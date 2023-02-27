@@ -46,6 +46,19 @@ class Level extends Entity
                     if(entity.name == "player") {
                         entities.push(new Player(entity.x, entity.y));
                     }
+                    if(entity.name == "optionalSolid") {
+                        if(Random.random < 0.5) {
+                            for(tileY in 0...Std.int(entity.height / walls.tileHeight)) {
+                                for(tileX in 0...Std.int(entity.width / walls.tileWidth)) {
+                                    walls.setTile(
+                                        tileX + Std.int(entity.x / walls.tileHeight),
+                                        tileY + Std.int(entity.y / walls.tileWidth),
+                                        true
+                                    );
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

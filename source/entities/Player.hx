@@ -29,6 +29,7 @@ class Player extends Entity
 
     public function new(x:Float, y:Float) {
         super(x, y);
+        name = "player";
         mask = new Hitbox(10, 10);
         sprite = new Spritemap("graphics/player.png", 10, 10);
         sprite.add("idle", [0]);
@@ -114,6 +115,7 @@ class Player extends Entity
             velocity.y * HXP.elapsed,
             ["walls"]
         );
+        x = Math.max(x, HXP.scene.camera.x);
     }
 
     override public function moveCollideX(e:Entity) {
