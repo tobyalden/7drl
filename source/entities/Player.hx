@@ -47,10 +47,19 @@ class Player extends MiniEntity
     override public function update() {
         if(Input.pressed("action")) {
             if(carrying != null) {
-                carrying.toss(
-                    TOSS_VELOCITY_X * (sprite.flipX ? -1 : 1) + velocity.x / 2,
-                    -TOSS_VELOCITY_Y + velocity.y / 2
-                );
+                if(Input.check("down")) {
+                    carrying.moveTo(
+                        sprite.flipX ? x - carrying.width : right,
+                        top,
+                        ["walls"]
+                    );
+                }
+                else {
+                    carrying.toss(
+                        TOSS_VELOCITY_X * (sprite.flipX ? -1 : 1) + velocity.x / 2,
+                        -TOSS_VELOCITY_Y + velocity.y / 2
+                    );
+                }
                 carrying = null;
             }
             else {
