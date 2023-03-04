@@ -23,15 +23,21 @@ class Player extends MiniEntity
     public static inline var JUMP_BUFFER_TIME = 1 / 60 * 5;
     public static inline var TOSS_VELOCITY_X = 150;
     public static inline var TOSS_VELOCITY_Y = 150;
+    public static inline var DETACH_DISTANCE = 10;
+    public static inline var RIDE_COOLDOWN = 0.5;
 
     public var carrying(default, null):Item;
+    public var riding(default, null):Mount;
     private var sprite:Spritemap;
     private var velocity:Vector2;
     private var timeOffGround:Float;
     private var timeJumpHeld:Float;
+    private var rideCooldown:Alarm;
 
     public function new(x:Float, y:Float) {
         super(x, y - 5);
+        carrying = null;
+        riding = null;
         name = "player";
         mask = new Hitbox(10, 15);
         sprite = new Spritemap("graphics/player.png", 10, 15);
@@ -41,7 +47,8 @@ class Player extends MiniEntity
         velocity = new Vector2();
         timeOffGround = 0;
         timeJumpHeld = 0;
-        carrying = null;
+        rideCooldown = new Alarm(RIDE_COOLDOWN);
+        addTween(rideCooldown);
     }
 
     override public function update() {
@@ -55,21 +62,37 @@ class Player extends MiniEntity
                     );
                 }
                 else {
-                    carrying.toss(
-                        TOSS_VELOCITY_X * (sprite.flipX ? -1 : 1) + velocity.x / 2,
-                        -TOSS_VELOCITY_Y + velocity.y / 2
+                    var tossInfluence = riding != null ? riding.velocity : velocity;
+                    var tossVelocity = new Vector2(
+                        TOSS_VELOCITY_X * (sprite.flipX ? -1 : 1) + tossInfluence.x / 2,
+                        -TOSS_VELOCITY_Y + tossInfluence.y / 2
                     );
+                    tossVelocity.scale(1 / carrying.weightModifier);
+                    carrying.toss(tossVelocity.x, tossVelocity.y);
+                    if(carrying.type == "mount") {
+                        rideCooldown.start();
+                    }
                 }
                 carrying = null;
             }
-            else {
+            else if(riding == null) {
+                // You can't pick up items while riding
                 var item = collide("item", x, y);
                 if(item != null) {
                     carrying = cast(item, Item);
                 }
+                else {
+                    item = collide("mount", x, y);
+                    if(item != null) {
+                        carrying = cast(item, Item);
+                    }
+                }
             }
         }
-        movement();
+        if(riding == null) {
+            movement();
+        }
+        collisions();
         animation();
         if(carrying != null) {
             carrying.moveTo(
@@ -77,17 +100,17 @@ class Player extends MiniEntity
                 y - carrying.height,
                 ["walls"]
             );
-            if(distanceFrom(carrying, true) > 10) {
+            if(distanceFrom(carrying, true) > DETACH_DISTANCE) {
                 carrying = null;
             }
         }
         super.update();
-        if(Input.check("jump")) {
-            timeJumpHeld += HXP.elapsed;
-        }
-        else {
-            timeJumpHeld = 0;
-        }
+    }
+
+    public function stopRiding() {
+        riding = null;
+        rideCooldown.start();
+        velocity.y = -JUMP_POWER;
     }
 
     private function movement() {
@@ -155,6 +178,26 @@ class Player extends MiniEntity
             ["walls"]
         );
         x = Math.max(x, HXP.scene.camera.x);
+
+        if(Input.check("jump")) {
+            timeJumpHeld += HXP.elapsed;
+        }
+        else {
+            timeJumpHeld = 0;
+        }
+    }
+
+    private function collisions() {
+        var mount = collide("mount", x, y);
+        if(
+            mount != null
+            && bottom < mount.centerY
+            && velocity.y > 0
+            && !rideCooldown.active
+            && carrying != mount
+        ) {
+            riding = cast(mount, Mount);
+        }
     }
 
     override public function moveCollideX(e:Entity) {

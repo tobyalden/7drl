@@ -49,6 +49,9 @@ class Level extends MiniEntity
                     if(entity.name == "item") {
                         entities.push(new Item(entity.x, entity.y));
                     }
+                    if(entity.name == "mount") {
+                        entities.push(new Mount(entity.x, entity.y));
+                    }
                     if(entity.name == "optionalSolid") {
                         if(Random.random < 0.5) {
                             for(tileY in 0...Std.int(entity.height / walls.tileHeight)) {
