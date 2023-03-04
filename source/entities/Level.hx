@@ -7,7 +7,7 @@ import haxepunk.masks.*;
 import haxepunk.math.*;
 import openfl.Assets;
 
-class Level extends Entity
+class Level extends MiniEntity
 {
     public var entities(default, null):Array<Entity>;
     private var walls:Grid;
@@ -45,6 +45,9 @@ class Level extends Entity
                     var entity = layer.entities[entityIndex];
                     if(entity.name == "player") {
                         entities.push(new Player(entity.x, entity.y));
+                    }
+                    if(entity.name == "item") {
+                        entities.push(new Item(entity.x, entity.y));
                     }
                     if(entity.name == "optionalSolid") {
                         if(Random.random < 0.5) {

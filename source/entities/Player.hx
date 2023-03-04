@@ -9,7 +9,7 @@ import haxepunk.Tween;
 import haxepunk.tweens.misc.*;
 import scenes.*;
 
-class Player extends Entity
+class Player extends MiniEntity
 {
     public static inline var MAX_RUN_SPEED = 100;
     public static inline var MAX_AIR_SPEED = 150;
@@ -21,27 +21,57 @@ class Player extends Entity
     public static inline var MAX_FALL_SPEED = 400;
     public static inline var COYOTE_TIME = 1 / 60 * 5;
     public static inline var JUMP_BUFFER_TIME = 1 / 60 * 5;
+    public static inline var TOSS_VELOCITY_X = 150;
+    public static inline var TOSS_VELOCITY_Y = 150;
 
+    public var carrying(default, null):Item;
     private var sprite:Spritemap;
     private var velocity:Vector2;
     private var timeOffGround:Float;
     private var timeJumpHeld:Float;
 
     public function new(x:Float, y:Float) {
-        super(x, y);
+        super(x, y - 5);
         name = "player";
-        mask = new Hitbox(10, 10);
-        sprite = new Spritemap("graphics/player.png", 10, 10);
+        mask = new Hitbox(10, 15);
+        sprite = new Spritemap("graphics/player.png", 10, 15);
         sprite.add("idle", [0]);
         sprite.play("idle");
         graphic = sprite;
         velocity = new Vector2();
         timeOffGround = 0;
         timeJumpHeld = 0;
+        carrying = null;
     }
 
     override public function update() {
+        if(Input.pressed("action")) {
+            if(carrying != null) {
+                carrying.toss(
+                    TOSS_VELOCITY_X * (sprite.flipX ? -1 : 1) + velocity.x / 2,
+                    -TOSS_VELOCITY_Y + velocity.y / 2
+                );
+                carrying = null;
+            }
+            else {
+                var item = collide("item", x, y);
+                if(item != null) {
+                    carrying = cast(item, Item);
+                }
+            }
+        }
         movement();
+        animation();
+        if(carrying != null) {
+            carrying.moveTo(
+                centerX - carrying.width / 2,
+                y - carrying.height,
+                ["walls"]
+            );
+            if(distanceFrom(carrying, true) > 10) {
+                carrying = null;
+            }
+        }
         super.update();
         if(Input.check("jump")) {
             timeJumpHeld += HXP.elapsed;
@@ -128,21 +158,12 @@ class Player extends Entity
         return true;
     }
 
-    private function isOnGround() {
-        return collide("walls", x, y + 1) != null;
-    }
-
-    private function isOnWall() {
-        return isOnLeftWall() || isOnRightWall();
-    }
-
-    private function isOnLeftWall() {
-        return collide("walls", x - 1, y) != null;
-    }
-
-    private function isOnRightWall() {
-        return collide("walls", x + 1, y) != null;
+    private function animation() {
+        if(Input.check("left")) {
+            sprite.flipX = true;
+        }
+        else if(Input.check("right")) {
+            sprite.flipX = false;
+        }
     }
 }
-
-
