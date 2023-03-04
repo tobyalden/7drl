@@ -36,6 +36,7 @@ class Player extends MiniEntity
 
     public function new(x:Float, y:Float) {
         super(x, y - 5);
+        layer = -10;
         carrying = null;
         riding = null;
         name = "player";
@@ -112,9 +113,19 @@ class Player extends MiniEntity
     }
 
     public function stopRiding() {
-        riding = null;
         rideCooldown.start();
-        velocity.y = -JUMP_POWER;
+        if(Input.check("up")) {
+            velocity.y = -JUMP_POWER;
+        }
+        else {
+            velocity.y = 0;
+            moveTo(
+                riding.centerX - width / 2,
+                riding.bottom - height - 5,
+                ["walls"]
+            );
+        }
+        riding = null;
     }
 
     private function movement() {

@@ -37,7 +37,7 @@ class Mount extends Item
 
     override public function update() {
         if(getPlayer().riding == this) {
-            if(Input.pressed("jump") && Input.check("up")) {
+            if(Input.pressed("jump") && (Input.check("up") || Input.check("down"))) {
                 getPlayer().stopRiding();
             }
             else {
