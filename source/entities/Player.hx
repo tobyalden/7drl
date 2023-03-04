@@ -94,6 +94,11 @@ class Player extends MiniEntity
         }
         collisions();
         animation();
+        moveCarriedItemToHands();
+        super.update();
+    }
+
+    public function moveCarriedItemToHands() {
         if(carrying != null) {
             carrying.moveTo(
                 centerX - carrying.width / 2,
@@ -104,7 +109,6 @@ class Player extends MiniEntity
                 carrying = null;
             }
         }
-        super.update();
     }
 
     public function stopRiding() {

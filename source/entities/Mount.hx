@@ -47,6 +47,7 @@ class Mount extends Item
                     y - getPlayer().height,
                     ["walls"]
                 );
+                getPlayer().moveCarriedItemToHands();
             }
         }
         super.update();
