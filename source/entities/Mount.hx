@@ -95,7 +95,8 @@ class Mount extends Item
             }
         }
 
-        if(isOnGround() || timeOffGround <= COYOTE_TIME) {
+        var potUnder = collide("pot", x, y + 1);
+        if(isOnGround() || timeOffGround <= COYOTE_TIME || potUnder != null) {
             if(
                 Input.pressed("jump")
                 || Input.check("jump") && timeJumpHeld <= JUMP_BUFFER_TIME
@@ -115,7 +116,7 @@ class Mount extends Item
         moveBy(
             velocity.x * HXP.elapsed,
             velocity.y * HXP.elapsed,
-            ["walls"]
+            ["walls", "pot"]
         );
         x = Math.max(x, HXP.scene.camera.x);
 
@@ -125,5 +126,23 @@ class Mount extends Item
         else {
             timeJumpHeld = 0;
         }
+    }
+
+    override public function moveCollideX(e:Entity) {
+        if(e.type == "pot") {
+            return false;
+        }
+        return super.moveCollideX(e);
+    }
+
+    override public function moveCollideY(e:Entity) {
+        if(e.type == "pot" && bottom > e.y) {
+            return false;
+        }
+        if(getPlayer().riding == this) {
+            velocity.y = 0;
+            return true;
+        }
+        return super.moveCollideY(e);
     }
 }

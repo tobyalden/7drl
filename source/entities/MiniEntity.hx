@@ -16,7 +16,7 @@ class MiniEntity extends Entity
     }
 
     private function isOnGround() {
-        return collide("walls", x, y + 1) != null;
+        return collideAny(["walls"], x, y + 1) != null;
     }
 
     private function isOnWall() {

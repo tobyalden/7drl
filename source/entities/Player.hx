@@ -33,6 +33,7 @@ class Player extends MiniEntity
     private var timeOffGround:Float;
     private var timeJumpHeld:Float;
     private var rideCooldown:Alarm;
+    private var canMove:Bool;
 
     public function new(x:Float, y:Float) {
         super(x, y - 5);
@@ -50,9 +51,42 @@ class Player extends MiniEntity
         timeJumpHeld = 0;
         rideCooldown = new Alarm(RIDE_COOLDOWN);
         addTween(rideCooldown);
+        canMove = true;
+    }
+
+    private function enterPot() {
+        HXP.alarm(1, function() {
+            HXP.scene = new GameScene();
+        });
     }
 
     override public function update() {
+        if(canMove) {
+            var potUnder = collide("pot", x, y + 1);
+            if(
+                Input.pressed("down")
+                && potUnder != null
+                && collide("pot", x, y) == null
+                && riding == null
+                && centerX >= potUnder.x
+                && centerX <= potUnder.right
+            ) {
+                canMove = false;
+                layer = potUnder.layer + 1;
+                HXP.tween(this, {x: Math.floor(potUnder.centerX - width / 2), y: potUnder.y}, 1, {complete: enterPot});
+            }
+            action();
+            if(riding == null) {
+                movement();
+            }
+            animation();
+        }
+        collisions();
+        moveCarriedItemToHands();
+        super.update();
+    }
+
+    private function action() {
         if(Input.pressed("action")) {
             if(carrying != null) {
                 if(Input.check("down")) {
@@ -78,19 +112,12 @@ class Player extends MiniEntity
             }
             else if(riding == null) {
                 // You can't pick up items while riding
-                var item = collideAny(Item.itemTypes, x, y);
+                var item = collideAny(Item.itemTypes, x, y + 1);
                 if(item != null) {
                     carrying = cast(item, Item);
                 }
             }
         }
-        if(riding == null) {
-            movement();
-        }
-        collisions();
-        animation();
-        moveCarriedItemToHands();
-        super.update();
     }
 
     public function moveCarriedItemToHands() {
@@ -164,7 +191,8 @@ class Player extends MiniEntity
             }
         }
 
-        if(isOnGround() || timeOffGround <= COYOTE_TIME) {
+        var potUnder = collide("pot", x, y + 1);
+        if(isOnGround() || timeOffGround <= COYOTE_TIME || potUnder != null) {
             if(
                 Input.pressed("jump")
                 || Input.check("jump") && timeJumpHeld <= JUMP_BUFFER_TIME
