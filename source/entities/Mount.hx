@@ -43,7 +43,7 @@ class Mount extends Item
             else {
                 mountedMovement();
                 getPlayer().moveTo(
-                    centerX - getPlayer().width / 2,
+                    Math.floor(centerX - getPlayer().width / 2),
                     y - getPlayer().height,
                     ["walls"]
                 );

@@ -96,7 +96,7 @@ class Player extends MiniEntity
     public function moveCarriedItemToHands() {
         if(carrying != null) {
             carrying.moveTo(
-                centerX - carrying.width / 2,
+                centerX - Math.floor(carrying.width / 2),
                 y - carrying.height,
                 ["walls"]
             );
@@ -114,7 +114,7 @@ class Player extends MiniEntity
         else {
             velocity.y = 0;
             moveTo(
-                riding.centerX - width / 2,
+                Math.floor(riding.centerX - width / 2),
                 riding.bottom - height - 5,
                 ["walls"]
             );
@@ -184,8 +184,9 @@ class Player extends MiniEntity
         moveBy(
             velocity.x * HXP.elapsed,
             velocity.y * HXP.elapsed,
-            ["walls"]
+            ["walls", "pot"]
         );
+
         x = Math.max(x, HXP.scene.camera.x);
 
         if(Input.check("jump")) {
@@ -210,11 +211,17 @@ class Player extends MiniEntity
     }
 
     override public function moveCollideX(e:Entity) {
+        if(e.type == "pot") {
+            return false;
+        }
         velocity.x = 0;
         return true;
     }
 
     override public function moveCollideY(e:Entity) {
+        if(e.type == "pot" && bottom > e.y) {
+            return false;
+        }
         velocity.y = 0;
         return true;
     }

@@ -61,6 +61,9 @@ class Main extends Engine
         if(Key.pressed(Key.F)) {
             HXP.fullscreen = !HXP.fullscreen;
         }
+        if(Key.pressed(Key.R)) {
+            HXP.scene = new GameScene();
+        }
 #end
         super.update();
     }

@@ -41,7 +41,6 @@ class MiniEntity extends Entity
         return null;
     }
 
-
     private function getPlayer() {
         return cast(HXP.scene.getInstance("player"), Player);
     }
