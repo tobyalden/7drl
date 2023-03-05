@@ -17,7 +17,7 @@ class Level extends MiniEntity
         super(0, 0);
         type = "walls";
         loadLevel(levelName);
-        updateGraphic();
+        updateGraphic(levelName);
     }
 
     override public function update() {
@@ -83,7 +83,7 @@ class Level extends MiniEntity
         }
     }
 
-    public function updateGraphic() {
+    public function updateGraphic(levelName:String) {
         tiles = new Tilemap(
             'graphics/tiles.png',
             walls.width, walls.height, walls.tileWidth, walls.tileHeight
@@ -91,7 +91,7 @@ class Level extends MiniEntity
         for(tileX in 0...walls.columns) {
             for(tileY in 0...walls.rows) {
                 if(walls.getTile(tileX, tileY)) {
-                    tiles.setTile(tileX, tileY, 0);
+                    tiles.setTile(tileX, tileY, levelName == "hell" ? 1 : 0);
                 }
             }
         }

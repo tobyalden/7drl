@@ -63,7 +63,11 @@ class Player extends MiniEntity
         velocity.setTo(0, 0);
         HXP.alarm(1, function() {
             removeCarriedItem();
-            HXP.engine.pushScene(new GameScene("pot"));
+            var toZone = "pot";
+            if(getScene().zone == "pot") {
+                toZone = "hell";
+            }
+            HXP.engine.pushScene(new GameScene(toZone));
         }, this);
     }
 

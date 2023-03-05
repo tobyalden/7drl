@@ -21,10 +21,10 @@ class GameScene extends Scene
     public static var staticZones:Array<String> = ["pot"];
     public static var poppedScene:Bool = false;
 
+    public var zone(default, null):String;
     private var player:Player;
     private var levels:Array<Level>;
     private var maxCameraX:Float;
-    private var zone:String;
 
     public function new(zone:String) {
         super();
