@@ -47,7 +47,7 @@ class Item extends MiniEntity
     }
 
     override public function update() {
-        if(getPlayer().carrying == this) {
+        if(Player.carrying == this) {
             velocity.x = 0;
             velocity.y = 0;
         }

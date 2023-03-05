@@ -18,6 +18,9 @@ class GameScene extends Scene
     public static inline var GAME_HEIGHT = 180;
     public static inline var DEBUG_MODE = true;
 
+    public static var staticZones:Array<String> = ["pot"];
+    public static var currentZone:String = "earth";
+
     private var player:Player;
     private var levels:Array<Level>;
     private var maxCameraX:Float;
@@ -25,10 +28,18 @@ class GameScene extends Scene
     override public function begin() {
         levels = [];
         var level = addLevel();
+        level.offsetEntities();
         for(entity in level.entities) {
             add(entity);
             if(entity.name == "player") {
                 player = cast(entity, Player);
+                if(Player.carrying != null) {
+                    add(Player.carrying);
+                    Player.carrying.moveTo(
+                        player.centerX - Math.floor(Player.carrying.width / 2),
+                        player.y - Player.carrying.height
+                    );
+                }
             }
         }
     }
@@ -40,15 +51,21 @@ class GameScene extends Scene
             }
         }
         super.update();
-        camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
-        maxCameraX = Math.max(camera.x, maxCameraX);
-        if(camera.x + GAME_WIDTH > getTotalWidthOfLevels()) {
-            addLevel();
+        if(!isStaticZone()) {
+            camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
+            maxCameraX = Math.max(camera.x, maxCameraX);
+            if(camera.x + GAME_WIDTH > getTotalWidthOfLevels()) {
+                addLevel();
+            }
         }
     }
 
+    private function isStaticZone() {
+        return staticZones.indexOf(currentZone) != -1;
+    }
+
     private function addLevel() {
-        var level = new Level("level");
+        var level = new Level(currentZone);
         level.x += getTotalWidthOfLevels();
         add(level);
         levels.push(level);

@@ -73,6 +73,13 @@ class Level extends MiniEntity
         }
     }
 
+    public function offsetEntities() {
+        for(entity in entities) {
+            entity.x += x;
+            entity.y += y;
+        }
+    }
+
     public function updateGraphic() {
         tiles = new Tilemap(
             'graphics/tiles.png',

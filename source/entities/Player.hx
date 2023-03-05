@@ -26,7 +26,8 @@ class Player extends MiniEntity
     public static inline var DETACH_DISTANCE = 10;
     public static inline var RIDE_COOLDOWN = 0.5;
 
-    public var carrying(default, null):Item;
+    static public var carrying(default, null):Item = null;
+
     public var riding(default, null):Mount;
     private var sprite:Spritemap;
     private var velocity:Vector2;
@@ -38,7 +39,6 @@ class Player extends MiniEntity
     public function new(x:Float, y:Float) {
         super(x, y - 5);
         layer = -10;
-        carrying = null;
         riding = null;
         name = "player";
         mask = new Hitbox(10, 15);
@@ -56,6 +56,10 @@ class Player extends MiniEntity
 
     private function enterPot() {
         HXP.alarm(1, function() {
+            GameScene.currentZone = "pot";
+            if(Player.carrying != null) {
+                HXP.scene.remove(Player.carrying);
+            }
             HXP.scene = new GameScene();
         });
     }
