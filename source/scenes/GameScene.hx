@@ -81,7 +81,7 @@ class GameScene extends Scene
     }
 
     private function isStaticZone() {
-        return staticZones.indexOf(zone) != -1;
+        return staticZones.contains(zone);
     }
 
     private function addLevel() {

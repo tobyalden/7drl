@@ -272,7 +272,7 @@ class Player extends MiniEntity
         moveBy(
             velocity.x * HXP.elapsed,
             velocity.y * HXP.elapsed,
-            ["walls", "pot"]
+            ["walls"].concat(MiniEntity.semiSolids)
         );
 
         x = Math.max(x, HXP.scene.camera.x);
@@ -299,7 +299,7 @@ class Player extends MiniEntity
     }
 
     override public function moveCollideX(e:Entity) {
-        if(e.type == "pot") {
+        if(MiniEntity.semiSolids.contains(e.type)) {
             return false;
         }
         velocity.x = 0;
@@ -307,7 +307,7 @@ class Player extends MiniEntity
     }
 
     override public function moveCollideY(e:Entity) {
-        if(e.type == "pot" && bottom > e.y) {
+        if(MiniEntity.semiSolids.contains(e.type) && bottom > e.y) {
             return false;
         }
         velocity.y = 0;

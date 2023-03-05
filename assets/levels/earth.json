@@ -65,7 +65,7 @@
         {"name": "pot", "id": 20, "_eid": "99911727", "x": 70, "y": 160, "originX": 0, "originY": 0},
         {"name": "mount", "id": 21, "_eid": "96773502", "x": 30, "y": 160, "originX": 0, "originY": 0},
         {"name": "pot", "id": 22, "_eid": "99911727", "x": 280, "y": 60, "originX": 0, "originY": 0},
-        {"name": "item", "id": 23, "_eid": "96531983", "x": 140, "y": 110, "originX": 0, "originY": 0}
+        {"name": "bed", "id": 24, "_eid": "05614990", "x": 130, "y": 120, "originX": 0, "originY": 0}
       ]
     }
   ]

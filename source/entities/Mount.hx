@@ -116,7 +116,7 @@ class Mount extends Item
         moveBy(
             velocity.x * HXP.elapsed,
             velocity.y * HXP.elapsed,
-            ["walls", "pot"]
+            ["walls"].concat(MiniEntity.semiSolids)
         );
         x = Math.max(x, HXP.scene.camera.x);
 
@@ -129,14 +129,14 @@ class Mount extends Item
     }
 
     override public function moveCollideX(e:Entity) {
-        if(e.type == "pot") {
+        if(MiniEntity.semiSolids.contains(e.type)) {
             return false;
         }
         return super.moveCollideX(e);
     }
 
     override public function moveCollideY(e:Entity) {
-        if(e.type == "pot" && bottom > e.y) {
+        if(MiniEntity.semiSolids.contains(e.type) && bottom > e.y) {
             return false;
         }
         if(getPlayer().riding == this) {
