@@ -36,6 +36,7 @@ class Player extends MiniEntity
     private var rideCooldown:Alarm;
     private var canMove:Bool;
     private var enterPotCoordinates:Array<Vector2>;
+    private var lastUsedPot:Pot;
 
     public function new(x:Float, y:Float) {
         super(x, y - 5);
@@ -54,6 +55,7 @@ class Player extends MiniEntity
         addTween(rideCooldown);
         canMove = true;
         enterPotCoordinates = [];
+        lastUsedPot = null;
     }
 
     private function enterPot() {
@@ -84,7 +86,13 @@ class Player extends MiniEntity
             this,
             {x: enterPotCoordinates[0].x, y: enterPotCoordinates[0].y},
             1,
-            {complete: function() { canMove = true; }}
+            {complete: function() {
+                canMove = true;
+                layer = -10;
+                if(lastUsedPot != null) {
+                    lastUsedPot.crack();
+                }
+            }}
         );
         if(Player.carrying != null) {
             HXP.tween(
@@ -101,6 +109,7 @@ class Player extends MiniEntity
             if(
                 Input.pressed("down")
                 && potUnder != null
+                && !cast(potUnder, Pot).isCracked
                 && collide("pot", x, y) == null
                 && riding == null
                 && centerX >= potUnder.x
@@ -109,6 +118,7 @@ class Player extends MiniEntity
                 trace('entering pot');
                 canMove = false;
                 layer = potUnder.layer + 1;
+                lastUsedPot = cast(potUnder, Pot);
                 enterPotCoordinates = [new Vector2(x, y)];
                 HXP.tween(
                     this,

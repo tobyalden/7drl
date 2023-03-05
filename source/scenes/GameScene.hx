@@ -65,7 +65,7 @@ class GameScene extends Scene
                 HXP.scene = new GameScene("earth");
             }
         }
-        if(player.bottom < 0) {
+        if(zone == "pot" && player.bottom < 0) {
             HXP.engine.popScene();
             player.removeCarriedItem();
             poppedScene = true;
