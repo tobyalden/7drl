@@ -35,6 +35,7 @@ class Player extends MiniEntity
     private var timeJumpHeld:Float;
     private var rideCooldown:Alarm;
     private var canMove:Bool;
+    private var enterPotCoordinates:Array<Vector2>;
 
     public function new(x:Float, y:Float) {
         super(x, y - 5);
@@ -52,16 +53,46 @@ class Player extends MiniEntity
         rideCooldown = new Alarm(RIDE_COOLDOWN);
         addTween(rideCooldown);
         canMove = true;
+        enterPotCoordinates = [];
     }
 
     private function enterPot() {
+        velocity.setTo(0, 0);
         HXP.alarm(1, function() {
-            GameScene.currentZone = "pot";
-            if(Player.carrying != null) {
-                HXP.scene.remove(Player.carrying);
-            }
-            HXP.scene = new GameScene();
+            removeCarriedItem();
+            HXP.engine.pushScene(new GameScene("pot"));
         });
+    }
+
+    public function removeCarriedItem() {
+        if(Player.carrying == null) {
+            return;
+        }
+        HXP.scene.remove(Player.carrying);
+    }
+
+    public function addCarriedItem(itemPosition:Vector2) {
+        if(Player.carrying == null) {
+            return;
+        }
+        HXP.scene.add(Player.carrying);
+        Player.carrying.moveTo(itemPosition.x, itemPosition.y);
+    }
+
+    public function exitPot() {
+        HXP.tween(
+            this,
+            {x: enterPotCoordinates[0].x, y: enterPotCoordinates[0].y},
+            1,
+            {complete: function() { canMove = true; }}
+        );
+        if(Player.carrying != null) {
+            HXP.tween(
+                Player.carrying,
+                {x: enterPotCoordinates[1].x, y: enterPotCoordinates[1].y},
+                1
+            );
+        }
     }
 
     override public function update() {
@@ -75,18 +106,33 @@ class Player extends MiniEntity
                 && centerX >= potUnder.x
                 && centerX <= potUnder.right
             ) {
+                trace('entering pot');
                 canMove = false;
                 layer = potUnder.layer + 1;
-                HXP.tween(this, {x: Math.floor(potUnder.centerX - width / 2), y: potUnder.y}, 1, {complete: enterPot});
+                enterPotCoordinates = [new Vector2(x, y)];
+                HXP.tween(
+                    this,
+                    {x: Math.floor(potUnder.centerX - width / 2), y: potUnder.y},
+                    1,
+                    {complete: enterPot}
+                );
+                if(Player.carrying != null) {
+                    enterPotCoordinates.push(new Vector2(Player.carrying.x, Player.carrying.y));
+                    HXP.tween(
+                        Player.carrying,
+                        {x: Math.floor(potUnder.centerX - Player.carrying.width / 2), y: potUnder.y},
+                        1
+                    );
+                }
             }
             action();
             if(riding == null) {
                 movement();
             }
             animation();
+            moveCarriedItemToHands();
         }
         collisions();
-        moveCarriedItemToHands();
         super.update();
     }
 

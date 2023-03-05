@@ -37,7 +37,7 @@ class Main extends Engine
             defineGamepadInputs(newGamepad);
         });
 
-        HXP.scene = new GameScene();
+        HXP.scene = new GameScene("earth");
     }
 
     private function defineGamepadInputs(gamepad) {
@@ -62,7 +62,7 @@ class Main extends Engine
             HXP.fullscreen = !HXP.fullscreen;
         }
         if(Key.pressed(Key.R)) {
-            HXP.scene = new GameScene();
+            HXP.scene = new GameScene("earth");
         }
 #end
         super.update();

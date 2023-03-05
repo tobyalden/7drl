@@ -19,11 +19,17 @@ class GameScene extends Scene
     public static inline var DEBUG_MODE = true;
 
     public static var staticZones:Array<String> = ["pot"];
-    public static var currentZone:String = "earth";
+    public static var poppedScene:Bool = false;
 
     private var player:Player;
     private var levels:Array<Level>;
     private var maxCameraX:Float;
+    private var zone:String;
+
+    public function new(zone:String) {
+        super();
+        this.zone = zone;
+    }
 
     override public function begin() {
         levels = [];
@@ -34,21 +40,35 @@ class GameScene extends Scene
             if(entity.name == "player") {
                 player = cast(entity, Player);
                 if(Player.carrying != null) {
-                    add(Player.carrying);
-                    Player.carrying.moveTo(
+                    player.addCarriedItem(new Vector2(
                         player.centerX - Math.floor(Player.carrying.width / 2),
                         player.y - Player.carrying.height
-                    );
+                    ));
                 }
             }
         }
     }
 
     override public function update() {
+        if(poppedScene) {
+            if(Player.carrying != null) {
+                player.addCarriedItem(new Vector2(
+                    player.centerX - Math.floor(Player.carrying.width / 2),
+                    player.y
+                ));
+            }
+            player.exitPot();
+            poppedScene = false;
+        }
         if(DEBUG_MODE) {
             if(Key.pressed(Key.R)) {
-                HXP.scene = new GameScene();
+                HXP.scene = new GameScene("earth");
             }
+        }
+        if(player.bottom < 0) {
+            HXP.engine.popScene();
+            player.removeCarriedItem();
+            poppedScene = true;
         }
         super.update();
         if(!isStaticZone()) {
@@ -61,11 +81,11 @@ class GameScene extends Scene
     }
 
     private function isStaticZone() {
-        return staticZones.indexOf(currentZone) != -1;
+        return staticZones.indexOf(zone) != -1;
     }
 
     private function addLevel() {
-        var level = new Level(currentZone);
+        var level = new Level(zone);
         level.x += getTotalWidthOfLevels();
         add(level);
         levels.push(level);
