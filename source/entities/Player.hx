@@ -46,6 +46,7 @@ class Player extends MiniEntity
         mask = new Hitbox(10, 15);
         sprite = new Spritemap("graphics/player.png", 10, 15);
         sprite.add("idle", [0]);
+        sprite.add("asleep", [1]);
         sprite.play("idle");
         graphic = sprite;
         velocity = new Vector2();
@@ -63,7 +64,7 @@ class Player extends MiniEntity
         HXP.alarm(1, function() {
             removeCarriedItem();
             HXP.engine.pushScene(new GameScene("pot"));
-        });
+        }, this);
     }
 
     public function removeCarriedItem() {
@@ -105,36 +106,8 @@ class Player extends MiniEntity
 
     override public function update() {
         if(canMove) {
-            var potUnder = collide("pot", x, y + 1);
-            if(
-                Input.pressed("down")
-                && potUnder != null
-                && !cast(potUnder, Pot).isCracked
-                && collide("pot", x, y) == null
-                && riding == null
-                && centerX >= potUnder.x
-                && centerX <= potUnder.right
-            ) {
-                trace('entering pot');
-                canMove = false;
-                layer = potUnder.layer + 1;
-                lastUsedPot = cast(potUnder, Pot);
-                enterPotCoordinates = [new Vector2(x, y)];
-                HXP.tween(
-                    this,
-                    {x: Math.floor(potUnder.centerX - width / 2), y: potUnder.y},
-                    1,
-                    {complete: enterPot}
-                );
-                if(Player.carrying != null) {
-                    enterPotCoordinates.push(new Vector2(Player.carrying.x, Player.carrying.y));
-                    HXP.tween(
-                        Player.carrying,
-                        {x: Math.floor(potUnder.centerX - Player.carrying.width / 2), y: potUnder.y},
-                        1
-                    );
-                }
-            }
+            handlePots();
+            handleBeds();
             action();
             if(riding == null) {
                 movement();
@@ -144,6 +117,63 @@ class Player extends MiniEntity
         }
         collisions();
         super.update();
+    }
+
+    private function handlePots() {
+        var potUnder = collide("pot", x, y + 1);
+        if(
+            Input.pressed("down")
+            && potUnder != null
+            && !cast(potUnder, Pot).isCracked
+            && collide("pot", x, y) == null
+            && riding == null
+            && centerX >= potUnder.x
+            && centerX <= potUnder.right
+        ) {
+            trace('entering pot');
+            canMove = false;
+            layer = potUnder.layer + 1;
+            lastUsedPot = cast(potUnder, Pot);
+            enterPotCoordinates = [new Vector2(x, y)];
+            HXP.tween(
+                this,
+                {x: Math.floor(potUnder.centerX - width / 2), y: potUnder.y},
+                1,
+                {complete: enterPot}
+            );
+            if(Player.carrying != null) {
+                enterPotCoordinates.push(new Vector2(Player.carrying.x, Player.carrying.y));
+                HXP.tween(
+                    Player.carrying,
+                    {x: Math.floor(potUnder.centerX - Player.carrying.width / 2), y: potUnder.y},
+                    1
+                );
+            }
+        }
+    }
+
+    private function handleBeds() {
+        var bedUnder = collide("bed", x, y + 1);
+        if(
+            Input.pressed("down")
+            && bedUnder != null
+            && collide("bed", x, y) == null
+            && riding == null
+            && centerX >= bedUnder.x
+            && centerX <= bedUnder.right
+        ) {
+            canMove = false;
+            moveTo(
+                Math.floor(bedUnder.centerX - width / 2),
+                bedUnder.y - height,
+                ["walls"]
+            );
+            sprite.play("asleep");
+            HXP.alarm(1, function() {
+                removeCarriedItem();
+                HXP.engine.pushScene(new GameScene("earth"));
+            }, this);
+        }
     }
 
     private function action() {
