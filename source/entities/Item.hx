@@ -13,6 +13,8 @@ class Item extends MiniEntity
 {
     public static inline var FRICTION = 500;
 
+    public static var itemTypes = ["item", "mount", "pot"];
+
     public var velocity(default, null):Vector2;
     public var weightModifier(default, null):Float;
     private var sprite:Spritemap;

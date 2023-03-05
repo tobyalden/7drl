@@ -61,8 +61,9 @@
         {"name": "optionalSolid", "id": 15, "_eid": "53964962", "x": 0, "y": 0, "width": 40, "height": 20, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 16, "_eid": "53964962", "x": 140, "y": 150, "width": 70, "height": 20, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 17, "_eid": "53964962", "x": 260, "y": 130, "width": 60, "height": 40, "originX": 0, "originY": 0},
-        {"name": "item", "id": 18, "_eid": "96531983", "x": 70, "y": 160, "originX": 0, "originY": 0},
-        {"name": "mount", "id": 19, "_eid": "96773502", "x": 40, "y": 160, "originX": 0, "originY": 0}
+        {"name": "item", "id": 18, "_eid": "96531983", "x": 50, "y": 160, "originX": 0, "originY": 0},
+        {"name": "mount", "id": 19, "_eid": "96773502", "x": 30, "y": 160, "originX": 0, "originY": 0},
+        {"name": "pot", "id": 20, "_eid": "99911727", "x": 70, "y": 160, "originX": 0, "originY": 0}
       ]
     }
   ]

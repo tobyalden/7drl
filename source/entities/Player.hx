@@ -78,15 +78,9 @@ class Player extends MiniEntity
             }
             else if(riding == null) {
                 // You can't pick up items while riding
-                var item = collide("item", x, y);
+                var item = collideAny(Item.itemTypes, x, y);
                 if(item != null) {
                     carrying = cast(item, Item);
-                }
-                else {
-                    item = collide("mount", x, y);
-                    if(item != null) {
-                        carrying = cast(item, Item);
-                    }
                 }
             }
         }

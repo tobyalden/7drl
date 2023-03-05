@@ -31,6 +31,17 @@ class MiniEntity extends Entity
         return collide("walls", x + 1, y) != null;
     }
 
+	private function collideAny(collideTypes:Array<String>, collideX:Float, collideY:Float) {
+        for(collideType in collideTypes) {
+            var collision = collide(collideType, collideX, collideY);
+            if(collision != null) {
+                return collision;
+            }
+        }
+        return null;
+    }
+
+
     private function getPlayer() {
         return cast(HXP.scene.getInstance("player"), Player);
     }
