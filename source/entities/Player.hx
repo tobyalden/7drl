@@ -50,8 +50,8 @@ class Player extends MiniEntity
         sprite.play("idle");
         graphic = sprite;
         velocity = new Vector2();
-        timeOffGround = 0;
-        timeJumpHeld = 0;
+        timeOffGround = 999;
+        timeJumpHeld = 999;
         rideCooldown = new Alarm(RIDE_COOLDOWN);
         addTween(rideCooldown);
         canMove = true;

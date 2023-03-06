@@ -17,9 +17,11 @@ class GameScene extends Scene
     public static inline var GAME_WIDTH = 320;
     public static inline var GAME_HEIGHT = 180;
     public static inline var DEBUG_MODE = true;
+    public static inline var HEAVEN_HEIGHT = 50;
 
     public static var staticZones:Array<String> = ["pot"];
     public static var poppedScene:Bool = false;
+    public static var exitedPot:Bool = false;
 
     public var zone(default, null):String;
     private var player:Player;
@@ -57,7 +59,9 @@ class GameScene extends Scene
                     player.y
                 ));
             }
-            player.exitPot();
+            if(exitedPot) {
+                player.exitPot();
+            }
             poppedScene = false;
         }
         if(DEBUG_MODE) {
@@ -66,6 +70,21 @@ class GameScene extends Scene
             }
         }
         if(zone == "pot" && player.bottom < 0) {
+            HXP.engine.popScene();
+            player.removeCarriedItem();
+            poppedScene = true;
+            exitedPot = true;
+        }
+        else if(zone == "earth" && player.bottom < -HEAVEN_HEIGHT) {
+            //HXP.engine.pushScene(new GameScene("heaven"));
+            //HXP.scene = new GameScene("heaven");
+            player.y = -player.height;
+            player.removeCarriedItem();
+            HXP.engine.pushScene(new GameScene("heaven"));
+        }
+        else if(zone == "heaven" && player.y > GAME_HEIGHT) {
+            //HXP.engine.pushScene(new GameScene("earth"));
+            //HXP.scene = new GameScene("earth");
             HXP.engine.popScene();
             player.removeCarriedItem();
             poppedScene = true;
