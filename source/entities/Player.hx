@@ -71,6 +71,10 @@ class Player extends MiniEntity
         }, this);
     }
 
+    public function destroyCarriedItem() {
+        Player.carrying = null;
+    }
+
     public function removeCarriedItem() {
         if(Player.carrying == null) {
             return;
@@ -106,6 +110,12 @@ class Player extends MiniEntity
                 1
             );
         }
+    }
+
+    public function wakeUp() {
+        canMove = true;
+        sprite.play("idle");
+        trace('waking up: ${getScene().zone}');
     }
 
     override public function update() {
@@ -286,8 +296,8 @@ class Player extends MiniEntity
             }
         }
 
-        var potUnder = collide("pot", x, y + 1);
-        if(isOnGround() || timeOffGround <= COYOTE_TIME || potUnder != null) {
+        var semiSolidUnder = collideAny(MiniEntity.semiSolids, x, y + 1);
+        if(isOnGround() || timeOffGround <= COYOTE_TIME || semiSolidUnder != null) {
             if(
                 Input.pressed("jump")
                 || Input.check("jump") && timeJumpHeld <= JUMP_BUFFER_TIME

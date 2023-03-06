@@ -20,8 +20,8 @@ class GameScene extends Scene
     public static inline var HEAVEN_HEIGHT = 50;
 
     public static var staticZones:Array<String> = ["pot", "bedroom"];
-    public static var poppedScene:Bool = false;
     public static var exitedPot:Bool = false;
+    public static var wokeUp:Bool = false;
     public static var dreamDepth:Int = 0;
     public static var bedDepths:Array<Int> = [];
 
@@ -33,6 +33,23 @@ class GameScene extends Scene
     public function new(zone:String) {
         super();
         this.zone = zone;
+    }
+
+	override public function resume() {
+        if(Player.carrying != null) {
+            player.addCarriedItem(new Vector2(
+                player.centerX - Math.floor(Player.carrying.width / 2),
+                player.y
+            ));
+        }
+        if(GameScene.exitedPot) {
+            player.exitPot();
+            GameScene.exitedPot = false;
+        }
+        else if(GameScene.wokeUp) {
+            player.wakeUp();
+            GameScene.wokeUp = false;
+        }
     }
 
     override public function begin() {
@@ -54,25 +71,13 @@ class GameScene extends Scene
     }
 
     override public function update() {
-        if(poppedScene) {
-            if(Player.carrying != null) {
-                player.addCarriedItem(new Vector2(
-                    player.centerX - Math.floor(Player.carrying.width / 2),
-                    player.y
-                ));
-            }
-            if(exitedPot) {
-                player.exitPot();
-            }
-            poppedScene = false;
-        }
         if(DEBUG_MODE) {
         }
+
         if(zone == "pot" && player.bottom < 0) {
             HXP.engine.popScene();
             player.removeCarriedItem();
-            poppedScene = true;
-            exitedPot = true;
+            GameScene.exitedPot = true;
         }
         else if(zone == "earth" && player.bottom < -HEAVEN_HEIGHT) {
             player.y = -player.height;
@@ -82,7 +87,6 @@ class GameScene extends Scene
         else if(zone == "heaven" && player.y > GAME_HEIGHT) {
             HXP.engine.popScene();
             player.removeCarriedItem();
-            poppedScene = true;
         }
         super.update();
         if(!isStaticZone()) {
@@ -101,6 +105,12 @@ class GameScene extends Scene
             for(i in 0...popNum) {
                 HXP.engine.popScene();
             }
+            player.removeCarriedItem();
+            if(lastBedDepth == 0) {
+                // You can't carry items from dreams into the real world
+                player.destroyCarriedItem();
+            }
+            GameScene.wokeUp = true;
         });
     }
 
