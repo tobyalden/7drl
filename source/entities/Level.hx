@@ -10,6 +10,7 @@ import openfl.Assets;
 class Level extends MiniEntity
 {
     public var entities(default, null):Array<Entity>;
+    public var playerStart(default, null):Vector2;
     private var walls:Grid;
     private var tiles:Tilemap;
 
@@ -45,6 +46,7 @@ class Level extends MiniEntity
                     var entity = layer.entities[entityIndex];
                     if(entity.name == "player") {
                         entities.push(new Player(entity.x, entity.y));
+                        playerStart = new Vector2(entity.x, entity.y);
                     }
                     if(entity.name == "item") {
                         entities.push(new Item(entity.x, entity.y));

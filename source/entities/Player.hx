@@ -29,13 +29,12 @@ class Player extends MiniEntity
     static public var carrying(default, null):Item = null;
 
     public var riding(default, null):Mount;
+    public var velocity(default, null):Vector2;
     private var sprite:Spritemap;
-    private var velocity:Vector2;
     private var timeOffGround:Float;
     private var timeJumpHeld:Float;
     private var rideCooldown:Alarm;
     private var canMove:Bool;
-    private var enterPotCoordinates:Array<Vector2>;
     private var lastUsedPot:Pot;
 
     public function new(x:Float, y:Float) {
@@ -55,19 +54,22 @@ class Player extends MiniEntity
         rideCooldown = new Alarm(RIDE_COOLDOWN);
         addTween(rideCooldown);
         canMove = true;
-        enterPotCoordinates = [];
         lastUsedPot = null;
     }
 
-    private function enterPot() {
+    private function enterPot(pot:Pot) {
         velocity.setTo(0, 0);
         HXP.alarm(1, function() {
             removeCarriedItem();
-            var toZone = "pot";
             if(getScene().zone == "pot") {
-                toZone = "hell";
+                HXP.engine.pushScene(new GameScene("hell"));
             }
-            HXP.engine.pushScene(new GameScene(toZone));
+            else {
+                if(pot.interior == null) {
+                    pot.createInterior();
+                }
+                HXP.engine.pushScene(pot.interior);
+            }
         }, this);
     }
 
@@ -93,20 +95,26 @@ class Player extends MiniEntity
     public function exitPot() {
         HXP.tween(
             this,
-            {x: enterPotCoordinates[0].x, y: enterPotCoordinates[0].y},
+            {
+                x: Math.floor(lastUsedPot.centerX - width / 2),
+                y: lastUsedPot.y - height
+            },
             1,
             {complete: function() {
                 canMove = true;
                 layer = -10;
-                if(lastUsedPot != null) {
-                    lastUsedPot.crack();
-                }
+                //if(lastUsedPot != null) {
+                    //lastUsedPot.crack();
+                //}
             }}
         );
-        if(Player.carrying != null) {
+        if(carrying != null) {
             HXP.tween(
-                Player.carrying,
-                {x: enterPotCoordinates[1].x, y: enterPotCoordinates[1].y},
+                carrying,
+                {
+                    x: Math.floor(lastUsedPot.centerX - carrying.width / 2),
+                    y: lastUsedPot.y - height - carrying.height
+                },
                 1
             );
         }
@@ -148,15 +156,13 @@ class Player extends MiniEntity
             canMove = false;
             layer = potUnder.layer + 1;
             lastUsedPot = cast(potUnder, Pot);
-            enterPotCoordinates = [new Vector2(x, y)];
             HXP.tween(
                 this,
                 {x: Math.floor(potUnder.centerX - width / 2), y: potUnder.y},
                 1,
-                {complete: enterPot}
+                {complete: function() { enterPot(cast(potUnder, Pot)); }}
             );
             if(Player.carrying != null) {
-                enterPotCoordinates.push(new Vector2(Player.carrying.x, Player.carrying.y));
                 HXP.tween(
                     Player.carrying,
                     {x: Math.floor(potUnder.centerX - Player.carrying.width / 2), y: potUnder.y},
@@ -226,15 +232,16 @@ class Player extends MiniEntity
     }
 
     public function moveCarriedItemToHands() {
-        if(carrying != null) {
-            carrying.moveTo(
-                centerX - Math.floor(carrying.width / 2),
-                y - carrying.height,
-                ["walls"]
-            );
-            if(distanceFrom(carrying, true) > DETACH_DISTANCE) {
-                carrying = null;
-            }
+        if(carrying == null) {
+            return;
+        }
+        carrying.moveTo(
+            centerX - Math.floor(carrying.width / 2),
+            y - carrying.height,
+            ["walls"]
+        );
+        if(distanceFrom(carrying, true) > DETACH_DISTANCE) {
+            carrying = null;
         }
     }
 

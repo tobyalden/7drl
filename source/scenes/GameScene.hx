@@ -42,6 +42,10 @@ class GameScene extends Scene
                 player.y
             ));
         }
+        if(zone == "pot" && player.bottom < 0) {
+            player.moveTo(levels[0].playerStart.x, levels[0].playerStart.y);
+            player.velocity.setTo(0, 0);
+        }
         if(GameScene.exitedPot) {
             player.exitPot();
             GameScene.exitedPot = false;
@@ -72,6 +76,8 @@ class GameScene extends Scene
 
     override public function update() {
         if(DEBUG_MODE) {
+            if(Key.pressed(Key.P)) {
+            }
         }
 
         if(zone == "pot" && player.bottom < 0) {
