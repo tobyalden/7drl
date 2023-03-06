@@ -37,7 +37,8 @@ class Main extends Engine
             defineGamepadInputs(newGamepad);
         });
 
-        HXP.scene = new GameScene("earth");
+        HXP.scene = new GameScene("bedroom");
+        //HXP.scene = new GameScene("earth");
     }
 
     private function defineGamepadInputs(gamepad) {

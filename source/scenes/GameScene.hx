@@ -19,7 +19,7 @@ class GameScene extends Scene
     public static inline var DEBUG_MODE = true;
     public static inline var HEAVEN_HEIGHT = 50;
 
-    public static var staticZones:Array<String> = ["pot"];
+    public static var staticZones:Array<String> = ["pot", "bedroom"];
     public static var poppedScene:Bool = false;
     public static var exitedPot:Bool = false;
 
@@ -76,15 +76,11 @@ class GameScene extends Scene
             exitedPot = true;
         }
         else if(zone == "earth" && player.bottom < -HEAVEN_HEIGHT) {
-            //HXP.engine.pushScene(new GameScene("heaven"));
-            //HXP.scene = new GameScene("heaven");
             player.y = -player.height;
             player.removeCarriedItem();
             HXP.engine.pushScene(new GameScene("heaven"));
         }
         else if(zone == "heaven" && player.y > GAME_HEIGHT) {
-            //HXP.engine.pushScene(new GameScene("earth"));
-            //HXP.scene = new GameScene("earth");
             HXP.engine.popScene();
             player.removeCarriedItem();
             poppedScene = true;
