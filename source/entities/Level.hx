@@ -11,6 +11,7 @@ class Level extends MiniEntity
 {
     public var entities(default, null):Array<Entity>;
     public var playerStart(default, null):Vector2;
+    public var eggStart(default, null):Vector2;
     private var walls:Grid;
     private var tiles:Tilemap;
 
@@ -62,6 +63,10 @@ class Level extends MiniEntity
                     }
                     if(entity.name == "enemy") {
                         entities.push(new Enemy(entity.x, entity.y));
+                    }
+                    if(entity.name == "egg") {
+                        entities.push(new Egg(entity.x, entity.y));
+                        eggStart = new Vector2(entity.x, entity.y);
                     }
                     if(entity.name == "optionalSolid") {
                         if(Random.random < 0.5) {

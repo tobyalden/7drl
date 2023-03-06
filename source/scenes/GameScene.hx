@@ -42,6 +42,11 @@ class GameScene extends Scene
                 player.y
             ));
         }
+        if(zone == "bedroom") {
+            if(typeCount("egg") == 0) {
+                add(new Egg(levels[0].eggStart.x, levels[0].eggStart.y));
+            }
+        }
         if(zone == "pot" && player.bottom < 0) {
             player.moveTo(levels[0].playerStart.x, levels[0].playerStart.y);
             player.velocity.setTo(0, 0);
