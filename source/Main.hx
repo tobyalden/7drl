@@ -54,6 +54,16 @@ class Main extends Engine
         gamepad.defineButton("action", [XboxGamepad.X_BUTTON]);
     }
 
+    override public function popScene():Scene {
+        GameScene.dreamDepth -= 1;
+        return super.popScene();
+    }
+
+    override public function pushScene(value:Scene):Void {
+        GameScene.dreamDepth += 1;
+        super.pushScene(value);
+    }
+
     override public function update() {
 #if desktop
         if(Key.pressed(Key.ESCAPE)) {
@@ -61,9 +71,6 @@ class Main extends Engine
         }
         if(Key.pressed(Key.F)) {
             HXP.fullscreen = !HXP.fullscreen;
-        }
-        if(Key.pressed(Key.R)) {
-            HXP.scene = new GameScene("earth");
         }
 #end
         super.update();

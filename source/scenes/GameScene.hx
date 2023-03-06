@@ -22,6 +22,8 @@ class GameScene extends Scene
     public static var staticZones:Array<String> = ["pot", "bedroom"];
     public static var poppedScene:Bool = false;
     public static var exitedPot:Bool = false;
+    public static var dreamDepth:Int = 0;
+    public static var bedDepths:Array<Int> = [];
 
     public var zone(default, null):String;
     private var player:Player;
@@ -65,9 +67,6 @@ class GameScene extends Scene
             poppedScene = false;
         }
         if(DEBUG_MODE) {
-            if(Key.pressed(Key.R)) {
-                HXP.scene = new GameScene("earth");
-            }
         }
         if(zone == "pot" && player.bottom < 0) {
             HXP.engine.popScene();
@@ -93,6 +92,16 @@ class GameScene extends Scene
                 addLevel();
             }
         }
+    }
+
+    public function onDeath() {
+        HXP.alarm(2, function() {
+            var lastBedDepth = GameScene.bedDepths.length > 0 ? GameScene.bedDepths.pop() : 0;
+            var popNum = GameScene.dreamDepth - lastBedDepth;
+            for(i in 0...popNum) {
+                HXP.engine.popScene();
+            }
+        });
     }
 
     private function isStaticZone() {

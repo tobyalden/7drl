@@ -175,6 +175,7 @@ class Player extends MiniEntity
             sprite.play("asleep");
             HXP.alarm(1, function() {
                 removeCarriedItem();
+                GameScene.bedDepths.push(GameScene.dreamDepth);
                 HXP.engine.pushScene(new GameScene("earth"));
             }, this);
         }
@@ -330,6 +331,16 @@ class Player extends MiniEntity
         ) {
             riding = cast(mount, Mount);
         }
+        if(collide("hazard", x, y) != null) {
+            die();
+        }
+    }
+
+    private function die() {
+        canMove = false;
+        visible = false;
+        collidable = false;
+        getScene().onDeath();
     }
 
     override public function moveCollideX(e:Entity) {

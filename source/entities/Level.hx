@@ -58,6 +58,9 @@ class Level extends MiniEntity
                     if(entity.name == "bed") {
                         entities.push(new Bed(entity.x, entity.y));
                     }
+                    if(entity.name == "enemy") {
+                        entities.push(new Enemy(entity.x, entity.y));
+                    }
                     if(entity.name == "optionalSolid") {
                         if(Random.random < 0.5) {
                             for(tileY in 0...Std.int(entity.height / walls.tileHeight)) {
