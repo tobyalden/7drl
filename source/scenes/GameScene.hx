@@ -63,20 +63,7 @@ class GameScene extends Scene
 
     override public function begin() {
         levels = [];
-        var level = addLevel();
-        level.offsetEntities();
-        for(entity in level.entities) {
-            add(entity);
-            if(entity.name == "player") {
-                player = cast(entity, Player);
-                if(Player.carrying != null) {
-                    player.addCarriedItem(new Vector2(
-                        player.centerX - Math.floor(Player.carrying.width / 2),
-                        player.y - Player.carrying.height
-                    ));
-                }
-            }
-        }
+        addLevel(zone);
     }
 
     override public function update() {
@@ -104,7 +91,7 @@ class GameScene extends Scene
             camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
             maxCameraX = Math.max(camera.x, maxCameraX);
             if(camera.x + GAME_WIDTH > getTotalWidthOfLevels()) {
-                addLevel();
+                addLevel("earth_nest");
             }
         }
     }
@@ -129,12 +116,29 @@ class GameScene extends Scene
         return staticZones.contains(zone);
     }
 
-    private function addLevel() {
-        var level = new Level(zone);
+    private function addLevel(levelName:String) {
+        var level = new Level(levelName);
         level.x += getTotalWidthOfLevels();
         add(level);
         levels.push(level);
-        return level;
+        level.offsetEntities();
+        for(entity in level.entities) {
+            if(entity.name == "player") {
+                if(getInstance("player") == null) {
+                    player = cast(entity, Player);
+                    add(player);
+                    if(Player.carrying != null) {
+                        player.addCarriedItem(new Vector2(
+                            player.centerX - Math.floor(Player.carrying.width / 2),
+                            player.y - Player.carrying.height
+                        ));
+                    }
+                }
+            }
+            else {
+                add(entity);
+            }
+        }
     }
 
     private function getTotalWidthOfLevels() {

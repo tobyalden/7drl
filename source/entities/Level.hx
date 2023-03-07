@@ -68,6 +68,9 @@ class Level extends MiniEntity
                         entities.push(new Egg(entity.x, entity.y));
                         eggStart = new Vector2(entity.x, entity.y);
                     }
+                    if(entity.name == "nest") {
+                        entities.push(new Nest(entity.x, entity.y, entity.width, entity.height));
+                    }
                     if(entity.name == "optionalSolid") {
                         if(Random.random < 0.5) {
                             for(tileY in 0...Std.int(entity.height / walls.tileHeight)) {
@@ -94,8 +97,16 @@ class Level extends MiniEntity
     }
 
     public function updateGraphic(levelName:String) {
+        var allTilesets = [
+            "bedroom" => "bedroom",
+            "earth" => "earth",
+            "earth_nest" => "earth",
+            "heaven" => "heaven",
+            "hell" => "hell"
+        ];
+        var tileset = allTilesets.exists(levelName) ? allTilesets[levelName] : "default";
         tiles = new Tilemap(
-            'graphics/tiles_${levelName}.png',
+            'graphics/tiles_${tileset}.png',
             walls.width, walls.height, walls.tileWidth, walls.tileHeight
         );
         for(tileX in 0...walls.columns) {
