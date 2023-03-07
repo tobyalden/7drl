@@ -13,7 +13,7 @@ class Item extends MiniEntity
 {
     public static inline var FRICTION = 500;
 
-    public static var itemTypes = ["item", "mount", "pot", "bed", "egg"];
+    public static var itemTypes = ["item", "mount", "pot", "bed", "egg", "kettle"];
 
     public var velocity(default, null):Vector2;
     public var weightModifier(default, null):Float;

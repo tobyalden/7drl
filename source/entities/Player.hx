@@ -353,7 +353,7 @@ class Player extends MiniEntity
         ) {
             riding = cast(mount, Mount);
         }
-        if(collide("hazard", x, y) != null) {
+        if(collideAny(MiniEntity.hazards, x, y) != null) {
             die();
         }
     }

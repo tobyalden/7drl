@@ -71,6 +71,15 @@ class Level extends MiniEntity
                     if(entity.name == "nest") {
                         entities.push(new Nest(entity.x, entity.y, entity.width, entity.height));
                     }
+                    if(entity.name == "kettle") {
+                        entities.push(new Kettle(entity.x, entity.y));
+                    }
+                    if(entity.name == "ogre") {
+                        entities.push(new Ogre(entity.x, entity.y));
+                    }
+                    if(entity.name == "lava") {
+                        entities.push(new Lava(entity.x, entity.y, entity.width, entity.height));
+                    }
                     if(entity.name == "optionalSolid") {
                         if(Random.random < 0.5) {
                             for(tileY in 0...Std.int(entity.height / walls.tileHeight)) {

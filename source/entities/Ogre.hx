@@ -9,12 +9,11 @@ import haxepunk.Tween;
 import haxepunk.tweens.misc.*;
 import scenes.*;
 
-class Enemy extends MiniEntity
+class Ogre extends Enemy
 {
     public function new(x:Float, y:Float) {
         super(x, y);
-        type = "enemy";
-        mask = new Hitbox(15, 25);
+        mask = new Hitbox(30, 40);
         graphic = new ColoredRect(width, height, 0x32a852);
     }
 
@@ -22,4 +21,5 @@ class Enemy extends MiniEntity
         super.update();
     }
 }
+
 

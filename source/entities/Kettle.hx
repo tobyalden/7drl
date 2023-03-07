@@ -9,17 +9,16 @@ import haxepunk.Tween;
 import haxepunk.tweens.misc.*;
 import scenes.*;
 
-class Enemy extends MiniEntity
+class Kettle extends Item
 {
     public function new(x:Float, y:Float) {
-        super(x, y);
-        type = "enemy";
-        mask = new Hitbox(15, 25);
-        graphic = new ColoredRect(width, height, 0x32a852);
+        super(x, y - 10);
+        type = "kettle";
+        mask = new Hitbox(20, 20);
+        graphic = new Image("graphics/kettle.png");
     }
 
     override public function update() {
         super.update();
     }
 }
-
