@@ -21,6 +21,10 @@ class MiniEntity extends Entity
         return collideAny(["walls"], x, y + 1) != null;
     }
 
+    private function isOnGroundOrSemiSolid() {
+        return collideAny(["walls"].concat(MiniEntity.semiSolids), x, y + 1) != null;
+    }
+
     private function isOnWall() {
         return isOnLeftWall() || isOnRightWall();
     }

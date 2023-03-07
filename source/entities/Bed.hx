@@ -16,7 +16,7 @@ class Bed extends Item
         weightModifier = 1.25;
         type = "bed";
         mask = new Hitbox(25, 15);
-        graphic = new ColoredRect(width, height, 0xC69593);
+        graphic = new Image("graphics/bed.png");
     }
 
     override public function update() {

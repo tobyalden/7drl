@@ -17,7 +17,6 @@ class Item extends MiniEntity
 
     public var velocity(default, null):Vector2;
     public var weightModifier(default, null):Float;
-    private var sprite:Spritemap;
 
     public function new(x:Float, y:Float) {
         super(x, y);

@@ -36,6 +36,7 @@ class Player extends MiniEntity
     private var rideCooldown:Alarm;
     private var canMove:Bool;
     private var lastUsedPot:Pot;
+    private var isAsleep:Bool;
 
     public function new(x:Float, y:Float) {
         super(x, y - 5);
@@ -45,7 +46,13 @@ class Player extends MiniEntity
         mask = new Hitbox(10, 15);
         sprite = new Spritemap("graphics/player.png", 10, 15);
         sprite.add("idle", [0]);
-        sprite.add("asleep", [1]);
+        sprite.add("run", [4, 5, 6, 7], 8);
+        sprite.add("jump", [8, 9], 8);
+        sprite.add("asleep", [12]);
+        sprite.add("idle_carrying", [16]);
+        sprite.add("run_carrying", [20, 21, 22, 23], 8);
+        sprite.add("jump_carrying", [24, 23], 8);
+        sprite.add("asleep_carrying", [28]);
         sprite.play("idle");
         graphic = sprite;
         velocity = new Vector2();
@@ -55,6 +62,7 @@ class Player extends MiniEntity
         addTween(rideCooldown);
         canMove = true;
         lastUsedPot = null;
+        isAsleep = false;
     }
 
     private function enterPot(pot:Pot) {
@@ -122,8 +130,7 @@ class Player extends MiniEntity
 
     public function wakeUp() {
         canMove = true;
-        sprite.play("idle");
-        trace('waking up: ${getScene().zone}');
+        isAsleep = true;
     }
 
     override public function update() {
@@ -152,7 +159,6 @@ class Player extends MiniEntity
             && centerX >= potUnder.x
             && centerX <= potUnder.right
         ) {
-            trace('entering pot');
             canMove = false;
             layer = potUnder.layer + 1;
             lastUsedPot = cast(potUnder, Pot);
@@ -188,7 +194,7 @@ class Player extends MiniEntity
                 bedUnder.y - height,
                 ["walls"]
             );
-            sprite.play("asleep");
+            isAsleep = true;
             HXP.alarm(1, function() {
                 removeCarriedItem();
                 GameScene.bedDepths.push(GameScene.dreamDepth);
@@ -303,8 +309,7 @@ class Player extends MiniEntity
             }
         }
 
-        var semiSolidUnder = collideAny(MiniEntity.semiSolids, x, y + 1);
-        if(isOnGround() || timeOffGround <= COYOTE_TIME || semiSolidUnder != null) {
+        if(isOnGroundOrSemiSolid() || timeOffGround <= COYOTE_TIME) {
             if(
                 Input.pressed("jump")
                 || Input.check("jump") && timeJumpHeld <= JUMP_BUFFER_TIME
@@ -377,6 +382,20 @@ class Player extends MiniEntity
     }
 
     private function animation() {
+        var suffix = carrying != null ? "_carrying" : "";
+        var action = "idle";
+        if(isAsleep) {
+            action = "asleep";
+        }
+        else if(!isOnGroundOrSemiSolid()) {
+            action = "jump";
+        }
+        else if(Math.abs(velocity.x) > 0) {
+            action = "run";
+        }
+        var animationName = '${action}${suffix}';
+        sprite.play(animationName);
+
         if(Input.check("left")) {
             sprite.flipX = true;
         }

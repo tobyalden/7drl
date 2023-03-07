@@ -17,7 +17,7 @@ class Egg extends Item
         super(x, y - 5);
         type = "egg";
         mask = new Hitbox(20, 15);
-        graphic = new ColoredRect(width, height, 0xe1daa7);
+        graphic = new Image("graphics/egg.png");
     }
 
     override public function update() {

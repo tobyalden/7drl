@@ -14,12 +14,20 @@ class Pot extends Item
     public var isCracked(default, null):Bool;
     public var interior(default, null):Scene;
 
+    private var sprite:Spritemap;
+
     public function new(x:Float, y:Float) {
         super(x, y - 15);
         weightModifier = 1.25;
         type = "pot";
-        mask = new Hitbox(15, 25);
-        graphic = new ColoredRect(width, height, 0xFFFFBB);
+        mask = new Hitbox(12, 25);
+        sprite = new Spritemap("graphics/pot.png", 12, 25);
+        sprite.add("unused", [0]);
+        sprite.add("crack1", [1]);
+        sprite.add("crack2", [2]);
+        sprite.add("crack3", [3]);
+        sprite.play("unused");
+        graphic = sprite;
         isCracked = false;
         interior = null;
     }
