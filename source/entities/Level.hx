@@ -83,6 +83,9 @@ class Level extends MiniEntity
                     if(entity.name == "water") {
                         entities.push(new Water(entity.x, entity.y, entity.width, entity.height));
                     }
+                    if(entity.name == "angel") {
+                        entities.push(new Angel(entity.x, entity.y));
+                    }
                     if(entity.name == "optionalSolid") {
                         if(Random.random < 0.5) {
                             for(tileY in 0...Std.int(entity.height / walls.tileHeight)) {
