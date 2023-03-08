@@ -50,7 +50,7 @@ class Item extends MiniEntity
             velocity.x = 0;
             velocity.y = 0;
         }
-        else if(getPlayer().riding != this) {
+        else if(Player.riding != this) {
             movement();
         }
         super.update();

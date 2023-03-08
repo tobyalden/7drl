@@ -17,7 +17,7 @@ class GameScene extends Scene
     public static inline var GAME_WIDTH = 320;
     public static inline var GAME_HEIGHT = 180;
     public static inline var DEBUG_MODE = true;
-    public static inline var HEAVEN_HEIGHT = 50;
+    public static inline var HEAVEN_HEIGHT = 200;
 
     public static var staticZones:Array<String> = ["pot", "bedroom"];
     public static var exitedPot:Bool = false;
@@ -42,6 +42,7 @@ class GameScene extends Scene
                 player.y
             ));
         }
+        player.addRiding();
         if(zone == "bedroom") {
             if(typeCount("egg") == 0) {
                 add(new Egg(levels[0].eggStart.x, levels[0].eggStart.y));
@@ -73,26 +74,31 @@ class GameScene extends Scene
         }
 
         if(zone == "pot" && player.bottom < 0) {
-            HXP.engine.popScene();
             player.removeCarriedItem();
             GameScene.exitedPot = true;
+            HXP.engine.popScene();
         }
         else if(zone == "earth" && player.bottom < -HEAVEN_HEIGHT) {
             player.y = -player.height;
+            if(Player.riding != null) {
+                Player.riding.y = -Player.riding.height;
+            }
             player.removeCarriedItem();
+            player.removeRiding();
             HXP.engine.pushScene(new GameScene("heaven"));
         }
-        else if(zone == "heaven" && player.y > GAME_HEIGHT) {
-            HXP.engine.popScene();
+        else if(zone == "heaven" && player.y > GAME_HEIGHT + 50) {
             player.removeCarriedItem();
+            player.removeRiding();
+            HXP.engine.popScene();
         }
         super.update();
         if(!isStaticZone()) {
             camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
             maxCameraX = Math.max(camera.x, maxCameraX);
             if(camera.x + GAME_WIDTH > getTotalWidthOfLevels()) {
-                //addLevel("earth_nest");
-                addLevel("hell_ogre");
+                addLevel("earth_nest");
+                //addLevel("hell_ogre");
             }
         }
     }
@@ -134,6 +140,7 @@ class GameScene extends Scene
                             player.y - Player.carrying.height
                         ));
                     }
+                    player.addRiding();
                 }
             }
             else {

@@ -19,8 +19,11 @@ class Mount extends Item
     public static inline var JUMP_POWER = 300;
     public static inline var JUMP_CANCEL = 50;
     public static inline var MAX_FALL_SPEED = 400;
+    public static inline var MAX_RISE_SPEED = 800;
     public static inline var COYOTE_TIME = 1 / 60 * 5;
     public static inline var JUMP_BUFFER_TIME = 1 / 60 * 5;
+
+    public static inline var FLAP_POWER = 250;
 
     private var timeOffGround:Float;
     private var timeJumpHeld:Float;
@@ -36,7 +39,7 @@ class Mount extends Item
     }
 
     override public function update() {
-        if(getPlayer().riding == this) {
+        if(Player.riding == this) {
             if(Input.pressed("jump") && (Input.check("up") || Input.check("down"))) {
                 getPlayer().stopRiding();
             }
@@ -54,6 +57,7 @@ class Mount extends Item
     }
 
     private function mountedMovement() {
+        // TODO: Find a way to abstract this out from Player and Mount
         if(isOnGround()) {
             timeOffGround = 0;
             if(Input.check("left") && !isOnLeftWall()) {
@@ -95,13 +99,18 @@ class Mount extends Item
             }
         }
 
-        var potUnder = collide("pot", x, y + 1);
-        if(isOnGround() || timeOffGround <= COYOTE_TIME || potUnder != null) {
+        if(isOnGroundOrSemiSolid() || timeOffGround <= COYOTE_TIME) {
             if(
                 Input.pressed("jump")
                 || Input.check("jump") && timeJumpHeld <= JUMP_BUFFER_TIME
             ) {
                 velocity.y = -JUMP_POWER;
+            }
+        }
+        else {
+            if(Input.pressed("jump")) {
+                velocity.y = Math.min(velocity.y, JUMP_CANCEL);
+                velocity.y -= FLAP_POWER;
             }
         }
 
@@ -111,13 +120,19 @@ class Mount extends Item
         }
         velocity.y += gravity * HXP.elapsed;
 
-        velocity.y = Math.min(velocity.y, MAX_FALL_SPEED);
+        if(collide("steam", x, y) != null) {
+            velocity.y = Math.min(velocity.y, JUMP_CANCEL);
+            velocity.y -= Steam.LIFT_POWER * HXP.elapsed;
+        }
+
+        velocity.y = MathUtil.clamp(velocity.y, -MAX_RISE_SPEED, MAX_FALL_SPEED);
 
         moveBy(
             velocity.x * HXP.elapsed,
             velocity.y * HXP.elapsed,
             ["walls"].concat(MiniEntity.semiSolids)
         );
+
         x = Math.max(x, HXP.scene.camera.x);
 
         if(Input.check("jump")) {
@@ -139,7 +154,7 @@ class Mount extends Item
         if(MiniEntity.semiSolids.contains(e.type) && bottom > e.y) {
             return false;
         }
-        if(getPlayer().riding == this) {
+        if(Player.riding == this) {
             velocity.y = 0;
             return true;
         }

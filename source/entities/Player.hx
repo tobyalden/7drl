@@ -19,6 +19,7 @@ class Player extends MiniEntity
     public static inline var JUMP_POWER = 300;
     public static inline var JUMP_CANCEL = 50;
     public static inline var MAX_FALL_SPEED = 400;
+    public static inline var MAX_RISE_SPEED = 800;
     public static inline var COYOTE_TIME = 1 / 60 * 5;
     public static inline var JUMP_BUFFER_TIME = 1 / 60 * 5;
     public static inline var TOSS_VELOCITY_X = 150;
@@ -27,8 +28,8 @@ class Player extends MiniEntity
     public static inline var RIDE_COOLDOWN = 0.5;
 
     static public var carrying(default, null):Item = null;
+    static public var riding(default, null):Mount = null;
 
-    public var riding(default, null):Mount;
     public var velocity(default, null):Vector2;
     private var sprite:Spritemap;
     private var timeOffGround:Float;
@@ -41,7 +42,6 @@ class Player extends MiniEntity
     public function new(x:Float, y:Float) {
         super(x, y - 5);
         layer = -10;
-        riding = null;
         name = "player";
         mask = new Hitbox(10, 15);
         sprite = new Spritemap("graphics/player.png", 10, 15);
@@ -92,6 +92,13 @@ class Player extends MiniEntity
         HXP.scene.remove(Player.carrying);
     }
 
+    public function removeRiding() {
+        if(Player.riding == null) {
+            return;
+        }
+        HXP.scene.remove(Player.riding);
+    }
+
     public function addCarriedItem(itemPosition:Vector2) {
         if(Player.carrying == null) {
             return;
@@ -100,7 +107,17 @@ class Player extends MiniEntity
         Player.carrying.moveTo(itemPosition.x, itemPosition.y);
     }
 
+    public function addRiding() {
+        if(Player.riding == null) {
+            return;
+        }
+        HXP.scene.add(Player.riding);
+        Player.riding.moveTo(centerX - Player.riding.width / 2, bottom - Player.riding.height);
+        moveTo(Player.riding.centerX - width / 2, Player.riding.y - height);
+    }
+
     public function exitPot() {
+        // TODO: It's possible for an item to clip into a wall and get stuck when exiting
         HXP.tween(
             this,
             {
@@ -138,7 +155,7 @@ class Player extends MiniEntity
             handlePots();
             handleBeds();
             action();
-            if(riding == null) {
+            if(Player.riding == null) {
                 movement();
             }
             animation();
@@ -155,7 +172,7 @@ class Player extends MiniEntity
             && potUnder != null
             && !cast(potUnder, Pot).isCracked
             && collide("pot", x, y) == null
-            && riding == null
+            && Player.riding == null
             && centerX >= potUnder.x
             && centerX <= potUnder.right
         ) {
@@ -184,7 +201,7 @@ class Player extends MiniEntity
             Input.pressed("down")
             && bedUnder != null
             && collide("bed", x, y) == null
-            && riding == null
+            && Player.riding == null
             && centerX >= bedUnder.x
             && centerX <= bedUnder.right
         ) {
@@ -214,7 +231,7 @@ class Player extends MiniEntity
                     );
                 }
                 else {
-                    var tossInfluence = riding != null ? riding.velocity : velocity;
+                    var tossInfluence = Player.riding != null ? Player.riding.velocity : velocity;
                     var tossVelocity = new Vector2(
                         TOSS_VELOCITY_X * (sprite.flipX ? -1 : 1) + tossInfluence.x / 2,
                         -TOSS_VELOCITY_Y + tossInfluence.y / 2
@@ -227,8 +244,8 @@ class Player extends MiniEntity
                 }
                 carrying = null;
             }
-            else if(riding == null) {
-                // You can't pick up items while riding
+            else if(Player.riding == null) {
+                // You can't pick up items while Player.riding
                 var item = collideAny(Item.itemTypes, x, y + 1);
                 if(item != null) {
                     carrying = cast(item, Item);
@@ -259,12 +276,12 @@ class Player extends MiniEntity
         else {
             velocity.y = 0;
             moveTo(
-                Math.floor(riding.centerX - width / 2),
-                riding.bottom - height - 5,
+                Math.floor(Player.riding.centerX - width / 2),
+                Player.riding.bottom - height - 5,
                 ["walls"]
             );
         }
-        riding = null;
+        Player.riding = null;
     }
 
     private function movement() {
@@ -324,7 +341,12 @@ class Player extends MiniEntity
         }
         velocity.y += gravity * HXP.elapsed;
 
-        velocity.y = Math.min(velocity.y, MAX_FALL_SPEED);
+        if(collide("steam", x, y) != null) {
+            velocity.y = Math.min(velocity.y, JUMP_CANCEL);
+            velocity.y -= Steam.LIFT_POWER * HXP.elapsed;
+        }
+
+        velocity.y = MathUtil.clamp(velocity.y, -MAX_RISE_SPEED, MAX_FALL_SPEED);
 
         moveBy(
             velocity.x * HXP.elapsed,
@@ -351,7 +373,7 @@ class Player extends MiniEntity
             && !rideCooldown.active
             && carrying != mount
         ) {
-            riding = cast(mount, Mount);
+            Player.riding = cast(mount, Mount);
         }
         if(collideAny(MiniEntity.hazards, x, y) != null) {
             die();
@@ -384,7 +406,10 @@ class Player extends MiniEntity
     private function animation() {
         var suffix = carrying != null ? "_carrying" : "";
         var action = "idle";
-        if(isAsleep) {
+        if(Player.riding != null) {
+            action = "idle";
+        }
+        else if(isAsleep) {
             action = "asleep";
         }
         else if(!isOnGroundOrSemiSolid()) {

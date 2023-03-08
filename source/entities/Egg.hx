@@ -21,11 +21,21 @@ class Egg extends Item
     }
 
     override public function update() {
+        if(collide("steam", x, y) != null) {
+            hatch();
+        }
         super.update();
     }
 
     private function crack() {
         HXP.scene.remove(this);
+    }
+
+    private function hatch() {
+        var chicken = new Mount(0, 0);
+        chicken.moveTo(centerX - chicken.width / 2, bottom - chicken.height);
+        HXP.scene.add(chicken);
+        crack();
     }
 
     override public function moveCollideX(e:Entity) {

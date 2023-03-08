@@ -11,7 +11,7 @@ import scenes.*;
 
 class MiniEntity extends Entity
 {
-    public static var semiSolids = ["pot", "bed", "kettle"];
+    public static var semiSolids = ["pot", "bed"];
     public static var hazards = ["lava", "enemy"];
 
     public function new(x:Float, y:Float) {
