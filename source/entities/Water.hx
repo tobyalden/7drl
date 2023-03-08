@@ -31,7 +31,6 @@ class Water extends MiniEntity
 
     private function bless() {
         isBlessed = true;
-        //pulse.tween(0.5, 0xADD8E6, 0xEDF7FA, 0.5, 0.5, Ease.sineInOut);
         pulse.tween(0.5, 0xEDF7FA, 0xADD8E6, 0.5, 0.5, Ease.sineInOut);
     }
 

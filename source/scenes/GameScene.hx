@@ -97,8 +97,8 @@ class GameScene extends Scene
             camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
             maxCameraX = Math.max(camera.x, maxCameraX);
             if(camera.x + GAME_WIDTH > getTotalWidthOfLevels()) {
-                //addLevel("earth_nest");
-                addLevel("heaven_shrine");
+                addLevel("earth_nest");
+                //addLevel("heaven_shrine");
                 //addLevel("hell_ogre");
             }
         }

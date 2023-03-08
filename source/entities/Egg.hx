@@ -13,10 +13,12 @@ import scenes.*;
 class Egg extends Item
 {
     public static inline var BREAK_SPEED = 200;
+    public static inline var BROODING_TIME_TO_HATCH = 5;
 
     private var isBlessed:Bool;
     private var pulse:ColorTween;
     private var sprite:Image;
+    private var broodingTime:Float;
 
     public function new(x:Float, y:Float) {
         super(x, y - 5);
@@ -27,6 +29,7 @@ class Egg extends Item
         isBlessed = false;
         pulse = new ColorTween(TweenType.PingPong);
         addTween(pulse);
+        broodingTime = 0;
     }
 
     private function bless() {
@@ -35,8 +38,22 @@ class Egg extends Item
     }
 
     override public function update() {
-        if(collide("steam", x, y) != null) {
-            hatch();
+        if(collide("nest", x, y) != null) {
+            var collidedMount = collide("mount", x, y);
+            if(collide("steam", x, y) != null) {
+                hatch();
+            }
+            else if(collidedMount != null) {
+                if(!cast(collidedMount, Mount).isDragon) {
+                    broodingTime += HXP.elapsed;
+                    if(broodingTime > BROODING_TIME_TO_HATCH) {
+                        hatch();
+                    }
+                }
+            }
+            else {
+                broodingTime = 0;
+            }
         }
         if(collide("angel", x, y) != null && !isBlessed) {
             bless();

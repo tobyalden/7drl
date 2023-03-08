@@ -24,10 +24,11 @@ class Mount extends Item
     public static inline var JUMP_BUFFER_TIME = 1 / 60 * 5;
 
     public static inline var FLAP_POWER = 250;
-    //public static inline var EGG_SPAWN_DISTANCE = GameScene.GAME_WIDTH * 5;
-    public static inline var EGG_SPAWN_DISTANCE = 100;
+    public static inline var EGG_SPAWN_DISTANCE = GameScene.GAME_WIDTH * 5;
+    //public static inline var EGG_SPAWN_DISTANCE = 100;
     public static inline var EGG_SPAWN_TIME = 3;
 
+    public var isDragon(default, null):Bool;
     private var timeOffGround:Float;
     private var timeJumpHeld:Float;
     private var distanceTraveled:Float;
@@ -46,6 +47,7 @@ class Mount extends Item
         });
         addTween(eggSpawner);
         distanceTraveled = 0;
+        isDragon = false;
     }
 
     private function spawnEgg() {
