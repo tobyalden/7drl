@@ -7,22 +7,42 @@ import haxepunk.masks.*;
 import haxepunk.math.*;
 import haxepunk.Tween;
 import haxepunk.tweens.misc.*;
+import haxepunk.utils.*;
 import scenes.*;
 
 class Egg extends Item
 {
     public static inline var BREAK_SPEED = 200;
 
+    private var isBlessed:Bool;
+    private var pulse:ColorTween;
+    private var sprite:Image;
+
     public function new(x:Float, y:Float) {
         super(x, y - 5);
         type = "egg";
         mask = new Hitbox(20, 15);
-        graphic = new Image("graphics/egg.png");
+        sprite = new Image("graphics/egg.png");
+        graphic = sprite;
+        isBlessed = false;
+        pulse = new ColorTween(TweenType.PingPong);
+        addTween(pulse);
+    }
+
+    private function bless() {
+        isBlessed = true;
+        pulse.tween(0.5, 0xEDF7FA, 0xADD8E6, 0.5, 0.5, Ease.sineInOut);
     }
 
     override public function update() {
         if(collide("steam", x, y) != null) {
             hatch();
+        }
+        if(collide("angel", x, y) != null && !isBlessed) {
+            bless();
+        }
+        if(isBlessed) {
+            sprite.color = pulse.color;
         }
         super.update();
     }

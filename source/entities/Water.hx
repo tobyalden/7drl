@@ -26,6 +26,7 @@ class Water extends MiniEntity
         graphic = sprite;
         pulse = new ColorTween(TweenType.PingPong);
         addTween(pulse);
+        isBlessed = false;
     }
 
     private function bless() {
