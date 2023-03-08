@@ -53,7 +53,7 @@ class Level extends MiniEntity
                         entities.push(new Item(entity.x, entity.y));
                     }
                     if(entity.name == "mount") {
-                        entities.push(new Mount(entity.x, entity.y));
+                        entities.push(new Mount(entity.x, entity.y, false));
                     }
                     if(entity.name == "pot") {
                         entities.push(new Pot(entity.x, entity.y));

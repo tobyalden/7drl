@@ -30,6 +30,8 @@ class Egg extends Item
         pulse = new ColorTween(TweenType.PingPong);
         addTween(pulse);
         broodingTime = 0;
+
+        bless(); // TODO: for testing
     }
 
     private function bless() {
@@ -72,9 +74,9 @@ class Egg extends Item
     }
 
     private function hatch() {
-        var chicken = new Mount(0, 0);
-        chicken.moveTo(centerX - chicken.width / 2, bottom - chicken.height);
-        HXP.scene.add(chicken);
+        var newborn = new Mount(0, 0, isBlessed);
+        newborn.moveTo(centerX - newborn.width / 2, bottom - newborn.height);
+        HXP.scene.add(newborn);
         crack();
     }
 

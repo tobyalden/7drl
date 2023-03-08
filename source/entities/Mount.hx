@@ -28,18 +28,21 @@ class Mount extends Item
     //public static inline var EGG_SPAWN_DISTANCE = 100;
     public static inline var EGG_SPAWN_TIME = 3;
 
+    public static inline var DRAGON_FLY_SPEED = 175;
+
     public var isDragon(default, null):Bool;
     private var timeOffGround:Float;
     private var timeJumpHeld:Float;
     private var distanceTraveled:Float;
     private var eggSpawner:Alarm;
 
-    public function new(x:Float, y:Float) {
+    public function new(x:Float, y:Float, isDragon:Bool) {
         super(x, y - 10);
+        this.isDragon = isDragon;
         weightModifier = 1.25;
         type = "mount";
-        mask = new Hitbox(20, 20);
-        graphic = new ColoredRect(width, height, 0x00FACC);
+        mask = new Hitbox(isDragon ? 30 : 20, 20);
+        graphic = new ColoredRect(width, height, isDragon ? 0xC85B28 : 0x00FACC);
         timeOffGround = 999;
         timeJumpHeld = 999;
         eggSpawner = new Alarm(EGG_SPAWN_TIME, function() {
@@ -47,7 +50,6 @@ class Mount extends Item
         });
         addTween(eggSpawner);
         distanceTraveled = 0;
-        isDragon = false;
     }
 
     private function spawnEgg() {
@@ -61,7 +63,12 @@ class Mount extends Item
             }
             else {
                 var oldX = x;
-                mountedMovement();
+                if(isDragon) {
+                    dragonMovement();
+                }
+                else {
+                    mountedMovement();
+                }
                 if(oldX < x) {
                     distanceTraveled += x - oldX;
                 }
@@ -73,12 +80,37 @@ class Mount extends Item
                 getPlayer().moveCarriedItemToHands();
             }
         }
-        if(distanceTraveled > EGG_SPAWN_DISTANCE) {
+        if(!isDragon && distanceTraveled > EGG_SPAWN_DISTANCE) {
             distanceTraveled = 0;
             eggSpawner.start();
             // TODO: Warn the player an egg is about to be layed (squawking sounds)
         }
         super.update();
+    }
+
+    private function dragonMovement() {
+        var heading = new Vector2();
+        if(Input.check("up")) {
+            heading.y = -1;
+        }
+        else if(Input.check("down")) {
+            heading.y = 1;
+        }
+        if(Input.check("left")) {
+            heading.x = -1;
+        }
+        else if(Input.check("right")) {
+            heading.x = 1;
+        }
+        velocity.x = heading.x * DRAGON_FLY_SPEED;
+        velocity.y = heading.y * DRAGON_FLY_SPEED;
+        moveBy(
+            velocity.x * HXP.elapsed,
+            velocity.y * HXP.elapsed,
+            ["walls"]
+        );
+
+        x = Math.max(x, HXP.scene.camera.x);
     }
 
     private function mountedMovement() {

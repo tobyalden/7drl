@@ -59,7 +59,9 @@ class Item extends MiniEntity
             velocity.y = 0;
         }
         else if(Player.riding != this) {
-            movement();
+            if(!(Type.getClass(this) == Mount && cast(this, Mount).isDragon)) {
+                movement();
+            }
         }
         super.update();
     }
