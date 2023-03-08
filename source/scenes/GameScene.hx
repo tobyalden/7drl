@@ -25,6 +25,7 @@ class GameScene extends Scene
     public static var wokeUp:Bool = false;
     public static var dreamDepth:Int = 0;
     public static var bedDepths:Array<Int> = [];
+    public static var totalTime:Float = 0;
 
     public var zone(default, null):String;
     private var player:Player;
@@ -75,6 +76,7 @@ class GameScene extends Scene
     }
 
     override public function update() {
+        GameScene.totalTime += HXP.elapsed;
         if(DEBUG_MODE) {
             if(Key.pressed(Key.P)) {
                 trace(bedDepths);
@@ -132,6 +134,7 @@ class GameScene extends Scene
             if(lastBedDepth == 0) {
                 // You can't carry items from dreams into the real world
                 player.destroyCarriedItem();
+                GameScene.totalTime = 0;
             }
             GameScene.wokeUp = true;
         });

@@ -12,7 +12,7 @@ import scenes.*;
 
 class Sword extends Item
 {
-    private var isBlessed:Bool;
+    public var isBlessed(default, null):Bool;
     private var pulse:ColorTween;
     private var sprite:Image;
 

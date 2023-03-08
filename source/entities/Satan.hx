@@ -13,12 +13,20 @@ import scenes.*;
 
 class Satan extends Enemy
 {
+    private var mover:MultiVarTween;
+    private var fireTimer:Alarm;
+    private var sprite:Image;
+
     public function new(x:Float, y:Float) {
         super(x, y);
         mask = new Hitbox(60, 60);
-        graphic = new ColoredRect(width, height, 0xFF0000);
-        HXP.tween(this, {"y": y + 70}, 1.5838, {type: TweenType.PingPong, tweener: this});
-        HXP.alarm(2.7264, function() {
+        sprite = new Image("graphics/satan.png");
+        sprite.centerOrigin();
+        sprite.x = 30;
+        sprite.y = 30;
+        graphic = sprite;
+        mover = HXP.tween(this, {"y": y + 70}, 1.5838, {type: TweenType.PingPong, tweener: this});
+        fireTimer = HXP.alarm(2.7264, function() {
             fire();
         }, TweenType.Looping, this);
     }
@@ -54,7 +62,25 @@ class Satan extends Enemy
         scene.add(bullet);
     }
 
+    private function die() {
+        mover.active = false;
+        fireTimer.active = false;
+        collidable = false;
+        HXP.tween(sprite, {"angle": 360}, 0.75, {type: TweenType.Looping, tweener: this});
+        HXP.tween(sprite, {"scaleX": 10}, 10, {type: TweenType.PingPong, tweener: this});
+        HXP.tween(sprite, {"scaleY": 10}, 10, {type: TweenType.PingPong, tweener: this});
+        HXP.tween(sprite, {"alpha": 0}, 10, {type: TweenType.OneShot, tweener: this, complete: function() {
+            HXP.alarm(3, function() {
+                HXP.engine.pushScene(new Victory());
+            }, this);
+        }});
+    }
+
     override public function update() {
+        var sword = collide("sword", x, y);
+        if(sword != null && cast(sword, Sword).isBlessed) {
+            die();
+        }
         super.update();
     }
 }
