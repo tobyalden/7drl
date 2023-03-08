@@ -85,7 +85,17 @@ class Mount extends Item
             eggSpawner.start();
             // TODO: Warn the player an egg is about to be layed (squawking sounds)
         }
+        if(collideAny(MiniEntity.hazards, x, y) != null) {
+            die();
+        }
         super.update();
+    }
+
+    private function die() {
+        HXP.scene.remove(this);
+        if(Player.riding == this) {
+            getPlayer().stopRiding();
+        }
     }
 
     private function dragonMovement() {

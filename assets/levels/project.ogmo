@@ -179,7 +179,9 @@
       "nodeDisplay": 0,
       "nodeGhost": true,
       "tags": [],
-      "values": []
+      "values": [
+        {"name": "isDragon", "definition": "Boolean", "defaults": false}
+      ]
     },
     {
       "exportID": "99911727",

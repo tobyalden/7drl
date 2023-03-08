@@ -64,7 +64,16 @@
         {"name": "pot", "id": 22, "_eid": "99911727", "x": 150, "y": 120, "originX": 0, "originY": 0},
         {"name": "enemy", "id": 25, "_eid": "13582990", "x": 60, "y": 160, "originX": 0, "originY": 0},
         {"name": "bed", "id": 26, "_eid": "05614990", "x": 120, "y": 110, "originX": 0, "originY": 0},
-        {"name": "mount", "id": 27, "_eid": "96773502", "x": 220, "y": 110, "originX": 0, "originY": 0}
+        {
+          "name": "mount",
+          "id": 27,
+          "_eid": "96773502",
+          "x": 220,
+          "y": 110,
+          "originX": 0,
+          "originY": 0,
+          "values": {"isDragon": false}
+        }
       ]
     }
   ]

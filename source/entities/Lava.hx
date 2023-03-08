@@ -12,7 +12,7 @@ import scenes.*;
 class Lava extends MiniEntity
 {
     public static inline var PULSE_TIME = 2;
-    public static inline var OFFSCREEN_MARGIN = 20;
+    public static inline var OFFSCREEN_MARGIN = -10;
 
     private var tide:VarTween;
     private var sprite:Image;

@@ -269,6 +269,9 @@ class Player extends MiniEntity
     }
 
     public function stopRiding() {
+        if(Player.riding == null) {
+            return;
+        }
         rideCooldown.start();
         if(Input.check("up")) {
             velocity.y = -JUMP_POWER;
@@ -394,6 +397,7 @@ class Player extends MiniEntity
     }
 
     private function die() {
+        stopRiding();
         canMove = false;
         visible = false;
         collidable = false;
