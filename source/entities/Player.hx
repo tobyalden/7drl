@@ -331,13 +331,20 @@ class Player extends MiniEntity
                 Input.pressed("jump")
                 || Input.check("jump") && timeJumpHeld <= JUMP_BUFFER_TIME
             ) {
-                velocity.y = -JUMP_POWER;
+                var jumpPower:Float = JUMP_POWER;
+                if(collide("water", x, y) != null) {
+                    jumpPower *= 0.5;
+                }
+                velocity.y = -jumpPower;
             }
         }
 
         var gravity:Float = GRAVITY;
         if(Math.abs(velocity.y) < JUMP_CANCEL) {
             gravity *= 0.5;
+        }
+        if(collide("water", x, y) != null) {
+            gravity *= 0.25;
         }
         velocity.y += gravity * HXP.elapsed;
 
@@ -346,7 +353,13 @@ class Player extends MiniEntity
             velocity.y -= Steam.LIFT_POWER * HXP.elapsed;
         }
 
-        velocity.y = MathUtil.clamp(velocity.y, -MAX_RISE_SPEED, MAX_FALL_SPEED);
+        var maxRiseSpeed:Float = MAX_RISE_SPEED;
+        var maxFallSpeed:Float = MAX_FALL_SPEED;
+        if(collide("water", x, y) != null) {
+            maxRiseSpeed *= 0.66;
+            maxFallSpeed *= 0.33;
+        }
+        velocity.y = MathUtil.clamp(velocity.y, -maxRiseSpeed, maxFallSpeed);
 
         moveBy(
             velocity.x * HXP.elapsed,

@@ -81,7 +81,6 @@ class Mount extends Item
     }
 
     private function mountedMovement() {
-        // TODO: Find a way to abstract this out from Player and Mount
         if(isOnGround()) {
             timeOffGround = 0;
             if(Input.check("left") && !isOnLeftWall()) {
@@ -128,7 +127,11 @@ class Mount extends Item
                 Input.pressed("jump")
                 || Input.check("jump") && timeJumpHeld <= JUMP_BUFFER_TIME
             ) {
-                velocity.y = -JUMP_POWER;
+                var jumpPower:Float = JUMP_POWER;
+                if(collide("water", x, y) != null) {
+                    jumpPower *= 0.5;
+                }
+                velocity.y = -jumpPower;
             }
         }
         else {
@@ -142,6 +145,9 @@ class Mount extends Item
         if(Math.abs(velocity.y) < JUMP_CANCEL) {
             gravity *= 0.5;
         }
+        if(collide("water", x, y) != null) {
+            gravity *= 0.25;
+        }
         velocity.y += gravity * HXP.elapsed;
 
         if(collide("steam", x, y) != null) {
@@ -149,7 +155,13 @@ class Mount extends Item
             velocity.y -= Steam.LIFT_POWER * HXP.elapsed;
         }
 
-        velocity.y = MathUtil.clamp(velocity.y, -MAX_RISE_SPEED, MAX_FALL_SPEED);
+        var maxRiseSpeed:Float = MAX_RISE_SPEED;
+        var maxFallSpeed:Float = MAX_FALL_SPEED;
+        if(collide("water", x, y) != null) {
+            maxRiseSpeed *= 0.66;
+            maxFallSpeed *= 0.33;
+        }
+        velocity.y = MathUtil.clamp(velocity.y, -maxRiseSpeed, maxFallSpeed);
 
         moveBy(
             velocity.x * HXP.elapsed,
@@ -185,3 +197,4 @@ class Mount extends Item
         return super.moveCollideY(e);
     }
 }
+
