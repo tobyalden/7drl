@@ -391,7 +391,8 @@ class Player extends MiniEntity
         ) {
             Player.riding = cast(mount, Mount);
         }
-        if(collideAny(MiniEntity.hazards, x, y) != null) {
+        var hazard = collideAny(MiniEntity.hazards, x, y);
+        if(hazard != null && !(hazard.type == "lava" && Player.riding != null && Player.riding.isDragon)) {
             die();
         }
     }

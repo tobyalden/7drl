@@ -85,7 +85,8 @@ class Mount extends Item
             eggSpawner.start();
             // TODO: Warn the player an egg is about to be layed (squawking sounds)
         }
-        if(collideAny(MiniEntity.hazards, x, y) != null) {
+        var hazard = collideAny(MiniEntity.hazards, x, y);
+        if(hazard != null && !(hazard.type == "lava" && isDragon)) {
             die();
         }
         super.update();
