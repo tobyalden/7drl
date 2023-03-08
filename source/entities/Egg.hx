@@ -11,7 +11,7 @@ import scenes.*;
 
 class Egg extends Item
 {
-    public static inline var BREAK_SPEED = 100;
+    public static inline var BREAK_SPEED = 200;
 
     public function new(x:Float, y:Float) {
         super(x, y - 5);
@@ -29,6 +29,9 @@ class Egg extends Item
 
     private function crack() {
         HXP.scene.remove(this);
+        if(Player.carrying == this) {
+            getPlayer().destroyCarriedItem();
+        }
     }
 
     private function hatch() {

@@ -24,9 +24,14 @@ class Mount extends Item
     public static inline var JUMP_BUFFER_TIME = 1 / 60 * 5;
 
     public static inline var FLAP_POWER = 250;
+    //public static inline var EGG_SPAWN_DISTANCE = GameScene.GAME_WIDTH * 5;
+    public static inline var EGG_SPAWN_DISTANCE = 100;
+    public static inline var EGG_SPAWN_TIME = 3;
 
     private var timeOffGround:Float;
     private var timeJumpHeld:Float;
+    private var distanceTraveled:Float;
+    private var eggSpawner:Alarm;
 
     public function new(x:Float, y:Float) {
         super(x, y - 10);
@@ -34,8 +39,17 @@ class Mount extends Item
         type = "mount";
         mask = new Hitbox(20, 20);
         graphic = new ColoredRect(width, height, 0x00FACC);
-        timeOffGround = 0;
-        timeJumpHeld = 0;
+        timeOffGround = 999;
+        timeJumpHeld = 999;
+        eggSpawner = new Alarm(EGG_SPAWN_TIME, function() {
+            spawnEgg();
+        });
+        addTween(eggSpawner);
+        distanceTraveled = 0;
+    }
+
+    private function spawnEgg() {
+        HXP.scene.add(new Egg(x, y));
     }
 
     override public function update() {
@@ -44,7 +58,11 @@ class Mount extends Item
                 getPlayer().stopRiding();
             }
             else {
+                var oldX = x;
                 mountedMovement();
+                if(oldX < x) {
+                    distanceTraveled += x - oldX;
+                }
                 getPlayer().moveTo(
                     Math.floor(centerX - getPlayer().width / 2),
                     y - getPlayer().height,
@@ -52,6 +70,12 @@ class Mount extends Item
                 );
                 getPlayer().moveCarriedItemToHands();
             }
+        }
+        trace(distanceTraveled);
+        if(distanceTraveled > EGG_SPAWN_DISTANCE) {
+            distanceTraveled = 0;
+            eggSpawner.start();
+            // TODO: Warn the player an egg is about to be layed (squawking sounds)
         }
         super.update();
     }
