@@ -2,6 +2,7 @@ package entities;
 
 import haxepunk.*;
 import haxepunk.graphics.*;
+import haxepunk.input.*;
 import haxepunk.masks.*;
 import haxepunk.math.*;
 import haxepunk.Tween;
@@ -9,24 +10,23 @@ import haxepunk.tweens.misc.*;
 import haxepunk.utils.*;
 import scenes.*;
 
-class Water extends MiniEntity
+class Sword extends Item
 {
-    public var isBlessed(default, null):Bool;
+    private var isBlessed:Bool;
     private var pulse:ColorTween;
     private var sprite:Image;
 
-    public function new(x:Float, y:Float, width:Int, height:Int) {
-        super(x, y);
-        layer = -20;
-        type = "water";
-        mask = new Hitbox(width, height);
-        sprite = Image.createRect(width, height, 0xFFFFFF);
-        sprite.color = 0xADD8E6;
-        sprite.alpha = 0.5;
+    public function new(x:Float, y:Float) {
+        super(x, y - 5);
+        type = "sword";
+        mask = new Hitbox(15, 20);
+        sprite = new Image("graphics/sword.png");
         graphic = sprite;
+        isBlessed = false;
         pulse = new ColorTween(TweenType.PingPong);
         addTween(pulse);
-        isBlessed = false;
+
+        bless(); // TODO: for testing
     }
 
     private function bless() {
@@ -35,7 +35,8 @@ class Water extends MiniEntity
     }
 
     override public function update() {
-        if(collide("angel", x, y) != null && !isBlessed) {
+        var water = collide("water", x, y);
+        if(water != null && cast(water, Water).isBlessed && !isBlessed) {
             bless();
         }
         if(isBlessed) {
@@ -44,4 +45,3 @@ class Water extends MiniEntity
         super.update();
     }
 }
-

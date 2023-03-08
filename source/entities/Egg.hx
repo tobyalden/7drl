@@ -57,7 +57,8 @@ class Egg extends Item
                 broodingTime = 0;
             }
         }
-        if(collide("angel", x, y) != null && !isBlessed) {
+        var water = collide("water", x, y);
+        if(water != null && cast(water, Water).isBlessed && !isBlessed) {
             bless();
         }
         if(isBlessed) {

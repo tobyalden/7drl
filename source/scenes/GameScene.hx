@@ -20,7 +20,7 @@ class GameScene extends Scene
     public static inline var HEAVEN_HEIGHT = 200;
     public static inline var LAIR_AND_EARTH_DEPTH = GAME_HEIGHT + 50;
 
-    public static var staticZones:Array<String> = ["pot", "bedroom", "lair"];
+    public static var staticZones:Array<String> = ["pot", "bedroom", "lair", "swordroom"];
     public static var exitedPot:Bool = false;
     public static var wokeUp:Bool = false;
     public static var dreamDepth:Int = 0;
