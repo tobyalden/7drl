@@ -158,6 +158,7 @@ class Player extends MiniEntity
             if(Player.riding == null) {
                 movement();
             }
+            preventBacktracking();
             animation();
             moveCarriedItemToHands();
         }
@@ -369,8 +370,6 @@ class Player extends MiniEntity
             velocity.y * HXP.elapsed,
             ["walls"].concat(MiniEntity.semiSolids)
         );
-
-        x = Math.max(x, HXP.scene.camera.x);
 
         if(Input.check("jump")) {
             timeJumpHeld += HXP.elapsed;

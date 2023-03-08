@@ -12,7 +12,7 @@ import scenes.*;
 class MiniEntity extends Entity
 {
     public static var semiSolids = ["pot", "bed"];
-    public static var hazards = ["lava", "enemy", "angel"];
+    public static var hazards = ["lava", "enemy", "angel", "hazard"];
 
     public function new(x:Float, y:Float) {
         super(x, y);
@@ -54,5 +54,15 @@ class MiniEntity extends Entity
 
     private function getScene() {
         return cast(HXP.scene, GameScene);
+    }
+
+    private function preventBacktracking() {
+        if(getScene().zone == "lair") {
+            clampHorizontal(0, GameScene.GAME_WIDTH);
+            clampVertical(getPlayer().height, GameScene.GAME_HEIGHT);
+        }
+        else {
+            x = Math.max(x, HXP.scene.camera.x);
+        }
     }
 }

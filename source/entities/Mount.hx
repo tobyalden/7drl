@@ -121,7 +121,7 @@ class Mount extends Item
             ["walls"]
         );
 
-        x = Math.max(x, HXP.scene.camera.x);
+        preventBacktracking();
     }
 
     private function mountedMovement() {
@@ -213,7 +213,7 @@ class Mount extends Item
             ["walls"].concat(MiniEntity.semiSolids)
         );
 
-        x = Math.max(x, HXP.scene.camera.x);
+        preventBacktracking();
 
         if(Input.check("jump")) {
             timeJumpHeld += HXP.elapsed;

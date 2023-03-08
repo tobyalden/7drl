@@ -18,8 +18,9 @@ class GameScene extends Scene
     public static inline var GAME_HEIGHT = 180;
     public static inline var DEBUG_MODE = true;
     public static inline var HEAVEN_HEIGHT = 200;
+    public static inline var LAIR_AND_EARTH_DEPTH = GAME_HEIGHT + 50;
 
-    public static var staticZones:Array<String> = ["pot", "bedroom"];
+    public static var staticZones:Array<String> = ["pot", "bedroom", "lair"];
     public static var exitedPot:Bool = false;
     public static var wokeUp:Bool = false;
     public static var dreamDepth:Int = 0;
@@ -87,10 +88,19 @@ class GameScene extends Scene
             player.removeRiding();
             HXP.engine.pushScene(new GameScene("heaven"));
         }
-        else if(zone == "heaven" && player.y > GAME_HEIGHT + 50) {
+        else if(zone == "heaven" && player.y > LAIR_AND_EARTH_DEPTH) {
             player.removeCarriedItem();
             player.removeRiding();
             HXP.engine.popScene();
+        }
+        else if(zone == "hell" && player.y > LAIR_AND_EARTH_DEPTH) {
+            player.y = -player.height;
+            if(Player.riding != null) {
+                Player.riding.y = -Player.riding.height;
+            }
+            player.removeCarriedItem();
+            player.removeRiding();
+            HXP.engine.pushScene(new GameScene("lair"));
         }
         super.update();
         if(!isStaticZone()) {
