@@ -19,6 +19,7 @@ class Angel extends Enemy
 
     public function new(x:Float, y:Float) {
         super(x, y);
+        type = "angel";
         layer = -15;
         mask = new Hitbox(15, 20);
         graphic = new ColoredRect(width, height, 0x32a852);

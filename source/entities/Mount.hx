@@ -71,7 +71,6 @@ class Mount extends Item
                 getPlayer().moveCarriedItemToHands();
             }
         }
-        trace(distanceTraveled);
         if(distanceTraveled > EGG_SPAWN_DISTANCE) {
             distanceTraveled = 0;
             eggSpawner.start();
