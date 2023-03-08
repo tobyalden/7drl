@@ -64,6 +64,12 @@ class GameScene extends Scene
     }
 
     override public function begin() {
+        if(zone == "earth") {
+            var bgNum = Math.min(bedDepths.length, 4);
+            var bg = new Backdrop('graphics/EARTH_BG0${bgNum}.png');
+            bg.scrollX = 0.5;
+            addGraphic(bg, 99);
+        }
         levels = [];
         addLevel(zone);
     }
@@ -71,6 +77,7 @@ class GameScene extends Scene
     override public function update() {
         if(DEBUG_MODE) {
             if(Key.pressed(Key.P)) {
+                trace(bedDepths);
             }
         }
 
@@ -107,8 +114,8 @@ class GameScene extends Scene
             camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
             maxCameraX = Math.max(camera.x, maxCameraX);
             if(camera.x + GAME_WIDTH > getTotalWidthOfLevels()) {
-                addLevel("earth_nest");
-                //addLevel("heaven_shrine");
+                //addLevel("earth_nest");
+                addLevel("heaven_shrine");
                 //addLevel("hell_ogre");
             }
         }

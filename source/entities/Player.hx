@@ -147,7 +147,7 @@ class Player extends MiniEntity
 
     public function wakeUp() {
         canMove = true;
-        isAsleep = true;
+        isAsleep = false;
     }
 
     override public function update() {
@@ -216,7 +216,7 @@ class Player extends MiniEntity
             HXP.alarm(1, function() {
                 removeCarriedItem();
                 GameScene.bedDepths.push(GameScene.dreamDepth);
-                HXP.engine.pushScene(new GameScene("earth"));
+                HXP.engine.pushScene(new GameScene(GameScene.dreamDepth >= 4 ? "swordroom" : "earth"));
             }, this);
         }
     }
