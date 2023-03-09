@@ -153,6 +153,7 @@ class GameScene extends Scene
         add(level);
         if(levels.length > 0 && !GameScene.specialLevels.contains(levelName)) {
             level.addEnemies();
+            trace('adding enemies');
         }
         level.offsetEntities();
         levels.push(level);

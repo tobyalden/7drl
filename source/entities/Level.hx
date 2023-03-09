@@ -6,6 +6,7 @@ import haxepunk.graphics.tile.*;
 import haxepunk.masks.*;
 import haxepunk.math.*;
 import openfl.Assets;
+import scenes.GameScene;
 
 class Level extends MiniEntity
 {
@@ -43,14 +44,14 @@ class Level extends MiniEntity
             if(totalEnemies >= MAX_ENEMIES) {
                 continue;
             }
-            else if(
-                !getTile(tileX, tileY)
-                && !getTile(tileX - 1, tileY)
-                && !getTile(tileX + 1, tileY)
-                && getTile(tileX, tileY + 1)
-                && levelName.indexOf("earth") != -1
-            ) {
-                if(Random.random < 0.1) {
+            else if(levelName.indexOf("earth") != -1) {
+                if(
+                    !getTile(tileX, tileY)
+                    && !getTile(tileX - 1, tileY)
+                    && !getTile(tileX + 1, tileY)
+                    && getTile(tileX, tileY + 1)
+                    && Random.random < 0.1
+                ) {
                     var enemySpawn = new Vector2(tileX * TILE_SIZE + TILE_SIZE / 2, (tileY + 1) * TILE_SIZE);
                     var enemy:Entity = HXP.choose(
                         new Human(enemySpawn.x, enemySpawn.y),
@@ -62,6 +63,17 @@ class Level extends MiniEntity
                     //tiles.setTile(tileX, tileY, 1);
                     totalEnemies += 1;
                 }
+            }
+            else if(levelName.indexOf("hell") != -1) {
+                var buffer = Medusa.SINE_WAVE_SIZE + 5;
+                var medusaY = buffer + (GameScene.GAME_HEIGHT - buffer * 2) * Random.random;
+                var upOrDown = HXP.choose(1, -1);
+                var age = Random.random * Math.PI * 2;
+                for(i in 0...3) {
+                    var medusa = new Medusa(width + i * 20, medusaY, age - Math.PI / 32 * i);
+                    entities.push(medusa);
+                }
+                totalEnemies += 3;
             }
         }
     }
@@ -114,7 +126,7 @@ class Level extends MiniEntity
                     }
                     if(entity.name == "enemy") {
                         //entities.push(new Enemy(entity.x, entity.y));
-                        entities.push(new Medusa(entity.x, entity.y));
+                        //entities.push(new Medusa(entity.x, entity.y));
                     }
                     if(entity.name == "egg") {
                         entities.push(new Egg(entity.x, entity.y));
