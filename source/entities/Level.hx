@@ -96,7 +96,8 @@ class Level extends MiniEntity
                         entities.push(HXP.choose(
                             //new JumpingHuman(entity.x, entity.y),
                             //new Human(entity.x, entity.y)
-                            new SpikeBall(entity.x, entity.y)
+                            //new SpikeBall(entity.x, entity.y)
+                            new SpikeTrap(entity.x, entity.y)
                         ));
                     }
                     if(entity.name == "optionalSolid") {
