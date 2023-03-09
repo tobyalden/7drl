@@ -94,8 +94,9 @@ class Level extends MiniEntity
                     }
                     if(entity.name == "human") {
                         entities.push(HXP.choose(
-                            new JumpingHuman(entity.x, entity.y),
-                            new Human(entity.x, entity.y)
+                            //new JumpingHuman(entity.x, entity.y),
+                            //new Human(entity.x, entity.y)
+                            new SpikeBall(entity.x, entity.y)
                         ));
                     }
                     if(entity.name == "optionalSolid") {
@@ -120,6 +121,9 @@ class Level extends MiniEntity
         for(entity in entities) {
             entity.x += x;
             entity.y += y;
+            if(Type.getClass(entity) == SpikeBall) {
+                cast(entity, SpikeBall).startPoint.add(new Vector2(x, y));
+            }
         }
     }
 

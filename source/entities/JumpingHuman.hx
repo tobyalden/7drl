@@ -12,8 +12,8 @@ import scenes.*;
 class JumpingHuman extends Enemy
 {
     public static inline var SPEED = 60;
-    public static inline var JUMP_POWER = 260;
-    public static inline var JUMP_PAUSE = 1;
+    public static inline var JUMP_POWER = 300;
+    public static inline var JUMP_PAUSE = 1.25;
 
     private var jumpTimer:Alarm;
     private var willJump:Bool;
