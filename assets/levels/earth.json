@@ -60,12 +60,7 @@
         {"name": "optionalSolid", "id": 14, "_eid": "53964962", "x": 170, "y": 10, "width": 60, "height": 40, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 15, "_eid": "53964962", "x": 0, "y": 10, "width": 40, "height": 20, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 16, "_eid": "53964962", "x": 140, "y": 150, "width": 70, "height": 20, "originX": 0, "originY": 0},
-        {"name": "optionalSolid", "id": 17, "_eid": "53964962", "x": 260, "y": 130, "width": 60, "height": 40, "originX": 0, "originY": 0},
-        {"name": "egg", "id": 30, "_eid": "14463302", "x": 40, "y": 140, "originX": 0, "originY": 0},
-        {"name": "kettle", "id": 31, "_eid": "22456110", "x": 70, "y": 140, "originX": 0, "originY": 0},
-        {"name": "sword", "id": 32, "_eid": "31590154", "x": 130, "y": 120, "originX": 0, "originY": 0},
-        {"name": "enemy", "id": 36, "_eid": "13582990", "x": 310, "y": 80, "originX": 0, "originY": 0},
-        {"name": "enemy", "id": 37, "_eid": "13582990", "x": 310, "y": 40, "originX": 0, "originY": 0}
+        {"name": "optionalSolid", "id": 17, "_eid": "53964962", "x": 260, "y": 130, "width": 60, "height": 40, "originX": 0, "originY": 0}
       ]
     }
   ]

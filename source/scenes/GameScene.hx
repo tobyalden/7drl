@@ -21,6 +21,7 @@ class GameScene extends Scene
     public static inline var LAIR_AND_EARTH_DEPTH = GAME_HEIGHT + 50;
 
     public static var staticZones:Array<String> = ["pot", "bedroom", "lair", "swordroom"];
+    public static var specialLevels:Array<String> = ["earth_nest", "heaven_shrine", "hell_ogre"];
     public static var exitedPot:Bool = false;
     public static var wokeUp:Bool = false;
     public static var dreamDepth:Int = 0;
@@ -119,7 +120,8 @@ class GameScene extends Scene
                 //addLevel("earth_nest");
                 //addLevel("heaven_shrine");
                 //addLevel("hell_ogre");
-                addLevel("earth");
+                //addLevel("earth");
+                addLevel(zone);
             }
         }
     }
@@ -149,8 +151,11 @@ class GameScene extends Scene
         var level = new Level(levelName);
         level.x += getTotalWidthOfLevels();
         add(level);
-        levels.push(level);
+        if(levels.length > 0 && !GameScene.specialLevels.contains(levelName)) {
+            level.addEnemies();
+        }
         level.offsetEntities();
+        levels.push(level);
         for(entity in level.entities) {
             if(entity.name == "player") {
                 if(getInstance("player") == null) {
@@ -167,6 +172,13 @@ class GameScene extends Scene
             }
             else {
                 add(entity);
+            }
+        }
+        for(entity in level.entities) {
+            for(otherEntity in level.entities) {
+                if(entity != otherEntity && entity.collideWith(otherEntity, entity.x, entity.y) != null) {
+                    remove(entity);
+                }
             }
         }
     }

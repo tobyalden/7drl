@@ -17,7 +17,9 @@ class Enemy extends MiniEntity
         super(x, y);
         type = "enemy";
         mask = new Hitbox(15, 25);
-        graphic = new ColoredRect(width, height, 0x32a852);
+        var sprite = Image.createRect(width, height, 0x32a852);
+        sprite.alpha = 0.5;
+        graphic = sprite;
         velocity = new Vector2();
     }
 

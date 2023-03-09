@@ -17,6 +17,7 @@ class JumpingHuman extends Enemy
 
     private var jumpTimer:Alarm;
     private var willJump:Bool;
+    private var isJumpingHigh:Bool;
 
     public function new(x:Float, y:Float) {
         super(x, y);
@@ -28,13 +29,15 @@ class JumpingHuman extends Enemy
         });
         addTween(jumpTimer);
         willJump = false;
+        isJumpingHigh = true;
     }
 
     private function jump() {
         velocity = new Vector2(
             (centerX > getPlayer().centerX ? -1 : 1) * SPEED,
-            -JUMP_POWER
+            isJumpingHigh ? -JUMP_POWER : -JUMP_POWER / 2
         );
+        isJumpingHigh = !isJumpingHigh;
     }
 
     override public function update() {

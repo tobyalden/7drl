@@ -9,17 +9,68 @@ import openfl.Assets;
 
 class Level extends MiniEntity
 {
+    public static inline var TILE_SIZE = 10;
+    public static inline var MAX_ENEMIES = 3;
+
     public var entities(default, null):Array<Entity>;
     public var playerStart(default, null):Vector2;
     public var eggStart(default, null):Vector2;
     private var walls:Grid;
     private var tiles:Tilemap;
+    private var levelName:String;
 
     public function new(levelName:String) {
         super(0, 0);
+        this.levelName = levelName;
         type = "walls";
         loadLevel(levelName);
         updateGraphic(levelName);
+    }
+
+    public function addEnemies() {
+        var totalEnemies = 0;
+        var allTiles = [];
+
+        for(tileX in 1...walls.columns - 1) {
+            for(tileY in 5...walls.rows - 1) {
+                allTiles.push({tileX: tileX, tileY: tileY});
+            }
+        }
+        HXP.shuffle(allTiles);
+        for(tile in allTiles) {
+            var tileX = tile.tileX;
+            var tileY = tile.tileY;
+            if(totalEnemies >= MAX_ENEMIES) {
+                continue;
+            }
+            else if(
+                !getTile(tileX, tileY)
+                && !getTile(tileX - 1, tileY)
+                && !getTile(tileX + 1, tileY)
+                && getTile(tileX, tileY + 1)
+                && levelName.indexOf("earth") != -1
+            ) {
+                if(Random.random < 0.1) {
+                    var enemySpawn = new Vector2(tileX * TILE_SIZE + TILE_SIZE / 2, (tileY + 1) * TILE_SIZE);
+                    var enemy:Entity = HXP.choose(
+                        new Human(enemySpawn.x, enemySpawn.y),
+                        new JumpingHuman(enemySpawn.x, enemySpawn.y)
+                    );
+                    enemy.x -= enemy.width / 2;
+                    enemy.y -= enemy.height;
+                    entities.push(enemy);
+                    //tiles.setTile(tileX, tileY, 1);
+                    totalEnemies += 1;
+                }
+            }
+        }
+    }
+
+    public function getTile(tileX:Int, tileY:Int) {
+        if(tileX < 0 || tileY < 0 || tileX >= walls.columns || tileY >= walls.rows) {
+            return false;
+        }
+        return walls.getTile(tileX, tileY);
     }
 
     override public function update() {
