@@ -15,15 +15,12 @@ class Angel extends Enemy
     public static inline var CHASE_ACCEL = 100;
     public static inline var MAX_CHASE_SPEED = 100;
 
-    private var velocity:Vector2;
-
     public function new(x:Float, y:Float) {
         super(x, y);
         type = "angel";
         layer = -15;
         mask = new Hitbox(15, 20);
         graphic = new ColoredRect(width, height, 0x32a852);
-        velocity = new Vector2();
     }
 
     override public function update() {

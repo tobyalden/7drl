@@ -30,12 +30,15 @@ class Item extends MiniEntity
     private function movement() {
         if(isOnGround()) {
             velocity.x = MathUtil.approach(velocity.x, 0, FRICTION * HXP.elapsed * weightModifier);
+            velocity.y = 0;
         }
-        var gravity:Float = Player.GRAVITY;
-        if(collide("water", x, y) != null) {
-            gravity *= 0.25;
+        else {
+            var gravity:Float = Player.GRAVITY;
+            if(collide("water", x, y) != null) {
+                gravity *= 0.25;
+            }
+            velocity.y += gravity * HXP.elapsed;
         }
-        velocity.y += gravity * HXP.elapsed;
         var maxFallSpeed:Float = Player.MAX_FALL_SPEED;
         if(collide("water", x, y) != null) {
             maxFallSpeed *= 0.33;

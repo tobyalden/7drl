@@ -67,7 +67,7 @@ class Egg extends Item
         super.update();
     }
 
-    private function crack() {
+    public function crack() {
         HXP.scene.remove(this);
         if(Player.carrying == this) {
             getPlayer().destroyCarriedItem();

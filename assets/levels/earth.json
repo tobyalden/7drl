@@ -61,19 +61,10 @@
         {"name": "optionalSolid", "id": 15, "_eid": "53964962", "x": 0, "y": 10, "width": 40, "height": 20, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 16, "_eid": "53964962", "x": 140, "y": 150, "width": 70, "height": 20, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 17, "_eid": "53964962", "x": 260, "y": 130, "width": 60, "height": 40, "originX": 0, "originY": 0},
-        {"name": "pot", "id": 22, "_eid": "99911727", "x": 150, "y": 120, "originX": 0, "originY": 0},
-        {"name": "enemy", "id": 25, "_eid": "13582990", "x": 60, "y": 160, "originX": 0, "originY": 0},
-        {"name": "bed", "id": 26, "_eid": "05614990", "x": 120, "y": 110, "originX": 0, "originY": 0},
-        {
-          "name": "mount",
-          "id": 27,
-          "_eid": "96773502",
-          "x": 220,
-          "y": 110,
-          "originX": 0,
-          "originY": 0,
-          "values": {"isDragon": false}
-        }
+        {"name": "human", "id": 29, "_eid": "39494812", "x": 300, "y": 100, "originX": 0, "originY": 0},
+        {"name": "egg", "id": 30, "_eid": "14463302", "x": 40, "y": 140, "originX": 0, "originY": 0},
+        {"name": "kettle", "id": 31, "_eid": "22456110", "x": 70, "y": 140, "originX": 0, "originY": 0},
+        {"name": "sword", "id": 32, "_eid": "31590154", "x": 130, "y": 120, "originX": 0, "originY": 0}
       ]
     }
   ]

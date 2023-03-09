@@ -92,6 +92,12 @@ class Level extends MiniEntity
                     if(entity.name == "sword") {
                         entities.push(new Sword(entity.x, entity.y));
                     }
+                    if(entity.name == "human") {
+                        entities.push(HXP.choose(
+                            new JumpingHuman(entity.x, entity.y),
+                            new Human(entity.x, entity.y)
+                        ));
+                    }
                     if(entity.name == "optionalSolid") {
                         if(Random.random < 0.5) {
                             for(tileY in 0...Std.int(entity.height / walls.tileHeight)) {

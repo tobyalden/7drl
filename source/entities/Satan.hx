@@ -62,7 +62,7 @@ class Satan extends Enemy
         scene.add(bullet);
     }
 
-    private function die() {
+    override private function die() {
         mover.active = false;
         fireTimer.active = false;
         collidable = false;
