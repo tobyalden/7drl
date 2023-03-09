@@ -127,7 +127,7 @@ class Bullet extends MiniEntity
             }
         }
         if(!collideRect(
-            x, y, scene.camera.x, scene.camera.y, HXP.width, HXP.height)
+            x, y, scene.camera.x, scene.camera.y, GameScene.GAME_WIDTH, GameScene.GAME_HEIGHT)
         ) {
             scene.remove(this);
         }

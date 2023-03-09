@@ -62,7 +62,8 @@ class Level extends MiniEntity
                         entities.push(new Bed(entity.x, entity.y));
                     }
                     if(entity.name == "enemy") {
-                        entities.push(new Enemy(entity.x, entity.y));
+                        //entities.push(new Enemy(entity.x, entity.y));
+                        entities.push(new Medusa(entity.x, entity.y));
                     }
                     if(entity.name == "egg") {
                         entities.push(new Egg(entity.x, entity.y));
@@ -94,10 +95,8 @@ class Level extends MiniEntity
                     }
                     if(entity.name == "human") {
                         entities.push(HXP.choose(
-                            //new JumpingHuman(entity.x, entity.y),
-                            //new Human(entity.x, entity.y)
-                            //new SpikeBall(entity.x, entity.y)
-                            new SpikeTrap(entity.x, entity.y)
+                            new JumpingHuman(entity.x, entity.y),
+                            new Human(entity.x, entity.y)
                         ));
                     }
                     if(entity.name == "optionalSolid") {
