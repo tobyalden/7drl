@@ -128,11 +128,11 @@ class GameScene extends Scene
             camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
             maxCameraX = Math.max(camera.x, maxCameraX);
             if(camera.x + GAME_WIDTH + EXTEND_LEVEL_BUFFER > getTotalWidthOfLevels()) {
-                addLevel("earth_nest");
+                //addLevel("earth_nest");
                 //addLevel("heaven_shrine");
                 //addLevel("hell_ogre");
                 //addLevel("earth");
-                //addLevel(zone);
+                addLevel(zone);
             }
         }
     }
@@ -188,7 +188,12 @@ class GameScene extends Scene
         }
         for(entity in level.entities) {
             for(otherEntity in level.entities) {
-                if(entity != otherEntity && entity.collideWith(otherEntity, entity.x, entity.y) != null) {
+                if(
+                    entity != otherEntity
+                    && entity.collideWith(otherEntity, entity.x, entity.y) != null
+                    && entity.type != "lava"
+                    && otherEntity.type != "lava"
+                ) {
                     trace('removing overlapping enemies');
                     remove(entity);
                 }

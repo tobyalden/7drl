@@ -20,6 +20,7 @@ class SpikeTrap extends MiniEntity
 
     public function new(x:Float, y:Float) {
         super(x, y);
+        layer = -40;
         type = "not_hazard";
         sprite = new Spritemap("graphics/spiketrap.png", 10, 20);
         sprite.add("idle", [0]);

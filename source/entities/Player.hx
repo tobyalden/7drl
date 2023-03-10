@@ -158,6 +158,11 @@ class Player extends MiniEntity
             if(Player.riding == null) {
                 movement();
             }
+            else {
+                if(distanceFrom(Player.riding, true) > DETACH_DISTANCE) {
+                    stopRiding();
+                }
+            }
             preventBacktracking();
             animation();
             moveCarriedItemToHands();
@@ -397,6 +402,7 @@ class Player extends MiniEntity
     }
 
     private function die() {
+        return; // TODO: REMOVE THIS!
         stopRiding();
         canMove = false;
         visible = false;

@@ -61,6 +61,10 @@ class MiniEntity extends Entity
             clampHorizontal(0, GameScene.GAME_WIDTH);
             clampVertical(getPlayer().height, GameScene.GAME_HEIGHT);
         }
+        else if(getScene().zone == "heaven") {
+            x = Math.max(x, HXP.scene.camera.x);
+            y = Math.max(y, HXP.scene.camera.y);
+        }
         else {
             x = Math.max(x, HXP.scene.camera.x);
         }

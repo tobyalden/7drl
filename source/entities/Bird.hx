@@ -17,7 +17,7 @@ class Bird extends Enemy
 
     public function new(x:Float, y:Float) {
         super(x, y);
-        layer = -5;
+        layer = -50;
         type = "hazard";
         sprite = new Spritemap("graphics/bird.png", 15, 15);
         sprite.add("idle", [0, 1, 2, 3], 8);

@@ -22,9 +22,14 @@ class Level extends MiniEntity
 
     public function new(levelName:String) {
         super(0, 0);
+        layer = -30;
         this.levelName = levelName;
         type = "walls";
-        loadLevel(levelName);
+        var suffix = "";
+        if(["earth", "hell", "heaven"].contains(levelName)) {
+            suffix = '${HXP.choose(0, 1, 2)}';
+        }
+        loadLevel('${levelName}${suffix}');
         updateGraphic(levelName);
     }
 
@@ -50,10 +55,12 @@ class Level extends MiniEntity
         }
         else if(levelName.indexOf("heaven") != -1) {
             maxEnemies -= 1;
-            if(Random.random < 0.5) {
-                var bird = new Bird(width + 50 * Random.random, 20 + (GameScene.GAME_HEIGHT - 50) * Random.random);
-                entities.push(bird);
-                totalEnemies += 1;
+            if(Random.random < 0.66) {
+                for(i in 0...HXP.choose(1, 2)) {
+                    var bird = new Bird(width + 50 * Random.random, 20 + (GameScene.GAME_HEIGHT - 50) * Random.random);
+                    entities.push(bird);
+                    totalEnemies += 1;
+                }
             }
         }
 

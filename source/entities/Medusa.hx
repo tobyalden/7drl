@@ -21,9 +21,9 @@ class Medusa extends Enemy
 
     public function new(x:Float, y:Float, age:Float) {
         super(x, y);
+        layer = -50;
         this.age = age;
         startY = y;
-        layer = -5;
         type = "hazard";
         sprite = new Image("graphics/medusa.png");
         graphic = sprite;
