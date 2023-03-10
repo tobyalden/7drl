@@ -17,7 +17,7 @@ class Pot extends Item
     private var sprite:Spritemap;
 
     public function new(x:Float, y:Float) {
-        super(x, y - 15);
+        super(x, y);
         weightModifier = 1.25;
         type = "pot";
         mask = new Hitbox(12, 25);

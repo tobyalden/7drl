@@ -230,7 +230,14 @@ class Level extends MiniEntity
                         playerStart = new Vector2(entity.x, entity.y);
                     }
                     if(entity.name == "item") {
-                        entities.push(new Item(entity.x, entity.y));
+                        if(Random.random < 0.1) {
+                            if(Random.random < 0.333) {
+                                entities.push(new Pot(entity.x, entity.y - 5));
+                            }
+                            else {
+                                entities.push(new Item(entity.x, entity.y));
+                            }
+                        }
                     }
                     if(entity.name == "mount") {
                         entities.push(new Mount(entity.x, entity.y, entity.values.isDragon));

@@ -13,7 +13,7 @@ class Ogre extends Enemy
 {
     public static inline var SPEED = 50;
     public static inline var JUMP_POWER = 300;
-    public static inline var ALERT_AWAKEN_THRESHOLD = 2;
+    public static inline var ALERT_AWAKEN_THRESHOLD = 1.75;
     public static inline var ALERT_RANGE = 110;
 
     private var sprite:Spritemap;

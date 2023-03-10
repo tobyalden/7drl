@@ -20,6 +20,7 @@ class GameScene extends Scene
     public static inline var DEBUG_MODE = true;
     public static inline var HEAVEN_HEIGHT = 200;
     public static inline var LAIR_AND_EARTH_DEPTH = GAME_HEIGHT + 50;
+    public static inline var SPECIAL_LEVEL_INTERVAL = 7;
 
     public static var staticZones:Array<String> = ["pot", "bedroom", "lair", "swordroom"];
     public static var specialLevels:Array<String> = ["earth_nest", "heaven_shrine", "hell_ogre"];
@@ -132,7 +133,17 @@ class GameScene extends Scene
                 //addLevel("heaven_shrine");
                 //addLevel("hell_ogre");
                 //addLevel("earth");
-                addLevel(zone);
+                if(levels.length % SPECIAL_LEVEL_INTERVAL == 0) {
+                    var specialLevel = [
+                        "earth" => "earth_nest",
+                        "hell" => "hell_ogre",
+                        "heaven" => "heaven_shrine"
+                    ][zone];
+                    addLevel(specialLevel);
+                }
+                else {
+                    addLevel(zone);
+                }
             }
         }
     }

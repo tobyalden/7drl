@@ -46,12 +46,7 @@
       "gridCellsX": 32,
       "gridCellsY": 18,
       "entities": [
-        {"name": "nest", "id": 1, "_eid": "22337036", "x": 130, "y": 80, "originX": 0, "originY": 0},
-        {"name": "kettle", "id": 2, "_eid": "22456110", "x": 40, "y": 160, "originX": 0, "originY": 0},
-        {"name": "lava", "id": 3, "_eid": "22665787", "x": 80, "y": 160, "width": 10, "height": 10, "originX": 0, "originY": 0},
-        {"name": "kettle", "id": 4, "_eid": "22456110", "x": 70, "y": 160, "originX": 0, "originY": 0},
-        {"name": "pot", "id": 5, "_eid": "99911727", "x": 230, "y": 150, "originX": 0, "originY": 0},
-        {"name": "pot", "id": 6, "_eid": "99911727", "x": 250, "y": 150, "originX": 0, "originY": 0}
+        {"name": "nest", "id": 1, "_eid": "22337036", "x": 130, "y": 80, "originX": 0, "originY": 0}
       ]
     }
   ]

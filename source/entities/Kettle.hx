@@ -30,7 +30,7 @@ class Kettle extends Item
     }
 
     private function spawnSteam() {
-        HXP.scene.add(new Steam(x, y));
+        HXP.scene.add(new Steam(x, y - height));
     }
 
     override public function update() {
