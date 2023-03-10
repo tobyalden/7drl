@@ -25,8 +25,8 @@ class Mount extends Item
 
     public static inline var FLAP_POWER = 250;
     public static inline var EGG_SPAWN_DISTANCE = GameScene.GAME_WIDTH * 5;
-    //public static inline var EGG_SPAWN_DISTANCE = 100;
-    public static inline var EGG_SPAWN_TIME = 3;
+    //public static inline var EGG_SPAWN_DISTANCE = 200;
+    public static inline var EGG_SPAWN_TIME = 2;
 
     public static inline var DRAGON_FLY_SPEED = 175;
 
@@ -67,6 +67,7 @@ class Mount extends Item
 
     private function spawnEgg() {
         HXP.scene.add(new Egg(x, y));
+        GameScene.sfx["chicken_lay"].play();
     }
 
     override public function update() {
@@ -96,7 +97,7 @@ class Mount extends Item
         if(!isDragon && distanceTraveled > EGG_SPAWN_DISTANCE) {
             distanceTraveled = 0;
             eggSpawner.start();
-            // TODO: Warn the player an egg is about to be layed (squawking sounds)
+            GameScene.sfx["chicken_alert"].play();
         }
         if(collide("lava", x, y) != null && !isDragon) {
             die();

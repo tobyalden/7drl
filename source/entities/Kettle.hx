@@ -11,7 +11,7 @@ import scenes.*;
 
 class Kettle extends Item
 {
-    public static inline var MAX_HEAT = 5;
+    public static inline var MAX_HEAT = 60;
     public static inline var STEAM_SPAWN_INTERVAL = 1;
 
     private var heat:Float;

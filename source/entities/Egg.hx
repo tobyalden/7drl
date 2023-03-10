@@ -31,7 +31,7 @@ class Egg extends Item
         addTween(pulse);
         broodingTime = 0;
 
-        bless(); // TODO: for testing
+        //bless(); // TODO: for testing
     }
 
     private function bless() {

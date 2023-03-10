@@ -30,6 +30,8 @@ class GameScene extends Scene
     public static var bedDepths:Array<Int> = [];
     public static var totalTime:Float = 0;
 
+    public static var sfx:Map<String, Sfx> = null;
+
     public var zone(default, null):String;
     private var player:Player;
     private var levels:Array<Level>;
@@ -38,6 +40,12 @@ class GameScene extends Scene
     public function new(zone:String) {
         super();
         this.zone = zone;
+        if(sfx == null) {
+            sfx = [
+                "chicken_alert" => new Sfx("audio/chicken_alert.wav"),
+                "chicken_lay" => new Sfx("audio/chicken_lay.wav")
+            ];
+        }
     }
 
 	override public function resume() {
