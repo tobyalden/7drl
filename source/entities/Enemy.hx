@@ -29,7 +29,7 @@ class Enemy extends MiniEntity
             if(item.type == "mount" && Player.riding == item) {
                 // No effect
             }
-            else if(type == "angel") {
+            else if(type == "angel" || type == "ogre") {
                 // No effect
             }
             else if(cast(item, Item).velocity.length > 50) {

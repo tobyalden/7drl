@@ -121,9 +121,9 @@ class GameScene extends Scene
             if(camera.x + GAME_WIDTH + EXTEND_LEVEL_BUFFER > getTotalWidthOfLevels()) {
                 //addLevel("earth_nest");
                 //addLevel("heaven_shrine");
-                //addLevel("hell_ogre");
+                addLevel("hell_ogre");
                 //addLevel("earth");
-                addLevel(zone);
+                //addLevel(zone);
             }
         }
     }
