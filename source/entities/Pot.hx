@@ -15,6 +15,7 @@ class Pot extends Item
     public var interior(default, null):Scene;
 
     private var sprite:Spritemap;
+    private var numTimesExited:Int;
 
     public function new(x:Float, y:Float) {
         super(x, y);
@@ -30,6 +31,7 @@ class Pot extends Item
         graphic = sprite;
         isCracked = false;
         interior = null;
+        numTimesExited = 0;
     }
 
     public function createInterior() {
@@ -37,11 +39,19 @@ class Pot extends Item
     }
 
     public function crack() {
-        isCracked = true;
-        graphic = new ColoredRect(width, height, 0xA3A378);
+        numTimesExited += 1;
+        if(numTimesExited == 3) {
+            isCracked = true;
+        }
     }
 
     override public function update() {
+        if(numTimesExited == 0) {
+            sprite.play("unused");
+        }
+        else {
+            sprite.play('crack${numTimesExited}');
+        }
         super.update();
     }
 }

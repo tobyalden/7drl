@@ -128,9 +128,9 @@ class Player extends MiniEntity
             {complete: function() {
                 canMove = true;
                 layer = -10;
-                //if(lastUsedPot != null) {
-                    //lastUsedPot.crack();
-                //}
+                if(lastUsedPot != null) {
+                    lastUsedPot.crack();
+                }
             }}
         );
         if(carrying != null) {
