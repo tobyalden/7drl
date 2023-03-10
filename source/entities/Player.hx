@@ -51,7 +51,7 @@ class Player extends MiniEntity
         sprite.add("asleep", [12]);
         sprite.add("idle_carrying", [16]);
         sprite.add("run_carrying", [20, 21, 22, 23], 8);
-        sprite.add("jump_carrying", [24, 23], 8);
+        sprite.add("jump_carrying", [24, 25], 8);
         sprite.add("asleep_carrying", [28]);
         sprite.play("idle");
         graphic = sprite;

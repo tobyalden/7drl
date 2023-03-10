@@ -70,7 +70,16 @@ class GameScene extends Scene
         if(zone == "earth") {
             var bgNum = MathUtil.clamp(bedDepths.length, 1, 4);
             var bg = new Backdrop('graphics/EARTH_BG0${bgNum}.png');
-            //bg.alpha = 0.5;
+            bg.scrollX = 0.5;
+            addGraphic(bg, 99);
+        }
+        else if(zone == "hell") {
+            var bg = new Backdrop('graphics/HELL_BG.png');
+            bg.scrollX = 0.5;
+            addGraphic(bg, 99);
+        }
+        else if(zone == "heaven") {
+            var bg = new Backdrop('graphics/HEAVEN_BG.png');
             bg.scrollX = 0.5;
             addGraphic(bg, 99);
         }
@@ -119,9 +128,9 @@ class GameScene extends Scene
             camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
             maxCameraX = Math.max(camera.x, maxCameraX);
             if(camera.x + GAME_WIDTH + EXTEND_LEVEL_BUFFER > getTotalWidthOfLevels()) {
-                //addLevel("earth_nest");
+                addLevel("earth_nest");
                 //addLevel("heaven_shrine");
-                addLevel("hell_ogre");
+                //addLevel("hell_ogre");
                 //addLevel("earth");
                 //addLevel(zone);
             }

@@ -26,7 +26,7 @@ class Ogre extends Enemy
         sprite = new Spritemap("graphics/ogre.png", width, height);
         sprite.add("asleep", [0]);
         sprite.add("alert", [1]);
-        sprite.add("awake", [2]);
+        sprite.add("awake", [2, 3, 2, 4], 16);
         graphic = sprite;
         isAwake = false;
         alertness = 0;

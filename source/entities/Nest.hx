@@ -11,12 +11,12 @@ import scenes.*;
 
 class Nest extends MiniEntity
 {
-    public function new(x:Float, y:Float, width:Int, height:Int) {
+    public function new(x:Float, y:Float) {
         super(x, y);
+        layer = -10;
         type = "nest";
-        mask = new Hitbox(width, height);
-        var sprite = Image.createRect(width, height, 0xFF0000);
-        sprite.alpha = 0.5;
+        mask = new Hitbox(60, 20);
+        var sprite = new Image("graphics/nest.png");
         graphic = sprite;
     }
 }

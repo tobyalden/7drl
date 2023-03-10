@@ -13,13 +13,15 @@ class Bird extends Enemy
 {
     public static inline var HORIZONTAL_SPEED = 75;
 
-    private var sprite:Image;
+    private var sprite:Spritemap;
 
     public function new(x:Float, y:Float) {
         super(x, y);
         layer = -5;
         type = "hazard";
-        sprite = new Image("graphics/bird.png");
+        sprite = new Spritemap("graphics/bird.png", 15, 15);
+        sprite.add("idle", [0, 1, 2, 3], 8);
+        sprite.play("idle");
         graphic = sprite;
         mask = new Hitbox(15, 15);
     }

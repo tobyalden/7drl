@@ -60,7 +60,28 @@
         {"name": "optionalSolid", "id": 14, "_eid": "53964962", "x": 170, "y": 10, "width": 60, "height": 40, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 15, "_eid": "53964962", "x": 0, "y": 10, "width": 40, "height": 20, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 16, "_eid": "53964962", "x": 140, "y": 150, "width": 70, "height": 20, "originX": 0, "originY": 0},
-        {"name": "optionalSolid", "id": 17, "_eid": "53964962", "x": 260, "y": 130, "width": 60, "height": 40, "originX": 0, "originY": 0}
+        {"name": "optionalSolid", "id": 17, "_eid": "53964962", "x": 260, "y": 130, "width": 60, "height": 40, "originX": 0, "originY": 0},
+        {"name": "item", "id": 39, "_eid": "96531983", "x": 170, "y": 100, "originX": 0, "originY": 0},
+        {
+          "name": "mount",
+          "id": 40,
+          "_eid": "96773502",
+          "x": 130,
+          "y": 110,
+          "originX": 0,
+          "originY": 0,
+          "values": {"isDragon": false}
+        },
+        {
+          "name": "mount",
+          "id": 41,
+          "_eid": "96773502",
+          "x": 260,
+          "y": 80,
+          "originX": 0,
+          "originY": 0,
+          "values": {"isDragon": true}
+        }
       ]
     }
   ]

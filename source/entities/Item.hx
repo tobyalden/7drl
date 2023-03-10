@@ -21,8 +21,8 @@ class Item extends MiniEntity
     public function new(x:Float, y:Float) {
         super(x, y);
         type = "item";
-        mask = new Hitbox(10, 10);
-        graphic = new ColoredRect(width, height, 0xAAFF00);
+        mask = new Hitbox(20, 20);
+        graphic = new Image("graphics/apple.png");
         velocity = new Vector2();
         weightModifier = 1;
     }

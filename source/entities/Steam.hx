@@ -24,7 +24,7 @@ class Steam extends MiniEntity
         layer = -30;
         type = "steam";
         mask = new Hitbox(20, 15);
-        sprite = Image.createRect(width, height, 0x0000FF);
+        sprite = new Image("graphics/steam.png");
         graphic = sprite;
         velocity = new Vector2(0, -RISE_SPEED);
         lifeSpan = new Alarm(LIFE_TIME, function() {

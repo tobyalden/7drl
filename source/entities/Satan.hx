@@ -15,12 +15,14 @@ class Satan extends Enemy
 {
     private var mover:MultiVarTween;
     private var fireTimer:Alarm;
-    private var sprite:Image;
+    private var sprite:Spritemap;
 
     public function new(x:Float, y:Float) {
         super(x, y);
         mask = new Hitbox(60, 60);
-        sprite = new Image("graphics/satan.png");
+        sprite = new Spritemap("graphics/satan.png", 60, 60);
+        sprite.add("idle", [0, 1, 2, 3, 4, 5], 8);
+        sprite.play("idle");
         sprite.centerOrigin();
         sprite.x = 30;
         sprite.y = 30;

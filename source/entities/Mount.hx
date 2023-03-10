@@ -35,6 +35,7 @@ class Mount extends Item
     private var timeJumpHeld:Float;
     private var distanceTraveled:Float;
     private var eggSpawner:Alarm;
+    private var sprite:Spritemap;
 
     public function new(x:Float, y:Float, isDragon:Bool) {
         super(x, y - 10);
@@ -42,7 +43,19 @@ class Mount extends Item
         weightModifier = 1.25;
         type = "mount";
         mask = new Hitbox(isDragon ? 30 : 20, 20);
-        graphic = new ColoredRect(width, height, isDragon ? 0xC85B28 : 0x00FACC);
+        if(isDragon) {
+            sprite = new Spritemap("graphics/dragon.png", width, height);
+            sprite.add("idle", [0, 1], 8);
+            sprite.play("idle");
+        }
+        else {
+            sprite = new Spritemap("graphics/chicken.png", width, height);
+            sprite.add("idle", [0]);
+            sprite.add("run", [3, 2], 8);
+            sprite.add("fly", [5, 4], 8);
+            sprite.play("idle");
+        }
+        graphic = sprite;
         timeOffGround = 999;
         timeJumpHeld = 999;
         eggSpawner = new Alarm(EGG_SPAWN_TIME, function() {
@@ -92,7 +105,34 @@ class Mount extends Item
         if(hazard != null && hazard.type != "lava" && Player.riding == this) {
             die();
         }
+        animation();
         super.update();
+    }
+
+    private function animation() {
+        if(velocity.x < 0) {
+            sprite.flipX = true;
+        }
+        else if(velocity.x > 0) {
+            sprite.flipX = false;
+        }
+
+        if(isDragon) {
+            sprite.play("idle");
+        }
+        else {
+            if(isOnGround()) {
+                if(Math.abs(velocity.x) > 0) {
+                    sprite.play("run");
+                }
+                else {
+                    sprite.play("idle");
+                }
+            }
+            else {
+                sprite.play("fly");
+            }
+        }
     }
 
     private function die() {

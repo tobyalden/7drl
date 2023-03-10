@@ -13,16 +13,18 @@ class Human extends Enemy
 {
     public static inline var SPEED = 60;
 
+    private var sprite:Image;
+
     public function new(x:Float, y:Float) {
         super(x, y);
         mask = new Hitbox(15, 25);
-        graphic = new ColoredRect(width, height, 0x32a852);
+        sprite = new Image("graphics/human.png");
+        sprite.flipX = true;
+        graphic = sprite;
         velocity = new Vector2(-SPEED, 0);
     }
 
     override public function update() {
-        super.update();
-
         if(isOnGround()) {
             velocity.y = 0;
         }
@@ -38,6 +40,15 @@ class Human extends Enemy
                 ["walls"].concat(MiniEntity.semiSolids)
             );
         }
+
+        if(velocity.x < 0) {
+            sprite.flipX = true;
+        }
+        if(velocity.x > 0) {
+            sprite.flipX = false;
+        }
+
+        super.update();
     }
 
     override public function moveCollideX(e:Entity) {

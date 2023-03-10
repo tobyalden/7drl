@@ -40,8 +40,9 @@ class Level extends MiniEntity
                 var medusaY = buffer + (GameScene.GAME_HEIGHT - buffer * 2) * Random.random;
                 var upOrDown = HXP.choose(1, -1);
                 var age = Random.random * Math.PI * 2;
+                var pushBackAmount = 50 * Random.random;
                 for(i in 0...3) {
-                    var medusa = new Medusa(width + i * 20, medusaY, age - Math.PI / 32 * i);
+                    var medusa = new Medusa(width + i * 20 + pushBackAmount, medusaY, age - Math.PI / 32 * i);
                     entities.push(medusa);
                 }
                 totalEnemies += 2;
@@ -50,7 +51,7 @@ class Level extends MiniEntity
         else if(levelName.indexOf("heaven") != -1) {
             maxEnemies -= 1;
             if(Random.random < 0.5) {
-                var bird = new Bird(width, 20 + (GameScene.GAME_HEIGHT - 50) * Random.random);
+                var bird = new Bird(width + 50 * Random.random, 20 + (GameScene.GAME_HEIGHT - 50) * Random.random);
                 entities.push(bird);
                 totalEnemies += 1;
             }
@@ -242,7 +243,7 @@ class Level extends MiniEntity
                         eggStart = new Vector2(entity.x, entity.y);
                     }
                     if(entity.name == "nest") {
-                        entities.push(new Nest(entity.x, entity.y, entity.width, entity.height));
+                        entities.push(new Nest(entity.x, entity.y));
                     }
                     if(entity.name == "kettle") {
                         entities.push(new Kettle(entity.x, entity.y));
@@ -302,10 +303,14 @@ class Level extends MiniEntity
     public function updateGraphic(levelName:String) {
         var allTilesets = [
             "bedroom" => "bedroom",
+            "swordroom" => "swordroom",
+            "pot" => "pot",
             "earth" => "earth",
             "earth_nest" => "earth",
             "heaven" => "heaven",
-            "hell" => "hell"
+            "heaven_shrine" => "heaven",
+            "hell" => "hell",
+            "hell_ogre" => "hell"
         ];
         var tileset = allTilesets.exists(levelName) ? allTilesets[levelName] : "default";
         tiles = new Tilemap(

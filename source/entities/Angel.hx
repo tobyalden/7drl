@@ -20,7 +20,7 @@ class Angel extends Enemy
         type = "angel";
         layer = -15;
         mask = new Hitbox(15, 20);
-        graphic = new ColoredRect(width, height, 0x32a852);
+        graphic = new Image("graphics/angel.png");
     }
 
     override public function update() {
