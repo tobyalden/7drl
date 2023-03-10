@@ -46,7 +46,9 @@
       "gridCellsX": 32,
       "gridCellsY": 18,
       "entities": [
-        {"name": "player", "id": 0, "_eid": "42404373", "x": 155, "y": 0, "originX": 0, "originY": 0}
+        {"name": "player", "id": 0, "_eid": "42404373", "x": 155, "y": 0, "originX": 0, "originY": 0},
+        {"name": "pot", "id": 1, "_eid": "99911727", "x": 40, "y": 60, "originX": 0, "originY": 0},
+        {"name": "pot", "id": 2, "_eid": "99911727", "x": 70, "y": 60, "originX": 0, "originY": 0}
       ]
     }
   ]

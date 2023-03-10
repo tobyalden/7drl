@@ -72,6 +72,11 @@ class Player extends MiniEntity
             if(getScene().zone == "pot") {
                 HXP.engine.pushScene(new GameScene("hell"));
             }
+            else if(getScene().zone == "hell") {
+                removeCarriedItem();
+                GameScene.exitedPot = true;
+                HXP.engine.popScene();
+            }
             else {
                 if(pot.interior == null) {
                     pot.createInterior();
