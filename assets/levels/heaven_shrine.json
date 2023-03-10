@@ -46,20 +46,7 @@
       "gridCellsX": 38,
       "gridCellsY": 18,
       "entities": [
-        {"name": "water", "id": 0, "_eid": "30813266", "x": 140, "y": 115, "width": 110, "height": 55, "originX": 0, "originY": 0},
-        {"name": "egg", "id": 1, "_eid": "14463302", "x": 90, "y": 100, "originX": 0, "originY": 0},
-        {
-          "name": "mount",
-          "id": 2,
-          "_eid": "96773502",
-          "x": 110,
-          "y": 100,
-          "originX": 0,
-          "originY": 0,
-          "values": {"isDragon": false}
-        },
-        {"name": "angel", "id": 3, "_eid": "30945663", "x": 240, "y": 50, "originX": 0, "originY": 0},
-        {"name": "sword", "id": 4, "_eid": "31590154", "x": 70, "y": 90, "originX": 0, "originY": 0}
+        {"name": "water", "id": 0, "_eid": "30813266", "x": 140, "y": 115, "width": 110, "height": 55, "originX": 0, "originY": 0}
       ]
     }
   ]

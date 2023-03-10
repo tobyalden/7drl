@@ -51,17 +51,7 @@
         {"name": "optionalSolid", "id": 9, "_eid": "53964962", "x": 150, "y": 0, "width": 20, "height": 80, "originX": 0, "originY": 0},
         {"name": "player", "id": 10, "_eid": "42404373", "x": 10, "y": 150, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 11, "_eid": "53964962", "x": 150, "y": 170, "width": 30, "height": 10, "originX": 0, "originY": 0},
-        {"name": "optionalSolid", "id": 12, "_eid": "53964962", "x": 160, "y": 0, "width": 20, "height": 80, "originX": 0, "originY": 0},
-        {
-          "name": "mount",
-          "id": 15,
-          "_eid": "96773502",
-          "x": 10,
-          "y": 70,
-          "originX": 0,
-          "originY": 0,
-          "values": {"isDragon": false}
-        }
+        {"name": "optionalSolid", "id": 12, "_eid": "53964962", "x": 160, "y": 0, "width": 20, "height": 80, "originX": 0, "originY": 0}
       ]
     }
   ]

@@ -55,16 +55,6 @@
         {"name": "optionalSolid", "id": 17, "_eid": "53964962", "x": 240, "y": 80, "width": 30, "height": 20, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 19, "_eid": "53964962", "x": 110, "y": 110, "width": 40, "height": 20, "originX": 0, "originY": 0},
         {"name": "optionalSolid", "id": 20, "_eid": "53964962", "x": 160, "y": 0, "width": 20, "height": 40, "originX": 0, "originY": 0},
-        {
-          "name": "mount",
-          "id": 21,
-          "_eid": "96773502",
-          "x": 10,
-          "y": 80,
-          "originX": 0,
-          "originY": 0,
-          "values": {"isDragon": false}
-        },
         {"name": "optionalSolid", "id": 22, "_eid": "53964962", "x": 40, "y": 0, "width": 20, "height": 40, "originX": 0, "originY": 0}
       ]
     }
