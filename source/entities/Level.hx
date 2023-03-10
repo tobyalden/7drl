@@ -11,7 +11,7 @@ import scenes.GameScene;
 class Level extends MiniEntity
 {
     public static inline var TILE_SIZE = 10;
-    public static inline var MAX_ENEMIES = 3;
+    public static inline var DEFAULT_MAX_ENEMIES = 3;
 
     public var entities(default, null):Array<Entity>;
     public var playerStart(default, null):Vector2;
@@ -31,9 +31,25 @@ class Level extends MiniEntity
     public function addEnemies() {
         var totalEnemies = 0;
         var allTiles = [];
+        var maxEnemies = DEFAULT_MAX_ENEMIES;
+
+        if(levelName.indexOf("hell") != -1) {
+            maxEnemies += 1;
+            if(Random.random < 0.33) {
+                var buffer = Medusa.SINE_WAVE_SIZE + 5;
+                var medusaY = buffer + (GameScene.GAME_HEIGHT - buffer * 2) * Random.random;
+                var upOrDown = HXP.choose(1, -1);
+                var age = Random.random * Math.PI * 2;
+                for(i in 0...3) {
+                    var medusa = new Medusa(width + i * 20, medusaY, age - Math.PI / 32 * i);
+                    entities.push(medusa);
+                }
+                totalEnemies += 2;
+            }
+        }
 
         for(tileX in 1...walls.columns - 1) {
-            for(tileY in 5...walls.rows - 1) {
+            for(tileY in 2...walls.rows - 1) {
                 allTiles.push({tileX: tileX, tileY: tileY});
             }
         }
@@ -41,7 +57,7 @@ class Level extends MiniEntity
         for(tile in allTiles) {
             var tileX = tile.tileX;
             var tileY = tile.tileY;
-            if(totalEnemies >= MAX_ENEMIES) {
+            if(totalEnemies >= maxEnemies) {
                 continue;
             }
             else if(levelName.indexOf("earth") != -1) {
@@ -52,7 +68,10 @@ class Level extends MiniEntity
                     && getTile(tileX, tileY + 1)
                     && Random.random < 0.1
                 ) {
-                    var enemySpawn = new Vector2(tileX * TILE_SIZE + TILE_SIZE / 2, (tileY + 1) * TILE_SIZE);
+                    var enemySpawn = new Vector2(
+                        tileX * TILE_SIZE + TILE_SIZE / 2,
+                        (tileY + 1) * TILE_SIZE
+                    );
                     var enemy:Entity = HXP.choose(
                         new Human(enemySpawn.x, enemySpawn.y),
                         new JumpingHuman(enemySpawn.x, enemySpawn.y)
@@ -60,20 +79,52 @@ class Level extends MiniEntity
                     enemy.x -= enemy.width / 2;
                     enemy.y -= enemy.height;
                     entities.push(enemy);
-                    //tiles.setTile(tileX, tileY, 1);
                     totalEnemies += 1;
                 }
             }
-            else if(levelName.indexOf("hell") != -1) {
-                var buffer = Medusa.SINE_WAVE_SIZE + 5;
-                var medusaY = buffer + (GameScene.GAME_HEIGHT - buffer * 2) * Random.random;
-                var upOrDown = HXP.choose(1, -1);
-                var age = Random.random * Math.PI * 2;
-                for(i in 0...3) {
-                    var medusa = new Medusa(width + i * 20, medusaY, age - Math.PI / 32 * i);
-                    entities.push(medusa);
+            if(levelName.indexOf("hell") != -1) {
+                if(
+                    !getTile(tileX, tileY)
+                    && getTile(tileX, tileY - 1)
+                ) {
+                    var enemySpawn = new Vector2(
+                        tileX * TILE_SIZE,
+                        tileY * TILE_SIZE
+                    );
+                    var enemy = new FallingSpike(enemySpawn.x, enemySpawn.y);
+                    entities.push(enemy);
+                    if(
+                        !getTile(tileX + 1, tileY)
+                        && getTile(tileX + 1, tileY - 1)
+                    ) {
+                        enemy = new FallingSpike(enemySpawn.x + TILE_SIZE, enemySpawn.y);
+                        entities.push(enemy);
+                    }
+                    if(
+                        !getTile(tileX - 1, tileY)
+                        && getTile(tileX - 1, tileY - 1)
+                    ) {
+                        enemy = new FallingSpike(enemySpawn.x - TILE_SIZE, enemySpawn.y);
+                        entities.push(enemy);
+                    }
+                    totalEnemies += 1;
                 }
-                totalEnemies += 3;
+                if(
+                    getTile(tileX, tileY)
+                    && (
+                        !getTile(tileX, tileY + 1)
+                        || !getTile(tileX, tileY - 1)
+                    )
+                    && Random.random < 0.2
+                ) {
+                    var enemySpawn = new Vector2(
+                        tileX * TILE_SIZE + TILE_SIZE / 2,
+                        tileY * TILE_SIZE + TILE_SIZE / 2
+                    );
+                    var enemy = new SpikeBall(enemySpawn.x, enemySpawn.y);
+                    entities.push(enemy);
+                    totalEnemies += 2;
+                }
             }
         }
     }

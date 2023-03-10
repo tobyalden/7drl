@@ -57,6 +57,22 @@ class Item extends MiniEntity
     }
 
     override public function update() {
+        if(velocity.length > 20) {
+            var fallingSpikes = [];
+            HXP.scene.getClass(FallingSpike, fallingSpikes);
+            for(fallingSpike in fallingSpikes) {
+                if(
+                    Math.abs(fallingSpike.centerX - centerX) < FallingSpike.FALL_RANGE
+                    && HXP.scene.collideLine(
+                        "walls",
+                        Std.int(fallingSpike.centerX), Std.int(fallingSpike.centerY),
+                        Std.int(centerX), Std.int(centerY)
+                    ) == null
+                ) {
+                    cast(fallingSpike, FallingSpike).fall();
+                }
+            }
+        }
         if(Player.carrying == this) {
             velocity.x = 0;
             velocity.y = 0;

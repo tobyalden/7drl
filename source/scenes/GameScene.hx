@@ -69,6 +69,7 @@ class GameScene extends Scene
         if(zone == "earth") {
             var bgNum = MathUtil.clamp(bedDepths.length, 1, 4);
             var bg = new Backdrop('graphics/EARTH_BG0${bgNum}.png');
+            //bg.alpha = 0.5;
             bg.scrollX = 0.5;
             addGraphic(bg, 99);
         }
@@ -178,6 +179,7 @@ class GameScene extends Scene
         for(entity in level.entities) {
             for(otherEntity in level.entities) {
                 if(entity != otherEntity && entity.collideWith(otherEntity, entity.x, entity.y) != null) {
+                    trace('removing overlapping enemies');
                     remove(entity);
                 }
             }

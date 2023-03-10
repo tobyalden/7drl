@@ -19,12 +19,13 @@ class SpikeBall extends MiniEntity
     private var orbitSpeed:Int;
 
     public function new(startX:Float, startY:Float) {
-        super(0, 0);
+        super(startX, startY);
+        layer = -33;
         this.startPoint = new Vector2(startX, startY);
         type = "hazard";
         age = Random.random * Math.PI * 2;
         radius = 7;
-        orbitRadius = 50;
+        orbitRadius = 60;
         orbitSpeed = HXP.choose(3, -3);
         var hitbox = new Circle(radius);
         mask = hitbox;
