@@ -47,6 +47,9 @@ class Level extends MiniEntity
                 totalEnemies += 2;
             }
         }
+        else if(levelName.indexOf("heaven") != -1) {
+            maxEnemies -= 1;
+        }
 
         for(tileX in 1...walls.columns - 1) {
             for(tileY in 2...walls.rows - 1) {
@@ -82,7 +85,7 @@ class Level extends MiniEntity
                     totalEnemies += 1;
                 }
             }
-            if(levelName.indexOf("hell") != -1) {
+            else if(levelName.indexOf("hell") != -1) {
                 if(
                     getTile(tileX, tileY)
                     && !getTile(tileX, tileY - 1)
@@ -151,6 +154,29 @@ class Level extends MiniEntity
                     var enemy = new SpikeBall(enemySpawn.x, enemySpawn.y);
                     entities.push(enemy);
                     totalEnemies += 2;
+                }
+            }
+            else if(levelName.indexOf("heaven") != -1) {
+                if(
+                    !getTile(tileX + 1, tileY)
+                    && !getTile(tileX, tileY)
+                    && !getTile(tileX - 1, tileY)
+                    && !getTile(tileX + 1, tileY - 1)
+                    && !getTile(tileX, tileY - 1)
+                    && !getTile(tileX - 1, tileY - 1)
+                    && !getTile(tileX + 1, tileY + 1)
+                    && !getTile(tileX, tileY + 1)
+                    && !getTile(tileX - 1, tileY + 1)
+                ) {
+                    var enemySpawn = new Vector2(
+                        tileX * TILE_SIZE + TILE_SIZE / 2,
+                        tileY * TILE_SIZE + TILE_SIZE / 2
+                    );
+                    var enemy = new Angel(enemySpawn.x, enemySpawn.y);
+                    enemy.x -= enemy.width / 2;
+                    enemy.y -= enemy.height / 2;
+                    entities.push(enemy);
+                    totalEnemies += 1;
                 }
             }
         }
