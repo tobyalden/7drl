@@ -9,30 +9,22 @@ import haxepunk.tweens.misc.*;
 import haxepunk.utils.*;
 import scenes.*;
 
-class Medusa extends Enemy
+class Bird extends Enemy
 {
     public static inline var HORIZONTAL_SPEED = 75;
-    public static inline var SINE_WAVE_SPEED = 3;
-    public static inline var SINE_WAVE_SIZE = 35;
 
     private var sprite:Image;
-    private var age:Float;
-    private var startY:Float;
 
-    public function new(x:Float, y:Float, age:Float) {
+    public function new(x:Float, y:Float) {
         super(x, y);
-        this.age = age;
-        startY = y;
         layer = -5;
         type = "hazard";
-        sprite = new Image("graphics/medusa.png");
+        sprite = new Image("graphics/bird.png");
         graphic = sprite;
         mask = new Hitbox(15, 15);
     }
 
     override public function update() {
-        age += HXP.elapsed;
-        y = startY + Math.cos(age * SINE_WAVE_SPEED) * SINE_WAVE_SIZE;
         moveBy(-HORIZONTAL_SPEED * HXP.elapsed, 0);
         if(right < HXP.scene.camera.x) {
             HXP.scene.remove(this);
@@ -40,5 +32,6 @@ class Medusa extends Enemy
         super.update();
     }
 }
+
 
 

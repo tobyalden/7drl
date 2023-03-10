@@ -16,7 +16,7 @@ class Enemy extends MiniEntity
     public function new(x:Float, y:Float) {
         super(x, y);
         type = "enemy";
-        mask = new Hitbox(15, 25);
+        mask = new Hitbox(10, 10);
         var sprite = Image.createRect(width, height, 0x32a852);
         sprite.alpha = 0.5;
         graphic = sprite;

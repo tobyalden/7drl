@@ -49,6 +49,11 @@ class Level extends MiniEntity
         }
         else if(levelName.indexOf("heaven") != -1) {
             maxEnemies -= 1;
+            if(Random.random < 0.5) {
+                var bird = new Bird(width, 20 + (GameScene.GAME_HEIGHT - 50) * Random.random);
+                entities.push(bird);
+                totalEnemies += 1;
+            }
         }
 
         for(tileX in 1...walls.columns - 1) {

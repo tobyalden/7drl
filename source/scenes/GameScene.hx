@@ -16,6 +16,7 @@ class GameScene extends Scene
 {
     public static inline var GAME_WIDTH = 320;
     public static inline var GAME_HEIGHT = 180;
+    public static inline var EXTEND_LEVEL_BUFFER = 100;
     public static inline var DEBUG_MODE = true;
     public static inline var HEAVEN_HEIGHT = 200;
     public static inline var LAIR_AND_EARTH_DEPTH = GAME_HEIGHT + 50;
@@ -117,7 +118,7 @@ class GameScene extends Scene
         if(!isStaticZone()) {
             camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
             maxCameraX = Math.max(camera.x, maxCameraX);
-            if(camera.x + GAME_WIDTH > getTotalWidthOfLevels()) {
+            if(camera.x + GAME_WIDTH + EXTEND_LEVEL_BUFFER > getTotalWidthOfLevels()) {
                 //addLevel("earth_nest");
                 //addLevel("heaven_shrine");
                 //addLevel("hell_ogre");
