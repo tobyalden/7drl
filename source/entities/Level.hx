@@ -84,6 +84,33 @@ class Level extends MiniEntity
             }
             if(levelName.indexOf("hell") != -1) {
                 if(
+                    getTile(tileX, tileY)
+                    && !getTile(tileX, tileY - 1)
+                    && Random.random < 0.5
+                ) {
+                    var enemySpawn = new Vector2(
+                        tileX * TILE_SIZE,
+                        tileY * TILE_SIZE
+                    );
+                    var enemy = new SpikeTrap(enemySpawn.x, enemySpawn.y);
+                    entities.push(enemy);
+                    if(
+                        getTile(tileX + 1, tileY)
+                        && !getTile(tileX + 1, tileY - 1)
+                    ) {
+                        enemy = new SpikeTrap(enemySpawn.x + TILE_SIZE, enemySpawn.y);
+                        entities.push(enemy);
+                    }
+                    if(
+                        getTile(tileX - 1, tileY)
+                        && !getTile(tileX - 1, tileY - 1)
+                    ) {
+                        enemy = new SpikeTrap(enemySpawn.x - TILE_SIZE, enemySpawn.y);
+                        entities.push(enemy);
+                    }
+                    totalEnemies += 1;
+                }
+                if(
                     !getTile(tileX, tileY)
                     && getTile(tileX, tileY - 1)
                 ) {
