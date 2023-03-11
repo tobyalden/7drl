@@ -33,6 +33,13 @@ class Ogre extends Enemy
         alertness = 0;
     }
 
+    override private function die() {
+        var meat = new Meat(x, y);
+        meat.moveTo(centerX - meat.width / 2, centerY - meat.height / 2);
+        HXP.scene.add(meat);
+        super.die();
+    }
+
     private function jump() {
         if(isOnScreen()) {
             GameScene.sfx["ogre"].play();

@@ -342,16 +342,27 @@ class Player extends MiniEntity
                 // You can't pick up items while Player.riding
                 var item = collideAny(Item.itemTypes, x, y + 1);
                 if(item != null) {
-                    Player.carrying = cast(item, Item);
-                    if(item.type == "sword") {
-                        GameScene.sfx["pickupsword"].play();
+                    if(item.type == "meat" && cast(item, Meat).isCooked) {
+                        GameScene.sfx["eat"].play();
+                        Player.increaseHealth(2);
+                        HXP.scene.remove(item);
                     }
                     else {
-                        GameScene.sfx["pickup"].play();
+                        Player.carrying = cast(item, Item);
+                        if(item.type == "sword") {
+                            GameScene.sfx["pickupsword"].play();
+                        }
+                        else {
+                            GameScene.sfx["pickup"].play();
+                        }
                     }
                 }
             }
         }
+    }
+
+    static public function increaseHealth(amount:Int) {
+        Player.health = Std.int(Math.min(health + amount, MAX_HEALTH));
     }
 
     public function moveCarriedItemToHands() {

@@ -49,6 +49,7 @@ class GameScene extends Scene
                 "chicken_alert" => new Sfx("audio/chicken_alert.wav"),
                 "chicken_lay" => new Sfx("audio/chicken_lay.wav"),
                 "jump" => new Sfx("audio/jump.wav"),
+                "eat" => new Sfx("audio/eat.wav"),
                 "takehit" => new Sfx("audio/takehit.wav"),
                 "flap" => new Sfx("audio/flap.wav"),
                 "run" => new Sfx("audio/run.wav"),
@@ -83,7 +84,8 @@ class GameScene extends Scene
                 "music_hell" => new Sfx("audio/music_hell.wav"),
                 "music_heaven" => new Sfx("audio/music_heaven.wav"),
                 "music_satan" => new Sfx("audio/music_satan.wav"),
-                "bless" => new Sfx("audio/bless.wav")
+                "bless" => new Sfx("audio/bless.wav"),
+                "cook" => new Sfx("audio/cook.wav")
             ];
         }
     }
