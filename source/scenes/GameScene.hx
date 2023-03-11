@@ -50,6 +50,8 @@ class GameScene extends Scene
                 "chicken_lay" => new Sfx("audio/chicken_lay.wav"),
                 "jump" => new Sfx("audio/jump.wav"),
                 "eat" => new Sfx("audio/eat.wav"),
+                "dragonhatch" => new Sfx("audio/dragonhatch.wav"),
+                "dragonfly" => new Sfx("audio/dragonfly.wav"),
                 "takehit" => new Sfx("audio/takehit.wav"),
                 "flap" => new Sfx("audio/flap.wav"),
                 "run" => new Sfx("audio/run.wav"),

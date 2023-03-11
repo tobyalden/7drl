@@ -167,6 +167,9 @@ class Mount extends Item
         else if(Input.check("right")) {
             heading.x = 1;
         }
+        if(velocity.length == 0 && heading.length > 0) {
+            GameScene.sfx["dragonfly"].play();
+        }
         velocity.x = heading.x * DRAGON_FLY_SPEED;
         velocity.y = heading.y * DRAGON_FLY_SPEED;
         moveBy(
