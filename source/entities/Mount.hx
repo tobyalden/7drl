@@ -103,6 +103,10 @@ class Mount extends Item
             GameScene.sfx["chicken_alert"].play();
         }
         if(collide("lava", x, y) != null && !isDragon) {
+            var chickenDinner = new ChickenDinner(x, y);
+            chickenDinner.moveTo(centerX - chickenDinner.width / 2, centerY - chickenDinner.height / 2);
+            HXP.scene.add(chickenDinner);
+            GameScene.sfx["cook"].play();
             die();
         }
         var hazard = collideAny(MiniEntity.hazards, x, y);

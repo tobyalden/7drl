@@ -347,6 +347,11 @@ class Player extends MiniEntity
                         Player.increaseHealth(2);
                         HXP.scene.remove(item);
                     }
+                    else if(item.type == "chickendinner") {
+                        GameScene.sfx["eat"].play();
+                        Player.increaseHealth(1);
+                        HXP.scene.remove(item);
+                    }
                     else {
                         Player.carrying = cast(item, Item);
                         if(item.type == "sword") {
