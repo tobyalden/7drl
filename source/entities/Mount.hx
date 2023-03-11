@@ -24,8 +24,8 @@ class Mount extends Item
     public static inline var JUMP_BUFFER_TIME = 1 / 60 * 5;
 
     public static inline var FLAP_POWER = 250;
-    public static inline var EGG_SPAWN_DISTANCE = GameScene.GAME_WIDTH * 5;
-    //public static inline var EGG_SPAWN_DISTANCE = 200;
+    //public static inline var EGG_SPAWN_DISTANCE = GameScene.GAME_WIDTH * 5;
+    public static inline var EGG_SPAWN_DISTANCE = 100;
     public static inline var EGG_SPAWN_TIME = 2;
 
     public static inline var DRAGON_FLY_SPEED = 175;
@@ -220,12 +220,16 @@ class Mount extends Item
                     jumpPower *= 0.5;
                 }
                 velocity.y = -jumpPower;
+                GameScene.sfx["jump"].play();
+                timeJumpHeld = 999;
+                timeOffGround = 999;
             }
         }
         else {
             if(Input.pressed("jump")) {
                 velocity.y = Math.min(velocity.y, JUMP_CANCEL);
                 velocity.y -= FLAP_POWER;
+                GameScene.sfx["flap"].play();
             }
         }
 

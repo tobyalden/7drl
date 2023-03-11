@@ -31,23 +31,16 @@ class SpikeTrap extends MiniEntity
         sprite.y = -10;
         graphic = sprite;
         mask = new Hitbox(10, 5, 0, -5);
-        //if(sfx == null) {
-            //sfx = [
-                //"activate" => new Sfx("audio/spikeactivate.wav"),
-                //"deactivate" => new Sfx("audio/spikedeactivate.wav"),
-                //"warn" => new Sfx("audio/spikewarning.wav")
-            //];
-        //}
         activateTimer = new Alarm(ACTIVATE_DELAY, function() {
             sprite.play("active");
-            //sfx["activate"].play();
+            GameScene.sfx["spikeactivate"].play();
             type = "hazard";
             deactivateTimer.start();
         });
         addTween(activateTimer);
         deactivateTimer = new Alarm(DEACTIVATE_DELAY, function() {
             sprite.play("retracting");
-            //sfx["deactivate"].play();
+            GameScene.sfx["spikedeactivate"].play();
             type = "not_hazard";
         });
         addTween(deactivateTimer);
@@ -57,7 +50,7 @@ class SpikeTrap extends MiniEntity
         if(collideWith(getPlayer(), x, y) != null && getPlayer().isOnGround()) {
             if(!activateTimer.active && !deactivateTimer.active) {
                 activateTimer.start();
-                //sfx["warn"].play();
+                GameScene.sfx["spikewarning"].play();
             }
         }
         super.update();

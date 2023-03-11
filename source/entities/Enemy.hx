@@ -43,6 +43,8 @@ class Enemy extends MiniEntity
     }
 
     private function die() {
+        explode(3);
+        GameScene.sfx["enemydie"].play();
         HXP.scene.remove(this);
     }
 

@@ -43,12 +43,34 @@ class GameScene extends Scene
         if(sfx == null) {
             sfx = [
                 "chicken_alert" => new Sfx("audio/chicken_alert.wav"),
-                "chicken_lay" => new Sfx("audio/chicken_lay.wav")
+                "chicken_lay" => new Sfx("audio/chicken_lay.wav"),
+                "jump" => new Sfx("audio/jump.wav"),
+                "flap" => new Sfx("audio/flap.wav"),
+                "run" => new Sfx("audio/run.wav"),
+                "shatter" => new Sfx("audio/shatter.wav"),
+                "pickup" => new Sfx("audio/pickup.wav"),
+                "toss" => new Sfx("audio/toss.wav"),
+                "die" => new Sfx("audio/die.wav"),
+                "enemydie" => new Sfx("audio/enemydie.wav"),
+                "mount" => new Sfx("audio/mount.wav"),
+                "dismount" => new Sfx("audio/dismount.wav"),
+                "spikeactivate" => new Sfx("audio/spikeactivate.wav"),
+                "spikedeactivate" => new Sfx("audio/spikedeactivate.wav"),
+                "spikewarning" => new Sfx("audio/spikewarning.wav")
             ];
         }
     }
 
+    private function stopAllLoopingSounds() {
+        for(sfx in sfx) {
+            if(sfx.looping) {
+                sfx.stop();
+            }
+        }
+    }
+
 	override public function resume() {
+        stopAllLoopingSounds();
         if(Player.carrying != null) {
             player.addCarriedItem(new Vector2(
                 player.centerX - Math.floor(Player.carrying.width / 2),
@@ -76,6 +98,7 @@ class GameScene extends Scene
     }
 
     override public function begin() {
+        stopAllLoopingSounds();
         if(zone == "earth") {
             var bgNum = MathUtil.clamp(bedDepths.length, 1, 4);
             var bg = new Backdrop('graphics/EARTH_BG0${bgNum}.png');

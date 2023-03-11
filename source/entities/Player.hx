@@ -173,6 +173,7 @@ class Player extends MiniEntity
             moveCarriedItemToHands();
         }
         collisions();
+        sound();
         super.update();
     }
 
@@ -253,6 +254,7 @@ class Player extends MiniEntity
                         rideCooldown.start();
                     }
                 }
+                GameScene.sfx["toss"].play();
                 carrying = null;
             }
             else if(Player.riding == null) {
@@ -260,6 +262,7 @@ class Player extends MiniEntity
                 var item = collideAny(Item.itemTypes, x, y + 1);
                 if(item != null) {
                     carrying = cast(item, Item);
+                    GameScene.sfx["pickup"].play();
                 }
             }
         }
@@ -286,6 +289,7 @@ class Player extends MiniEntity
         rideCooldown.start();
         if(Input.check("up")) {
             velocity.y = -JUMP_POWER;
+            GameScene.sfx["jump"].play();
         }
         else {
             velocity.y = 0;
@@ -296,6 +300,7 @@ class Player extends MiniEntity
             );
         }
         Player.riding = null;
+        GameScene.sfx["dismount"].play();
     }
 
     private function movement() {
@@ -350,6 +355,9 @@ class Player extends MiniEntity
                     jumpPower *= 0.5;
                 }
                 velocity.y = -jumpPower;
+                GameScene.sfx["jump"].play();
+                timeJumpHeld = 999;
+                timeOffGround = 999;
             }
         }
 
@@ -399,6 +407,7 @@ class Player extends MiniEntity
             && carrying != mount
         ) {
             Player.riding = cast(mount, Mount);
+            GameScene.sfx["mount"].play();
         }
         var hazard = collideAny(MiniEntity.hazards, x, y);
         if(hazard != null && !(hazard.type == "lava" && Player.riding != null && Player.riding.isDragon)) {
@@ -406,12 +415,25 @@ class Player extends MiniEntity
         }
     }
 
+    private function sound() {
+        if(isOnGround() && Player.riding == null && Math.abs(velocity.x) > 0) {
+            if(!GameScene.sfx["run"].playing) {
+                GameScene.sfx["run"].loop();
+            }
+        }
+        else {
+            GameScene.sfx["run"].stop();
+        }
+    }
+
     private function die() {
-        return; // TODO: REMOVE THIS!
+        //return; // TODO: REMOVE THIS!
         stopRiding();
         canMove = false;
         visible = false;
         collidable = false;
+        GameScene.sfx["die"].play();
+        explode(50);
         getScene().onDeath();
     }
 

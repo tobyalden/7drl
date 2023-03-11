@@ -12,7 +12,7 @@ import scenes.*;
 
 class Egg extends Item
 {
-    public static inline var BREAK_SPEED = 200;
+    public static inline var BREAK_SPEED = 50;
     public static inline var BROODING_TIME_TO_HATCH = 5;
 
     private var isBlessed:Bool;
@@ -69,6 +69,8 @@ class Egg extends Item
 
     public function crack() {
         HXP.scene.remove(this);
+        explode(10);
+        GameScene.sfx["shatter"].play();
         if(Player.carrying == this) {
             getPlayer().destroyCarriedItem();
         }
