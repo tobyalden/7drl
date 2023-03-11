@@ -44,13 +44,13 @@ class SpikeBall extends MiniEntity
     }
 
     override public function render(camera:Camera) {
-        super.render(HXP.scene.camera);
-        Draw.lineThickness = 2;
+        Draw.lineThickness = 2 * HXP.screen.scaleX;
         Draw.setColor(0xFFFFFF);
         Draw.line(
-            x + radius - HXP.scene.camera.x, y + radius - HXP.scene.camera.y,
-            startPoint.x - HXP.scene.camera.x, startPoint.y - HXP.scene.camera.y
+            (x + radius - HXP.scene.camera.x) * HXP.screen.scaleX, (y + radius - HXP.scene.camera.y) * HXP.screen.scaleY,
+            (startPoint.x - HXP.scene.camera.x) * HXP.screen.scaleX, (startPoint.y - HXP.scene.camera.y) * HXP.screen.scaleY
         );
+        super.render(HXP.scene.camera);
         //Draw.setColor(0xFF0000);
         //Draw.circleFilled(x + radius - HXP.scene.camera.x, y + radius - HXP.scene.camera.y, radius);
     }
