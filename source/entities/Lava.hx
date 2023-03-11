@@ -23,7 +23,7 @@ class Lava extends MiniEntity
         type = "lava";
         mask = new Hitbox(width, height);
         sprite = Image.createRect(width, height, 0xFF0000);
-        sprite.alpha = 0.5;
+        sprite.alpha = 0.75;
         graphic = sprite;
         tide = new VarTween(TweenType.PingPong);
         tide.tween(this, "y", y + height + OFFSCREEN_MARGIN, PULSE_TIME, Ease.sineInOut);

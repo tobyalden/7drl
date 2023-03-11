@@ -61,8 +61,7 @@
         {"name": "optionalSolid", "id": 13, "_eid": "53964962", "x": 50, "y": 110, "width": 30, "height": 20, "originX": 0, "originY": 0},
         {"name": "lava", "id": 14, "_eid": "22665787", "x": 220, "y": 140, "width": 50, "height": 40, "originX": 0, "originY": 0},
         {"name": "item", "id": 15, "_eid": "96531983", "x": 180, "y": 90, "originX": 0, "originY": 0},
-        {"name": "item", "id": 16, "_eid": "96531983", "x": 290, "y": 100, "originX": 0, "originY": 0},
-        {"name": "sword", "id": 17, "_eid": "31590154", "x": 50, "y": 90, "originX": 0, "originY": 0}
+        {"name": "item", "id": 16, "_eid": "96531983", "x": 290, "y": 100, "originX": 0, "originY": 0}
       ]
     }
   ]

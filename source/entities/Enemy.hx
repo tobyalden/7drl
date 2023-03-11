@@ -11,6 +11,8 @@ import scenes.*;
 
 class Enemy extends MiniEntity
 {
+    public static inline var ITEM_MIN_KILL_VELOCITY = 5;
+
     private var velocity:Vector2;
 
     public function new(x:Float, y:Float) {
@@ -37,11 +39,8 @@ class Enemy extends MiniEntity
                     die();
                 }
             }
-            else if(cast(item, Item).velocity.length > 50) {
+            else if(cast(item, Item).velocity.length > ITEM_MIN_KILL_VELOCITY) {
                 die();
-                if(item.type == "egg") {
-                    cast(item, Egg).crack();
-                }
             }
         }
         super.update();

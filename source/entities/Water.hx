@@ -22,7 +22,7 @@ class Water extends MiniEntity
         mask = new Hitbox(width, height);
         sprite = Image.createRect(width, height, 0xFFFFFF);
         sprite.color = 0xADD8E6;
-        sprite.alpha = 0.5;
+        sprite.alpha = 0.75;
         graphic = sprite;
         pulse = new ColorTween(TweenType.PingPong);
         addTween(pulse);

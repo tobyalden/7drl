@@ -6,6 +6,7 @@ import haxepunk.math.*;
 import haxepunk.screen.UniformScaleMode;
 import haxepunk.utils.*;
 import openfl.Lib;
+import openfl.ui.Mouse;
 import scenes.*;
 
 
@@ -16,6 +17,7 @@ class Main extends Engine
     }
 
     override public function init() {
+        Mouse.hide();
 #if debug
         Console.enable();
 #end

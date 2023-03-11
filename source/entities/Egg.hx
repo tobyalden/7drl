@@ -80,6 +80,9 @@ class Egg extends Item
     }
 
     private function hatch() {
+        if(!isOnGround() || Player.carrying == this) {
+            return;
+        }
         var newborn = new Mount(0, 0, isBlessed);
         newborn.moveTo(centerX - newborn.width / 2, bottom - newborn.height);
         HXP.scene.add(newborn);

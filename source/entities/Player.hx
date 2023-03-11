@@ -233,7 +233,7 @@ class Player extends MiniEntity
                 ["walls"]
             );
             isAsleep = true;
-            GameScene.sfx["dream"].play();
+            GameScene.sfx["dream"].play(0.5);
             HXP.alarm(3, function() {
                 removeCarriedItem();
                 GameScene.bedDepths.push(GameScene.dreamDepth);
@@ -251,6 +251,9 @@ class Player extends MiniEntity
                         top,
                         ["walls"]
                     );
+                    if(!isOnGround()) {
+                        carrying.toss(0, TOSS_VELOCITY_Y);
+                    }
                 }
                 else {
                     var tossInfluence = Player.riding != null ? Player.riding.velocity : velocity;
@@ -420,12 +423,16 @@ class Player extends MiniEntity
             && velocity.y > 0
             && !rideCooldown.active
             && carrying != mount
+            && Player.riding == null
         ) {
             Player.riding = cast(mount, Mount);
             GameScene.sfx["mount"].play();
         }
         var hazard = collideAny(MiniEntity.hazards, x, y);
-        if(hazard != null && !(hazard.type == "lava" && Player.riding != null && Player.riding.isDragon)) {
+        if(
+            hazard != null
+            && canMove
+            && !(hazard.type == "lava" && Player.riding != null && Player.riding.isDragon)) {
             die();
         }
     }

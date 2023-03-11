@@ -11,6 +11,8 @@ import scenes.*;
 
 class MiniEntity extends Entity
 {
+    public static inline var OFFSCREEN_UNLOAD_BUFFER = 0;
+
     public static var semiSolids = ["pot", "bed"];
     public static var hazards = ["lava", "enemy", "angel", "hazard", "ogre"];
 
@@ -19,7 +21,7 @@ class MiniEntity extends Entity
     }
 
     override public function update() {
-        if(right < HXP.scene.camera.x - GameScene.GAME_WIDTH * 3) {
+        if(right < HXP.scene.camera.x - OFFSCREEN_UNLOAD_BUFFER) {
             trace("removing offscreen entity");
             HXP.scene.remove(this);
         }
