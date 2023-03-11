@@ -4,6 +4,7 @@ import entities.*;
 import haxepunk.*;
 import haxepunk.graphics.*;
 import haxepunk.graphics.tile.*;
+import haxepunk.graphics.text.*;
 import haxepunk.input.*;
 import haxepunk.masks.*;
 import haxepunk.math.*;
@@ -17,11 +18,10 @@ class GameScene extends Scene
     public static inline var GAME_WIDTH = 320;
     public static inline var GAME_HEIGHT = 180;
     public static inline var EXTEND_LEVEL_BUFFER = 100;
-    public static inline var DEBUG_MODE = true;
     public static inline var HEAVEN_HEIGHT = 200;
     public static inline var LAIR_AND_EARTH_DEPTH = GAME_HEIGHT + 50;
-    //public static inline var SPECIAL_LEVEL_INTERVAL = 7;
-    public static inline var SPECIAL_LEVEL_INTERVAL = 2;
+    public static inline var SPECIAL_LEVEL_INTERVAL = 7;
+    //public static inline var SPECIAL_LEVEL_INTERVAL = 2;
 
     public static var staticZones:Array<String> = ["pot", "bedroom", "lair", "swordroom"];
     public static var specialLevels:Array<String> = ["earth_nest", "heaven_shrine", "hell_ogre"];
@@ -30,6 +30,9 @@ class GameScene extends Scene
     public static var dreamDepth:Int = 0;
     public static var bedDepths:Array<Int> = [];
     public static var totalTime:Float = 0;
+
+    public static var debugMode:Bool = false;
+    private var debugModeIndicator:Text;
 
     public static var sfx:Map<String, Sfx> = null;
 
@@ -53,6 +56,8 @@ class GameScene extends Scene
                 "whoosh" => new Sfx("audio/whoosh.wav"),
                 "spikeland" => new Sfx("audio/spikeland.wav"),
                 "ogre" => new Sfx("audio/ogre.wav"),
+                "enterpot" => new Sfx("audio/enterpot.wav"),
+                "exitpot" => new Sfx("audio/exitpot.wav"),
                 "satandeath" => new Sfx("audio/satandeath.wav"),
                 "shatter" => new Sfx("audio/shatter.wav"),
                 "pickup" => new Sfx("audio/pickup.wav"),
@@ -66,7 +71,15 @@ class GameScene extends Scene
                 "dismount" => new Sfx("audio/dismount.wav"),
                 "spikeactivate" => new Sfx("audio/spikeactivate.wav"),
                 "spikedeactivate" => new Sfx("audio/spikedeactivate.wav"),
-                "spikewarning" => new Sfx("audio/spikewarning.wav")
+                "spikewarning" => new Sfx("audio/spikewarning.wav"),
+                "music_earth1" => new Sfx("audio/music_earth1.wav"),
+                "music_earth2" => new Sfx("audio/music_earth2.wav"),
+                "music_earth3" => new Sfx("audio/music_earth3.wav"),
+                "music_earth4" => new Sfx("audio/music_earth4.wav"),
+                "music_hell" => new Sfx("audio/music_hell.wav"),
+                "music_heaven" => new Sfx("audio/music_heaven.wav"),
+                "music_satan" => new Sfx("audio/music_satan.wav"),
+                "bless" => new Sfx("audio/bless.wav")
             ];
         }
     }
@@ -79,8 +92,25 @@ class GameScene extends Scene
         }
     }
 
+    private function startMusic() {
+        if(zone == "earth") {
+            var musicNum = MathUtil.clamp(bedDepths.length, 1, 4);
+            GameScene.sfx['music_earth${musicNum}'].loop();
+        }
+        else if(zone == "hell") {
+            GameScene.sfx["music_hell"].loop();
+        }
+        else if(zone == "heaven") {
+            GameScene.sfx["music_heaven"].loop();
+        }
+        else if(zone == "lair") {
+            GameScene.sfx["music_satan"].loop();
+        }
+    }
+
 	override public function resume() {
         stopAllLoopingSounds();
+        startMusic();
         if(Player.carrying != null) {
             player.addCarriedItem(new Vector2(
                 player.centerX - Math.floor(Player.carrying.width / 2),
@@ -108,7 +138,12 @@ class GameScene extends Scene
     }
 
     override public function begin() {
+        debugModeIndicator = new Text("INVINCIBILITY ON");
+        debugModeIndicator.scrollX = 0;
+        addGraphic(debugModeIndicator, -99999);
+
         stopAllLoopingSounds();
+        startMusic();
         if(zone == "earth") {
             var bgNum = MathUtil.clamp(bedDepths.length, 1, 4);
             var bg = new Backdrop('graphics/EARTH_BG0${bgNum}.png');
@@ -143,10 +178,10 @@ class GameScene extends Scene
 
     override public function update() {
         GameScene.totalTime += HXP.elapsed;
-        if(DEBUG_MODE) {
-            if(Key.pressed(Key.P)) {
-                player.die();
-            }
+
+        debugModeIndicator.alpha = debugMode ? 1 : 0;
+        if(Key.pressed(Key.P)) {
+            debugMode = !debugMode;
         }
 
         if(zone == "pot" && player.bottom < 0) {
@@ -250,13 +285,14 @@ class GameScene extends Scene
                 add(entity);
             }
         }
+        var safeToLeaveTypes = Item.itemTypes.concat(["lava"]);
         for(entity in level.entities) {
             for(otherEntity in level.entities) {
                 if(
                     entity != otherEntity
                     && entity.collideWith(otherEntity, entity.x, entity.y) != null
-                    && entity.type != "lava"
-                    && otherEntity.type != "lava"
+                    && !safeToLeaveTypes.contains(entity.type)
+                    && !safeToLeaveTypes.contains(otherEntity.type)
                 ) {
                     trace('removing overlapping enemies');
                     remove(entity);

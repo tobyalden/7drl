@@ -59,17 +59,7 @@
         {"name": "item", "id": 51, "_eid": "96531983", "x": 210, "y": 110, "originX": 0, "originY": 0},
         {"name": "item", "id": 52, "_eid": "96531983", "x": 170, "y": 110, "originX": 0, "originY": 0},
         {"name": "item", "id": 53, "_eid": "96531983", "x": 110, "y": 130, "originX": 0, "originY": 0},
-        {"name": "item", "id": 54, "_eid": "96531983", "x": 40, "y": 150, "originX": 0, "originY": 0},
-        {
-          "name": "mount",
-          "id": 55,
-          "_eid": "96773502",
-          "x": 20,
-          "y": 80,
-          "originX": 0,
-          "originY": 0,
-          "values": {"isDragon": false}
-        }
+        {"name": "item", "id": 54, "_eid": "96531983", "x": 40, "y": 150, "originX": 0, "originY": 0}
       ]
     }
   ]

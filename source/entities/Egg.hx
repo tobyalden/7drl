@@ -35,8 +35,11 @@ class Egg extends Item
     }
 
     private function bless() {
-        isBlessed = true;
+        if(!isBlessed) {
+            GameScene.sfx["bless"].play();
+        }
         pulse.tween(0.5, 0xEDF7FA, 0xADD8E6, 0.5, 0.5, Ease.sineInOut);
+        isBlessed = true;
     }
 
     override public function update() {

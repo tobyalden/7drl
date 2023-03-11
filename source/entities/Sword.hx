@@ -26,10 +26,13 @@ class Sword extends Item
         pulse = new ColorTween(TweenType.PingPong);
         addTween(pulse);
 
-        bless(); // TODO: for testing
+        //bless(); // TODO: for testing
     }
 
     private function bless() {
+        if(!isBlessed) {
+            GameScene.sfx["bless"].play();
+        }
         isBlessed = true;
         pulse.tween(0.5, 0xEDF7FA, 0xADD8E6, 0.5, 0.5, Ease.sineInOut);
     }

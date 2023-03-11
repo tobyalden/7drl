@@ -125,6 +125,7 @@ class Player extends MiniEntity
 
     public function exitPot() {
         // TODO: It's possible for an item to clip into a wall and get stuck when exiting
+        GameScene.sfx["exitpot"].play();
         HXP.tween(
             this,
             {
@@ -198,6 +199,7 @@ class Player extends MiniEntity
             canMove = false;
             layer = potUnder.layer + 1;
             lastUsedPot = cast(potUnder, Pot);
+            GameScene.sfx["enterpot"].play();
             HXP.tween(
                 this,
                 {x: Math.floor(potUnder.centerX - width / 2), y: potUnder.y},
@@ -235,7 +237,7 @@ class Player extends MiniEntity
             HXP.alarm(3, function() {
                 removeCarriedItem();
                 GameScene.bedDepths.push(GameScene.dreamDepth);
-                HXP.engine.pushScene(new GameScene(GameScene.dreamDepth >= 4 ? "swordroom" : "earth"));
+                HXP.engine.pushScene(new GameScene(GameScene.bedDepths.length >= 4 ? "swordroom" : "earth"));
             }, this);
         }
     }
@@ -440,7 +442,7 @@ class Player extends MiniEntity
     }
 
     public function die() {
-        if(GameScene.DEBUG_MODE && !Key.pressed(Key.P)) {
+        if(GameScene.debugMode) {
             return;
         }
         stopRiding();

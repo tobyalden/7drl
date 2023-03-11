@@ -63,6 +63,9 @@ class Level extends MiniEntity
                 }
             }
         }
+        else if(levelName.indexOf("earth") != -1) {
+            maxEnemies -= 1;
+        }
 
         for(tileX in 1...walls.columns - 1) {
             for(tileY in 2...walls.rows - 1) {
@@ -230,8 +233,8 @@ class Level extends MiniEntity
                         playerStart = new Vector2(entity.x, entity.y);
                     }
                     if(entity.name == "item") {
-                        if(Random.random < 0.1) {
-                            if(Random.random < 0.333) {
+                        if(Random.random < 0.2) {
+                            if(Random.random < 0.5) {
                                 entities.push(new Pot(entity.x, entity.y - 5));
                             }
                             else {

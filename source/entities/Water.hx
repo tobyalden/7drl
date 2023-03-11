@@ -30,6 +30,9 @@ class Water extends MiniEntity
     }
 
     private function bless() {
+        if(!isBlessed) {
+            GameScene.sfx["bless"].play();
+        }
         isBlessed = true;
         pulse.tween(0.5, 0xEDF7FA, 0xADD8E6, 0.5, 0.5, Ease.sineInOut);
     }
