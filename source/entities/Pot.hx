@@ -42,6 +42,10 @@ class Pot extends Item
         numTimesExited += 1;
         if(numTimesExited == 3) {
             isCracked = true;
+            GameScene.sfx["potbreak"].play();
+        }
+        else {
+            GameScene.sfx["potcrack"].play();
         }
     }
 

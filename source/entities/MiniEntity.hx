@@ -22,7 +22,6 @@ class MiniEntity extends Entity
 
     override public function update() {
         if(right < HXP.scene.camera.x - OFFSCREEN_UNLOAD_BUFFER) {
-            trace("removing offscreen entity");
             HXP.scene.remove(this);
         }
         super.update();

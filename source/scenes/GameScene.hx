@@ -20,7 +20,7 @@ class GameScene extends Scene
     public static inline var EXTEND_LEVEL_BUFFER = 100;
     public static inline var HEAVEN_HEIGHT = 200;
     public static inline var LAIR_AND_EARTH_DEPTH = GAME_HEIGHT + 50;
-    public static inline var SPECIAL_LEVEL_INTERVAL = 4;
+    public static inline var SPECIAL_LEVEL_INTERVAL = 5;
     //public static inline var SPECIAL_LEVEL_INTERVAL = 2;
 
     public static var staticZones:Array<String> = ["pot", "bedroom", "lair", "swordroom"];
@@ -52,6 +52,8 @@ class GameScene extends Scene
                 "takehit" => new Sfx("audio/takehit.wav"),
                 "flap" => new Sfx("audio/flap.wav"),
                 "run" => new Sfx("audio/run.wav"),
+                "potcrack" => new Sfx("audio/potcrack.wav"),
+                "potbreak" => new Sfx("audio/potbreak.wav"),
                 "fall" => new Sfx("audio/fall.wav"),
                 "land" => new Sfx("audio/land.wav"),
                 "whoosh" => new Sfx("audio/whoosh.wav"),
@@ -271,7 +273,6 @@ class GameScene extends Scene
         add(level);
         if(levels.length > 0 && !GameScene.specialLevels.contains(levelName)) {
             level.addEnemies();
-            trace('adding enemies');
         }
         level.offsetEntities();
         levels.push(level);
@@ -305,7 +306,6 @@ class GameScene extends Scene
                     && !safeToLeaveTypes.contains(entity.type)
                     && !safeToLeaveTypes.contains(otherEntity.type)
                 ) {
-                    trace('removing overlapping enemies');
                     remove(entity);
                 }
             }

@@ -118,19 +118,20 @@ class Player extends MiniEntity
             head.x = following.x + distancer.x;
             head.y = following.y + distancer.y;
         }
-        if(velocity.length < 10) {
+        if(velocity.length < 50 && canMove) {
             if(!healthAppearPause.active) {
                 healthAppearPause.start();
-                trace('showing');
             }
         }
         else {
-            trace('hiding');
             healthAppearPause.active = false;
             showHealth = false;
         }
         for(head in heads) {
-            if(showHealth) {
+            if(getScene().zone == "bedroom") {
+                head.sprite.alpha = 0;
+            }
+            else if(showHealth) {
                 head.sprite.alpha = MathUtil.approach(head.sprite.alpha, 1, HXP.elapsed * Head.DISAPPEAR_SPEED);
             }
             else {
