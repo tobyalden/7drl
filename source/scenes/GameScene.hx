@@ -189,6 +189,30 @@ class GameScene extends Scene
             debugMode = !debugMode;
         }
 
+        if(!isStaticZone()) {
+            camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
+            maxCameraX = Math.max(camera.x, maxCameraX);
+            if(camera.x + GAME_WIDTH + EXTEND_LEVEL_BUFFER > getTotalWidthOfLevels()) {
+                //addLevel("earth_nest");
+                //addLevel("heaven_shrine");
+                //addLevel("hell_ogre");
+                //addLevel("earth");
+                if(levels.length % SPECIAL_LEVEL_INTERVAL == 0) {
+                    var specialLevel = [
+                        "earth" => "earth_nest",
+                        "hell" => "hell_ogre",
+                        "heaven" => "heaven_shrine"
+                    ][zone];
+                    addLevel(specialLevel);
+                }
+                else {
+                    addLevel(zone);
+                }
+            }
+        }
+
+        super.update();
+
         if(zone == "pot" && player.bottom < 0) {
             player.removeCarriedItem();
             GameScene.exitedPot = true;
@@ -216,28 +240,6 @@ class GameScene extends Scene
             player.removeCarriedItem();
             player.removeRiding();
             HXP.engine.pushScene(new GameScene("lair"));
-        }
-        super.update();
-        if(!isStaticZone()) {
-            camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
-            maxCameraX = Math.max(camera.x, maxCameraX);
-            if(camera.x + GAME_WIDTH + EXTEND_LEVEL_BUFFER > getTotalWidthOfLevels()) {
-                //addLevel("earth_nest");
-                //addLevel("heaven_shrine");
-                //addLevel("hell_ogre");
-                //addLevel("earth");
-                if(levels.length % SPECIAL_LEVEL_INTERVAL == 0) {
-                    var specialLevel = [
-                        "earth" => "earth_nest",
-                        "hell" => "hell_ogre",
-                        "heaven" => "heaven_shrine"
-                    ][zone];
-                    addLevel(specialLevel);
-                }
-                else {
-                    addLevel(zone);
-                }
-            }
         }
     }
 
