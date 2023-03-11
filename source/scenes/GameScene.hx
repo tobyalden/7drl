@@ -76,6 +76,7 @@ class GameScene extends Scene
                 "spikedeactivate" => new Sfx("audio/spikedeactivate.wav"),
                 "spikewarning" => new Sfx("audio/spikewarning.wav"),
                 "music_earth1" => new Sfx("audio/music_earth1.wav"),
+                "music_earth1_alt" => new Sfx("audio/music_earth1_alt.wav"),
                 "music_earth2" => new Sfx("audio/music_earth2.wav"),
                 "music_earth3" => new Sfx("audio/music_earth3.wav"),
                 "music_earth4" => new Sfx("audio/music_earth4.wav"),
@@ -97,8 +98,11 @@ class GameScene extends Scene
 
     private function startMusic() {
         if(zone == "earth") {
-            var musicNum = MathUtil.clamp(bedDepths.length, 1, 4);
-            GameScene.sfx['music_earth${musicNum}'].loop();
+            var suffix = '${MathUtil.clamp(bedDepths.length, 1, 4)}';
+            if(suffix == '1') {
+                suffix = HXP.choose('1', '1_alt');
+            }
+            GameScene.sfx['music_earth${suffix}'].loop();
         }
         else if(zone == "hell") {
             GameScene.sfx["music_hell"].loop();

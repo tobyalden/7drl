@@ -4,3 +4,4 @@ project.xml.hxml
 export/
 dump/
 source/todo.txt
+assets/audio/*.wav.asd
