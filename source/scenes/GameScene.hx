@@ -20,7 +20,7 @@ class GameScene extends Scene
     public static inline var EXTEND_LEVEL_BUFFER = 100;
     public static inline var HEAVEN_HEIGHT = 200;
     public static inline var LAIR_AND_EARTH_DEPTH = GAME_HEIGHT + 50;
-    public static inline var SPECIAL_LEVEL_INTERVAL = 5;
+    public static inline var SPECIAL_LEVEL_INTERVAL = 4;
     //public static inline var SPECIAL_LEVEL_INTERVAL = 2;
 
     public static var staticZones:Array<String> = ["pot", "bedroom", "lair", "swordroom"];
