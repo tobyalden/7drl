@@ -565,7 +565,7 @@ class Player extends MiniEntity
     }
 
     private function animation() {
-        if(invincibilityTimer.active) {
+        if(invincibilityTimer.active && canMove) {
             sprite.alpha = sprite.alpha == 0 ? 1 : 0;
         }
         else {

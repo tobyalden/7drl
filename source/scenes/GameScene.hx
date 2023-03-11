@@ -196,7 +196,6 @@ class GameScene extends Scene
         if(Key.pressed(Key.P)) {
             debugMode = !debugMode;
         }
-
         super.update();
 
         if(!isStaticZone()) {
@@ -220,9 +219,14 @@ class GameScene extends Scene
                 }
             }
         }
+        camera.y = zone == "pot" ? GameScene.GAME_HEIGHT : 0;
 
-        if(zone == "pot" && player.bottom < 0) {
+        if(zone == "pot" && player.bottom < GameScene.GAME_HEIGHT) {
             player.removeCarriedItem();
+            player.x = GameScene.GAME_WIDTH / 2 - player.width / 2;
+            player.y = GameScene.GAME_HEIGHT;
+            player.velocity.x = 0;
+            player.velocity.y = 0;
             GameScene.exitedPot = true;
             HXP.engine.popScene();
         }
