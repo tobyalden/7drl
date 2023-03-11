@@ -189,6 +189,8 @@ class GameScene extends Scene
             debugMode = !debugMode;
         }
 
+        super.update();
+
         if(!isStaticZone()) {
             camera.x = Math.max(player.centerX - GAME_WIDTH / 3, maxCameraX);
             maxCameraX = Math.max(camera.x, maxCameraX);
@@ -210,8 +212,6 @@ class GameScene extends Scene
                 }
             }
         }
-
-        super.update();
 
         if(zone == "pot" && player.bottom < 0) {
             player.removeCarriedItem();
@@ -278,6 +278,9 @@ class GameScene extends Scene
                 if(getInstance("player") == null) {
                     player = cast(entity, Player);
                     add(player);
+                    for(head in player.heads) {
+                        add(head);
+                    }
                     if(Player.carrying != null) {
                         player.addCarriedItem(new Vector2(
                             player.centerX - Math.floor(Player.carrying.width / 2),

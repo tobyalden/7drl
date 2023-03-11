@@ -29,8 +29,10 @@ class Player extends MiniEntity
 
     static public var carrying(default, null):Item = null;
     static public var riding(default, null):Mount = null;
+    static public var health(default, null):Int = 3;
 
     public var velocity(default, null):Vector2;
+    public var heads(default, null):Array<Head>;
     private var sprite:Spritemap;
     private var timeOffGround:Float;
     private var timeJumpHeld:Float;
@@ -65,6 +67,7 @@ class Player extends MiniEntity
         lastUsedPot = null;
         isAsleep = false;
         wasOnGround = true;
+        heads = [new Head(x, y), new Head(x, y), new Head(x, y)];
     }
 
     private function enterPot(pot:Pot) {
@@ -86,6 +89,31 @@ class Player extends MiniEntity
                 HXP.engine.pushScene(pot.interior);
             }
         }, this);
+    }
+
+    private function updateHeads() {
+        for(i in 0...heads.length) {
+            var head = heads[i];
+            var following:Entity;
+            if(i == 0) {
+                following = this;
+            }
+            else {
+                following = heads[i - 1];
+            }
+            var distancer = new Vector2(head.x - following.x, head.y - following.y);
+            distancer.normalize(Head.FOLLOW_DISTANCE);
+            head.x = following.x + distancer.x;
+            head.y = following.y + distancer.y;
+        }
+        for(head in heads) {
+            if(head.distanceFrom(this) < Head.FOLLOW_DISTANCE) {
+                var distancer = new Vector2(head.x - x, head.y - y);
+                distancer.normalize(Head.FOLLOW_DISTANCE);
+                head.x = x + distancer.x;
+                head.y = y + distancer.y;
+            }
+        }
     }
 
     public function destroyCarriedItem() {
@@ -182,6 +210,7 @@ class Player extends MiniEntity
         if(!wasOnGround && isOnGround()) {
             GameScene.sfx["land"].play();
         }
+        updateHeads();
         super.update();
     }
 
@@ -268,13 +297,13 @@ class Player extends MiniEntity
                     }
                 }
                 GameScene.sfx["toss"].play();
-                carrying = null;
+                Player.carrying = null;
             }
             else if(Player.riding == null) {
                 // You can't pick up items while Player.riding
                 var item = collideAny(Item.itemTypes, x, y + 1);
                 if(item != null) {
-                    carrying = cast(item, Item);
+                    Player.carrying = cast(item, Item);
                     if(item.type == "sword") {
                         GameScene.sfx["pickupsword"].play();
                     }
