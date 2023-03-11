@@ -34,6 +34,9 @@ class FallingSpike extends MiniEntity
     }
 
     public function fall() {
+        if(!isFalling) {
+            GameScene.sfx["fall"].play();
+        }
         isFalling = true;
     }
 
@@ -46,9 +49,9 @@ class FallingSpike extends MiniEntity
                 Std.int(getPlayer().centerX), Std.int(getPlayer().centerY)
             ) == null
         ) {
-            isFalling = true;
+            fall();
         }
-        if(isFalling) {
+        if(isFalling && !vanishTimer.active) {
             velocity.y += Player.GRAVITY * HXP.elapsed;
             velocity.y = MathUtil.clamp(
                 velocity.y, -Player.MAX_FALL_SPEED, Player.MAX_FALL_SPEED
@@ -60,6 +63,7 @@ class FallingSpike extends MiniEntity
 
     override public function moveCollideY(_:Entity) {
         velocity.y = 0;
+        GameScene.sfx["spikeland"].play();
         if(!vanishTimer.active) {
             vanishTimer.start();
         }

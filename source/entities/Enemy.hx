@@ -29,8 +29,13 @@ class Enemy extends MiniEntity
             if(item.type == "mount" && Player.riding == item) {
                 // No effect
             }
-            else if(type == "angel" || type == "ogre") {
+            else if(type == "angel") {
                 // No effect
+            }
+            else if(type == "ogre") {
+                if(item.type == "sword") {
+                    die();
+                }
             }
             else if(cast(item, Item).velocity.length > 50) {
                 die();
@@ -43,8 +48,10 @@ class Enemy extends MiniEntity
     }
 
     private function die() {
-        explode(3);
-        GameScene.sfx["enemydie"].play();
+        if(isOnScreen()) {
+            explode(3);
+            GameScene.sfx["enemydie"].play();
+        }
         HXP.scene.remove(this);
     }
 

@@ -65,6 +65,8 @@ class Satan extends Enemy
     }
 
     override private function die() {
+        GameScene.sfx["shatter"].play();
+        GameScene.sfx["satandeath"].play();
         mover.active = false;
         fireTimer.active = false;
         collidable = false;

@@ -26,7 +26,7 @@ class Sword extends Item
         pulse = new ColorTween(TweenType.PingPong);
         addTween(pulse);
 
-        //bless(); // TODO: for testing
+        bless(); // TODO: for testing
     }
 
     private function bless() {

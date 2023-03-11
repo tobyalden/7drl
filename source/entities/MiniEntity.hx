@@ -12,7 +12,7 @@ import scenes.*;
 class MiniEntity extends Entity
 {
     public static var semiSolids = ["pot", "bed"];
-    public static var hazards = ["lava", "enemy", "angel", "hazard"];
+    public static var hazards = ["lava", "enemy", "angel", "hazard", "ogre"];
 
     public function new(x:Float, y:Float) {
         super(x, y);
@@ -54,6 +54,10 @@ class MiniEntity extends Entity
 
     private function getScene() {
         return cast(HXP.scene, GameScene);
+    }
+
+    private function isOnScreen() {
+        return right > HXP.scene.camera.x && x < (HXP.scene.camera.x + GameScene.GAME_WIDTH);
     }
 
     private function preventBacktracking() {

@@ -39,8 +39,8 @@ class Main extends Engine
 
         //HXP.scene = new GameScene("bedroom");
         //HXP.scene = new GameScene("heaven");
-        HXP.scene = new GameScene("earth");
-        //HXP.scene = new GameScene("hell");
+        //HXP.scene = new GameScene("earth");
+        HXP.scene = new GameScene("hell");
         //HXP.scene = new GameScene("pot");
         //HXP.scene = new GameScene("swordroom");
         //HXP.scene = new Victory();

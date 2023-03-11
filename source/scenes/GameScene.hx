@@ -20,7 +20,8 @@ class GameScene extends Scene
     public static inline var DEBUG_MODE = true;
     public static inline var HEAVEN_HEIGHT = 200;
     public static inline var LAIR_AND_EARTH_DEPTH = GAME_HEIGHT + 50;
-    public static inline var SPECIAL_LEVEL_INTERVAL = 7;
+    //public static inline var SPECIAL_LEVEL_INTERVAL = 7;
+    public static inline var SPECIAL_LEVEL_INTERVAL = 2;
 
     public static var staticZones:Array<String> = ["pot", "bedroom", "lair", "swordroom"];
     public static var specialLevels:Array<String> = ["earth_nest", "heaven_shrine", "hell_ogre"];
@@ -47,6 +48,12 @@ class GameScene extends Scene
                 "jump" => new Sfx("audio/jump.wav"),
                 "flap" => new Sfx("audio/flap.wav"),
                 "run" => new Sfx("audio/run.wav"),
+                "fall" => new Sfx("audio/fall.wav"),
+                "land" => new Sfx("audio/land.wav"),
+                "whoosh" => new Sfx("audio/whoosh.wav"),
+                "spikeland" => new Sfx("audio/spikeland.wav"),
+                "ogre" => new Sfx("audio/ogre.wav"),
+                "satandeath" => new Sfx("audio/satandeath.wav"),
                 "shatter" => new Sfx("audio/shatter.wav"),
                 "pickup" => new Sfx("audio/pickup.wav"),
                 "toss" => new Sfx("audio/toss.wav"),

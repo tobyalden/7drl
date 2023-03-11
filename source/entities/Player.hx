@@ -38,6 +38,7 @@ class Player extends MiniEntity
     private var canMove:Bool;
     private var lastUsedPot:Pot;
     private var isAsleep:Bool;
+    private var wasOnGround:Bool;
 
     public function new(x:Float, y:Float) {
         super(x, y - 5);
@@ -63,6 +64,7 @@ class Player extends MiniEntity
         canMove = true;
         lastUsedPot = null;
         isAsleep = false;
+        wasOnGround = true;
     }
 
     private function enterPot(pot:Pot) {
@@ -156,6 +158,7 @@ class Player extends MiniEntity
     }
 
     override public function update() {
+        wasOnGround = isOnGround();
         if(canMove) {
             handlePots();
             handleBeds();
@@ -174,6 +177,9 @@ class Player extends MiniEntity
         }
         collisions();
         sound();
+        if(!wasOnGround && isOnGround()) {
+            GameScene.sfx["land"].play();
+        }
         super.update();
     }
 
@@ -416,7 +422,7 @@ class Player extends MiniEntity
     }
 
     private function sound() {
-        if(isOnGround() && Player.riding == null && Math.abs(velocity.x) > 0) {
+        if(isOnGround() && Player.riding == null && Math.abs(velocity.x) > 0 && canMove) {
             if(!GameScene.sfx["run"].playing) {
                 GameScene.sfx["run"].loop();
             }

@@ -36,6 +36,7 @@ class Mount extends Item
     private var distanceTraveled:Float;
     private var eggSpawner:Alarm;
     private var sprite:Spritemap;
+    private var wasOnGround:Bool;
 
     public function new(x:Float, y:Float, isDragon:Bool) {
         super(x, y - 10);
@@ -63,6 +64,7 @@ class Mount extends Item
         });
         addTween(eggSpawner);
         distanceTraveled = 0;
+        wasOnGround = true;
     }
 
     private function spawnEgg() {
@@ -71,6 +73,7 @@ class Mount extends Item
     }
 
     override public function update() {
+        wasOnGround = isOnGround();
         if(Player.riding == this) {
             if(Input.pressed("jump") && (Input.check("up") || Input.check("down"))) {
                 getPlayer().stopRiding();
@@ -107,6 +110,9 @@ class Mount extends Item
             die();
         }
         animation();
+        if(!wasOnGround && isOnGround()) {
+            GameScene.sfx["land"].play();
+        }
         super.update();
     }
 

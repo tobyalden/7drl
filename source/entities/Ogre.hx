@@ -22,6 +22,7 @@ class Ogre extends Enemy
 
     public function new(x:Float, y:Float) {
         super(x, y);
+        type = "ogre";
         mask = new Hitbox(30, 40);
         sprite = new Spritemap("graphics/ogre.png", width, height);
         sprite.add("asleep", [0]);
@@ -33,14 +34,13 @@ class Ogre extends Enemy
     }
 
     private function jump() {
+        if(isOnScreen()) {
+            GameScene.sfx["ogre"].play();
+        }
         velocity = new Vector2(
             (centerX > getPlayer().centerX ? -1 : 1) * SPEED,
             -JUMP_POWER
         );
-    }
-
-    override function die() {
-        // He can't die!
     }
 
     override public function update() {
