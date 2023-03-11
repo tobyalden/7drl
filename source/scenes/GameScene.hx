@@ -49,6 +49,7 @@ class GameScene extends Scene
                 "chicken_alert" => new Sfx("audio/chicken_alert.wav"),
                 "chicken_lay" => new Sfx("audio/chicken_lay.wav"),
                 "jump" => new Sfx("audio/jump.wav"),
+                "takehit" => new Sfx("audio/takehit.wav"),
                 "flap" => new Sfx("audio/flap.wav"),
                 "run" => new Sfx("audio/run.wav"),
                 "fall" => new Sfx("audio/fall.wav"),
@@ -178,6 +179,7 @@ class GameScene extends Scene
 
     override public function update() {
         if(zone == "bedroom") {
+            player.maxOutHealth();
             GameScene.totalTime = 0;
         }
         else {

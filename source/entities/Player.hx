@@ -26,6 +26,8 @@ class Player extends MiniEntity
     public static inline var TOSS_VELOCITY_Y = 150;
     public static inline var DETACH_DISTANCE = 10;
     public static inline var RIDE_COOLDOWN = 0.5;
+    public static inline var MAX_HEALTH = 3;
+    public static inline var INVINCIBLE_TIME = 2;
 
     static public var carrying(default, null):Item = null;
     static public var riding(default, null):Mount = null;
@@ -41,6 +43,9 @@ class Player extends MiniEntity
     private var lastUsedPot:Pot;
     private var isAsleep:Bool;
     private var wasOnGround:Bool;
+    private var invincibilityTimer:Alarm;
+    private var healthAppearPause:Alarm;
+    private var showHealth:Bool;
 
     public function new(x:Float, y:Float) {
         super(x, y - 5);
@@ -68,6 +73,13 @@ class Player extends MiniEntity
         isAsleep = false;
         wasOnGround = true;
         heads = [new Head(x, y), new Head(x, y), new Head(x, y)];
+        invincibilityTimer = new Alarm(INVINCIBLE_TIME);
+        addTween(invincibilityTimer);
+        healthAppearPause = new Alarm(1, function() {
+            showHealth = true;
+        });
+        addTween(healthAppearPause);
+        showHealth = false;
     }
 
     private function enterPot(pot:Pot) {
@@ -106,14 +118,39 @@ class Player extends MiniEntity
             head.x = following.x + distancer.x;
             head.y = following.y + distancer.y;
         }
+        if(velocity.length < 10) {
+            if(!healthAppearPause.active) {
+                healthAppearPause.start();
+                trace('showing');
+            }
+        }
+        else {
+            trace('hiding');
+            healthAppearPause.active = false;
+            showHealth = false;
+        }
         for(head in heads) {
+            if(showHealth) {
+                head.sprite.alpha = MathUtil.approach(head.sprite.alpha, 1, HXP.elapsed * Head.DISAPPEAR_SPEED);
+            }
+            else {
+                head.sprite.alpha = MathUtil.approach(head.sprite.alpha, 0, HXP.elapsed * Head.APPEAR_SPEED);
+            }
             if(head.distanceFrom(this) < Head.FOLLOW_DISTANCE) {
                 var distancer = new Vector2(head.x - x, head.y - y);
                 distancer.normalize(Head.FOLLOW_DISTANCE);
                 head.x = x + distancer.x;
                 head.y = y + distancer.y;
             }
+            head.sprite.play("dead");
         }
+        for(i in 0...health) {
+            heads[i].sprite.play("alive");
+        }
+    }
+
+    public function maxOutHealth() {
+        health = MAX_HEALTH;
     }
 
     public function destroyCarriedItem() {
@@ -163,6 +200,7 @@ class Player extends MiniEntity
             1,
             {complete: function() {
                 canMove = true;
+                invincibilityTimer.start();
                 layer = -10;
                 if(lastUsedPot != null) {
                     lastUsedPot.crack();
@@ -462,7 +500,26 @@ class Player extends MiniEntity
             hazard != null
             && canMove
             && !(hazard.type == "lava" && Player.riding != null && Player.riding.isDragon)) {
+            if(hazard.type == "lava") {
+                die();
+            }
+            else {
+                takeHit();
+            }
+        }
+    }
+
+    private function takeHit() {
+        if(invincibilityTimer.active) {
+            return;
+        }
+        health -= 1;
+        if(health <= 0) {
             die();
+        }
+        else {
+            GameScene.sfx["takehit"].play();
+            invincibilityTimer.start();
         }
     }
 
@@ -507,6 +564,12 @@ class Player extends MiniEntity
     }
 
     private function animation() {
+        if(invincibilityTimer.active) {
+            sprite.alpha = sprite.alpha == 0 ? 1 : 0;
+        }
+        else {
+            sprite.alpha = 1;
+        }
         var suffix = carrying != null ? "_carrying" : "";
         var action = "idle";
         if(Player.riding != null) {
