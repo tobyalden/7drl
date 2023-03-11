@@ -24,8 +24,8 @@ class Mount extends Item
     public static inline var JUMP_BUFFER_TIME = 1 / 60 * 5;
 
     public static inline var FLAP_POWER = 250;
-    //public static inline var EGG_SPAWN_DISTANCE = GameScene.GAME_WIDTH * 5;
-    public static inline var EGG_SPAWN_DISTANCE = 100;
+    public static inline var EGG_SPAWN_DISTANCE = GameScene.GAME_WIDTH * 5;
+    //public static inline var EGG_SPAWN_DISTANCE = 100;
     public static inline var EGG_SPAWN_TIME = 2;
 
     public static inline var DRAGON_FLY_SPEED = 175;

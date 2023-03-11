@@ -155,6 +155,7 @@ class Player extends MiniEntity
     public function wakeUp() {
         canMove = true;
         isAsleep = false;
+        GameScene.sfx["wakeup"].play();
     }
 
     override public function update() {
@@ -230,7 +231,8 @@ class Player extends MiniEntity
                 ["walls"]
             );
             isAsleep = true;
-            HXP.alarm(1, function() {
+            GameScene.sfx["dream"].play();
+            HXP.alarm(3, function() {
                 removeCarriedItem();
                 GameScene.bedDepths.push(GameScene.dreamDepth);
                 HXP.engine.pushScene(new GameScene(GameScene.dreamDepth >= 4 ? "swordroom" : "earth"));
@@ -268,7 +270,12 @@ class Player extends MiniEntity
                 var item = collideAny(Item.itemTypes, x, y + 1);
                 if(item != null) {
                     carrying = cast(item, Item);
-                    GameScene.sfx["pickup"].play();
+                    if(item.type == "sword") {
+                        GameScene.sfx["pickupsword"].play();
+                    }
+                    else {
+                        GameScene.sfx["pickup"].play();
+                    }
                 }
             }
         }
@@ -432,8 +439,10 @@ class Player extends MiniEntity
         }
     }
 
-    private function die() {
-        //return; // TODO: REMOVE THIS!
+    public function die() {
+        if(GameScene.DEBUG_MODE && !Key.pressed(Key.P)) {
+            return;
+        }
         stopRiding();
         canMove = false;
         visible = false;

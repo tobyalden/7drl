@@ -56,8 +56,11 @@ class GameScene extends Scene
                 "satandeath" => new Sfx("audio/satandeath.wav"),
                 "shatter" => new Sfx("audio/shatter.wav"),
                 "pickup" => new Sfx("audio/pickup.wav"),
+                "pickupsword" => new Sfx("audio/pickupsword.wav"),
                 "toss" => new Sfx("audio/toss.wav"),
                 "die" => new Sfx("audio/die.wav"),
+                "wakeup" => new Sfx("audio/wakeup.wav"),
+                "dream" => new Sfx("audio/dream.wav"),
                 "enemydie" => new Sfx("audio/enemydie.wav"),
                 "mount" => new Sfx("audio/mount.wav"),
                 "dismount" => new Sfx("audio/dismount.wav"),
@@ -122,6 +125,18 @@ class GameScene extends Scene
             bg.scrollX = 0.5;
             addGraphic(bg, 99);
         }
+        else if(zone == "pot") {
+            var bg = new Backdrop('graphics/INSIDE_POT_BG.png');
+            addGraphic(bg, 99);
+        }
+        else if(zone == "bedroom") {
+            var bg = new Backdrop('graphics/BEDROOM_BG.png');
+            addGraphic(bg, 99);
+        }
+        else if(zone == "swordroom") {
+            var bg = new Backdrop('graphics/swordroomBG.png');
+            addGraphic(bg, 99);
+        }
         levels = [];
         addLevel(zone);
     }
@@ -130,7 +145,7 @@ class GameScene extends Scene
         GameScene.totalTime += HXP.elapsed;
         if(DEBUG_MODE) {
             if(Key.pressed(Key.P)) {
-                trace(bedDepths);
+                player.die();
             }
         }
 

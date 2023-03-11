@@ -18,6 +18,14 @@ class MiniEntity extends Entity
         super(x, y);
     }
 
+    override public function update() {
+        if(right < HXP.scene.camera.x - GameScene.GAME_WIDTH * 3) {
+            trace("removing offscreen entity");
+            HXP.scene.remove(this);
+        }
+        super.update();
+    }
+
     private function isOnGround() {
         return collideAny(["walls"], x, y + 1) != null;
     }
