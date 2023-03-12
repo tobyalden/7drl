@@ -198,7 +198,7 @@ class GameScene extends Scene
 
         debugModeIndicator.alpha = debugMode ? 1 : 0;
         if(Key.pressed(Key.P)) {
-            debugMode = !debugMode;
+            //debugMode = !debugMode;
         }
         super.update();
 
