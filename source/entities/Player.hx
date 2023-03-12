@@ -28,10 +28,13 @@ class Player extends MiniEntity
     public static inline var RIDE_COOLDOWN = 0.5;
     public static inline var MAX_HEALTH = 3;
     public static inline var INVINCIBLE_TIME = 2;
+    public static inline var KNOCKBACK_TIME = 0.3;
+    public static inline var KNOCKBACK_SPEED_X = 130;
+    public static inline var KNOCKBACK_SPEED_Y = 150;
 
     static public var carrying(default, null):Item = null;
     static public var riding(default, null):Mount = null;
-    static public var health(default, null):Int = 3;
+    static public var health(default, null):Int = MAX_HEALTH;
 
     public var velocity(default, null):Vector2;
     public var heads(default, null):Array<Head>;
@@ -44,6 +47,7 @@ class Player extends MiniEntity
     private var isAsleep:Bool;
     private var wasOnGround:Bool;
     private var invincibilityTimer:Alarm;
+    private var knockbackTimer:Alarm;
     private var healthAppearPause:Alarm;
     private var showHealth:Bool;
 
@@ -75,6 +79,8 @@ class Player extends MiniEntity
         heads = [new Head(x, y), new Head(x, y), new Head(x, y)];
         invincibilityTimer = new Alarm(INVINCIBLE_TIME);
         addTween(invincibilityTimer);
+        knockbackTimer = new Alarm(KNOCKBACK_TIME);
+        addTween(knockbackTimer);
         healthAppearPause = new Alarm(1, function() {
             showHealth = true;
         });
@@ -406,7 +412,10 @@ class Player extends MiniEntity
     }
 
     private function movement() {
-        if(isOnGround()) {
+        if(knockbackTimer.active) {
+            // Do nothing
+        }
+        else if(isOnGround()) {
             timeOffGround = 0;
             if(Input.check("left") && !isOnLeftWall()) {
                 velocity.x -= RUN_ACCEL * HXP.elapsed;
@@ -438,19 +447,24 @@ class Player extends MiniEntity
         var maxSpeed = isOnGround() ? MAX_RUN_SPEED : MAX_AIR_SPEED;
         velocity.x = MathUtil.clamp(velocity.x, -maxSpeed, maxSpeed);
 
-        if(isOnGround()) {
-            velocity.y = 0;
-        }
-        else {
-            if(Input.released("jump") && velocity.y < -JUMP_CANCEL) {
-                velocity.y = -JUMP_CANCEL;
+        if(!knockbackTimer.active) {
+            if(isOnGround()) {
+                velocity.y = 0;
+            }
+            else {
+                if(Input.released("jump") && velocity.y < -JUMP_CANCEL) {
+                    velocity.y = -JUMP_CANCEL;
+                }
             }
         }
 
         if(isOnGroundOrSemiSolid() || timeOffGround <= COYOTE_TIME) {
             if(
-                Input.pressed("jump")
-                || Input.check("jump") && timeJumpHeld <= JUMP_BUFFER_TIME
+                (
+                    Input.pressed("jump")
+                    || Input.check("jump") && timeJumpHeld <= JUMP_BUFFER_TIME
+                )
+                && !knockbackTimer.active
             ) {
                 var jumpPower:Float = JUMP_POWER;
                 if(collide("water", x, y) != null) {
@@ -537,6 +551,9 @@ class Player extends MiniEntity
         else {
             GameScene.sfx["takehit"].play();
             invincibilityTimer.start();
+            knockbackTimer.start();
+            velocity.x = sprite.flipX ? 1 : -1 * KNOCKBACK_SPEED_X;
+            velocity.y = -KNOCKBACK_SPEED_Y;
         }
     }
 
