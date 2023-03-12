@@ -89,6 +89,9 @@ class Egg extends Item
         if(isBlessed) {
             GameScene.sfx["dragonhatch"].play();
         }
+        else {
+            GameScene.sfx["chicken_alert"].play();
+        }
         crack();
     }
 
