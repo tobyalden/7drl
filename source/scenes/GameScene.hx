@@ -13,6 +13,11 @@ import haxepunk.tweens.misc.*;
 import haxepunk.utils.*;
 import openfl.Assets;
 
+typedef BedDepth = {
+    var depth:Int;
+    var health:Int;
+}
+
 class GameScene extends Scene
 {
     public static inline var GAME_WIDTH = 320;
@@ -28,7 +33,9 @@ class GameScene extends Scene
     public static var exitedPot:Bool = false;
     public static var wokeUp:Bool = false;
     public static var dreamDepth:Int = 0;
-    public static var bedDepths:Array<Int> = [];
+
+    public static var bedDepths:Array<BedDepth> = [];
+
     public static var totalTime:Float = 0;
 
     public static var debugMode:Bool = false;
@@ -189,7 +196,6 @@ class GameScene extends Scene
 
     override public function update() {
         if(zone == "bedroom") {
-            player.maxOutHealth();
             GameScene.totalTime = 0;
         }
         else {
@@ -261,13 +267,20 @@ class GameScene extends Scene
 
     public function onDeath() {
         HXP.alarm(2, function() {
-            var lastBedDepth = GameScene.bedDepths.length > 0 ? GameScene.bedDepths.pop() : 0;
-            var popNum = GameScene.dreamDepth - lastBedDepth;
+            var lastBedDepth:BedDepth;
+            if(GameScene.bedDepths.length > 0) {
+                lastBedDepth = GameScene.bedDepths.pop();
+            }
+            else {
+                lastBedDepth = {depth: 0, health: Player.MAX_HEALTH};
+            }
+            var popNum = GameScene.dreamDepth - lastBedDepth.depth;
+            Player.health = lastBedDepth.health;
             for(i in 0...popNum) {
                 HXP.engine.popScene();
             }
             player.removeCarriedItem();
-            if(lastBedDepth == 0) {
+            if(lastBedDepth.depth == 0) {
                 // You can't carry items from dreams into the real world
                 player.destroyCarriedItem();
             }

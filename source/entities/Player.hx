@@ -35,7 +35,7 @@ class Player extends MiniEntity
 
     static public var carrying(default, null):Item = null;
     static public var riding(default, null):Mount = null;
-    static public var health(default, null):Int = MAX_HEALTH;
+    static public var health:Int = MAX_HEALTH;
 
     public var velocity(default, null):Vector2;
     public var heads(default, null):Array<Head>;
@@ -235,6 +235,9 @@ class Player extends MiniEntity
         canMove = true;
         isAsleep = false;
         GameScene.sfx["wakeup"].play();
+        if(getScene().zone != "bedroom") {
+            invincibilityTimer.start();
+        }
     }
 
     override public function update() {
@@ -315,8 +318,8 @@ class Player extends MiniEntity
             GameScene.sfx["dream"].play(0.5);
             HXP.alarm(3, function() {
                 removeCarriedItem();
-                GameScene.bedDepths.push(GameScene.dreamDepth);
-                HXP.engine.pushScene(new GameScene(GameScene.bedDepths.length >= 4 ? "swordroom" : "earth"));
+                GameScene.bedDepths.push({depth: GameScene.dreamDepth, health: Player.health});
+                HXP.engine.pushScene(new GameScene(GameScene.bedDepths.length > 4 ? "swordroom" : "earth"));
             }, this);
         }
     }
