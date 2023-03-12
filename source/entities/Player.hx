@@ -31,6 +31,7 @@ class Player extends MiniEntity
     public static inline var KNOCKBACK_TIME = 0.3;
     public static inline var KNOCKBACK_SPEED_X = 130;
     public static inline var KNOCKBACK_SPEED_Y = 150;
+    public static inline var HEAD_APPEAR_VELOCITY_THRESHOLD = 50;
 
     static public var carrying(default, null):Item = null;
     static public var riding(default, null):Mount = null;
@@ -124,7 +125,11 @@ class Player extends MiniEntity
             head.x = following.x + distancer.x;
             head.y = following.y + distancer.y;
         }
-        if(velocity.length < 50 && canMove) {
+        var isStill = (
+            Player.riding == null && velocity.length < HEAD_APPEAR_VELOCITY_THRESHOLD
+            || Player.riding != null && Player.riding.velocity.length < HEAD_APPEAR_VELOCITY_THRESHOLD
+        );
+        if(isStill && canMove) {
             if(!healthAppearPause.active) {
                 healthAppearPause.start();
             }
