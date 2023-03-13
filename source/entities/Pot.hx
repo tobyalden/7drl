@@ -7,6 +7,7 @@ import haxepunk.masks.*;
 import haxepunk.math.*;
 import haxepunk.Tween;
 import haxepunk.tweens.misc.*;
+import haxepunk.utils.*;
 import scenes.*;
 
 class Pot extends Item
@@ -16,6 +17,8 @@ class Pot extends Item
 
     private var sprite:Spritemap;
     private var numTimesExited:Int;
+    private var isBlessed:Bool;
+    private var pulse:ColorTween;
 
     public function new(x:Float, y:Float) {
         super(x, y);
@@ -32,6 +35,19 @@ class Pot extends Item
         isCracked = false;
         interior = null;
         numTimesExited = 0;
+        isBlessed = false;
+        pulse = new ColorTween(TweenType.PingPong);
+        addTween(pulse);
+        //bless(); // TODO: for testing
+    }
+
+    private function bless() {
+        if(!isBlessed) {
+            GameScene.sfx["bless"].play();
+        }
+        pulse.tween(0.5, 0xEDF7FA, 0xADD8E6, 0.5, 0.5, Ease.sineInOut);
+        isBlessed = true;
+        numTimesExited = 0;
     }
 
     public function createInterior() {
@@ -39,6 +55,9 @@ class Pot extends Item
     }
 
     public function crack() {
+        if(isBlessed) {
+            return;
+        }
         numTimesExited += 1;
         if(numTimesExited == 3) {
             isCracked = true;
@@ -55,6 +74,13 @@ class Pot extends Item
         }
         else {
             sprite.play('crack${numTimesExited}');
+        }
+        var water = collide("water", x, y);
+        if(water != null && cast(water, Water).isBlessed && !isBlessed) {
+            bless();
+        }
+        if(isBlessed) {
+            sprite.color = pulse.color;
         }
         super.update();
     }
