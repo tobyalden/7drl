@@ -281,7 +281,7 @@ class Level extends MiniEntity
                         entities.push(new Satan(entity.x, entity.y));
                     }
                     if(entity.name == "sword") {
-                        entities.push(new Sword(entity.x, entity.y));
+                        entities.push(new Sword(entity.x, entity.y, GameScene.isTooNaughty()));
                     }
                     if(entity.name == "human") {
                         entities.push(HXP.choose(

@@ -12,17 +12,20 @@ import scenes.*;
 
 class Sword extends Item
 {
-    public var isBlessed(default, null):Bool;
+    public var isCursed(default, null):Bool;
     private var pulse:ColorTween;
-    private var sprite:Image;
+    private var sprite:Spritemap;
 
-    public function new(x:Float, y:Float) {
+    public function new(x:Float, y:Float, startCursed:Bool) {
         super(x, y - 5);
+        isCursed = startCursed;
         type = "sword";
         mask = new Hitbox(15, 20);
-        sprite = new Image("graphics/sword.png");
+        sprite = new Spritemap("graphics/sword.png", 15, 20);
+        sprite.add("uncursed", [0]);
+        sprite.add("cursed", [1]);
+        sprite.play(isCursed ? "cursed" : "uncursed");
         graphic = sprite;
-        isBlessed = false;
         pulse = new ColorTween(TweenType.PingPong);
         addTween(pulse);
 
@@ -30,21 +33,17 @@ class Sword extends Item
     }
 
     private function bless() {
-        if(!isBlessed) {
-            GameScene.sfx["bless"].play();
-        }
-        isBlessed = true;
+        GameScene.sfx["bless"].play();
+        isCursed = false;
         pulse.tween(0.5, 0xEDF7FA, 0xADD8E6, 0.5, 0.5, Ease.sineInOut);
     }
 
     override public function update() {
         var water = collide("water", x, y);
-        if(water != null && cast(water, Water).isBlessed && !isBlessed) {
+        if(water != null && cast(water, Water).isBlessed && isCursed) {
             bless();
         }
-        if(isBlessed) {
-            sprite.color = pulse.color;
-        }
+        sprite.play(isCursed ? "cursed" : "uncursed");
         super.update();
     }
 }

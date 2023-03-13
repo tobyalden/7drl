@@ -317,6 +317,15 @@ class Player extends MiniEntity
             isAsleep = true;
             GameScene.sfx["dream"].play(0.5);
             HXP.alarm(3, function() {
+                if(bedUnder == Player.carrying) {
+                    GameScene.naughtyLevel += 1;
+                    if(GameScene.naughtyLevel < GameScene.NAUGHTY_LEVEL_CURSE_THRESHOLD) {
+                        GameScene.sfx["naughty"].play();
+                    }
+                    else if(GameScene.naughtyLevel == GameScene.NAUGHTY_LEVEL_CURSE_THRESHOLD) {
+                        GameScene.sfx["toonaughty"].play();
+                    }
+                }
                 removeCarriedItem();
                 GameScene.bedDepths.push({depth: GameScene.dreamDepth, health: Player.health});
                 HXP.engine.pushScene(new GameScene(GameScene.bedDepths.length > 4 ? "swordroom" : "earth"));
@@ -325,7 +334,12 @@ class Player extends MiniEntity
     }
 
     private function action() {
-        if(Input.pressed("action")) {
+        var isCarryingCursedSword = (
+            carrying != null
+            && carrying.type == "sword"
+            && cast(carrying, Sword).isCursed
+        );
+        if(Input.pressed("action") && !isCarryingCursedSword) {
             if(carrying != null) {
                 if(Input.check("down")) {
                     carrying.moveTo(
@@ -369,6 +383,9 @@ class Player extends MiniEntity
                     else {
                         Player.carrying = cast(item, Item);
                         if(item.type == "sword") {
+                            if(cast(item, Sword).isCursed) {
+                                GameScene.sfx["swordattach"].play();
+                            }
                             GameScene.sfx["pickupsword"].play();
                         }
                         else {
@@ -394,7 +411,12 @@ class Player extends MiniEntity
             ["walls"]
         );
         if(distanceFrom(carrying, true) > DETACH_DISTANCE) {
-            carrying = null;
+            if(carrying.type == "sword" && cast(carrying, Sword).isCursed) {
+                takeHit();
+            }
+            else {
+                carrying = null;
+            }
         }
     }
 

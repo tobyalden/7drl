@@ -26,6 +26,7 @@ class GameScene extends Scene
     public static inline var HEAVEN_HEIGHT = 200;
     public static inline var LAIR_AND_EARTH_DEPTH = GAME_HEIGHT + 50;
     public static inline var SPECIAL_LEVEL_INTERVAL = 5;
+    public static inline var NAUGHTY_LEVEL_CURSE_THRESHOLD = 2;
     //public static inline var SPECIAL_LEVEL_INTERVAL = 2;
 
     public static var staticZones:Array<String> = ["pot", "bedroom", "lair", "swordroom"];
@@ -33,6 +34,7 @@ class GameScene extends Scene
     public static var exitedPot:Bool = false;
     public static var wokeUp:Bool = false;
     public static var dreamDepth:Int = 0;
+    public static var naughtyLevel:Int = 0;
 
     public static var bedDepths:Array<BedDepth> = [];
 
@@ -57,6 +59,8 @@ class GameScene extends Scene
                 "chicken_lay" => new Sfx("audio/chicken_lay.ogg"),
                 "jump" => new Sfx("audio/jump.ogg"),
                 "eat" => new Sfx("audio/eat.ogg"),
+                "naughty" => new Sfx("audio/naughty.ogg"),
+                "toonaughty" => new Sfx("audio/toonaughty.ogg"),
                 "dragonhatch" => new Sfx("audio/dragonhatch.ogg"),
                 "dragonfly" => new Sfx("audio/dragonfly.ogg"),
                 "takehit" => new Sfx("audio/takehit.ogg"),
@@ -75,6 +79,7 @@ class GameScene extends Scene
                 "shatter" => new Sfx("audio/shatter.ogg"),
                 "pickup" => new Sfx("audio/pickup.ogg"),
                 "pickupsword" => new Sfx("audio/pickupsword.ogg"),
+                "swordattach" => new Sfx("audio/swordattach.ogg"),
                 "toss" => new Sfx("audio/toss.ogg"),
                 "die" => new Sfx("audio/die.ogg"),
                 "wakeup" => new Sfx("audio/wakeup.ogg"),
@@ -187,11 +192,21 @@ class GameScene extends Scene
             addGraphic(bg, 99);
         }
         else if(zone == "swordroom") {
-            var bg = new Backdrop('graphics/swordroomBG.png');
-            addGraphic(bg, 99);
+            if(isTooNaughty()) {
+                var bg = new Backdrop('graphics/swordroomBG_cursed.png');
+                addGraphic(bg, 99);
+            }
+            else {
+                var bg = new Backdrop('graphics/swordroomBG.png');
+                addGraphic(bg, 99);
+            }
         }
         levels = [];
         addLevel(zone);
+    }
+
+    public static function isTooNaughty() {
+        return GameScene.naughtyLevel >= GameScene.NAUGHTY_LEVEL_CURSE_THRESHOLD;
     }
 
     override public function update() {
@@ -283,6 +298,7 @@ class GameScene extends Scene
             if(lastBedDepth.depth == 0) {
                 // You can't carry items from dreams into the real world
                 player.destroyCarriedItem();
+                GameScene.naughtyLevel = 0;
             }
             GameScene.wokeUp = true;
         });

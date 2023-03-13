@@ -83,7 +83,7 @@ class Satan extends Enemy
 
     override public function update() {
         var sword = collide("sword", x, y);
-        if(sword != null && cast(sword, Sword).isBlessed) {
+        if(sword != null) {
             die();
         }
         super.update();
