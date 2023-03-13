@@ -13,6 +13,18 @@ class Level extends MiniEntity
     public static inline var TILE_SIZE = 10;
     public static inline var DEFAULT_MAX_ENEMIES = 3;
 
+    public static var itemSpawnBag = [
+        false, false, false, false, true,
+        false, false, false, false, true
+    ];
+    public static var itemTypeBag = [
+        "pot", "apple",
+        "pot", "apple",
+        "pot", "apple"
+    ];
+    public static var itemSpawnBagIndex = 0;
+    public static var itemTypeBagIndex = 0;
+
     public var entities(default, null):Array<Entity>;
     public var playerStart(default, null):Vector2;
     public var eggStart(default, null):Vector2;
@@ -233,8 +245,18 @@ class Level extends MiniEntity
                         playerStart = new Vector2(entity.x, entity.y);
                     }
                     if(entity.name == "item") {
-                        if(Random.random < 0.2) {
-                            if(Random.random < 0.5) {
+                        var itemSpawn = itemSpawnBag[itemSpawnBagIndex];
+                        itemSpawnBagIndex += 1;
+                        if(itemSpawnBagIndex >= itemSpawnBag.length) {
+                            itemSpawnBagIndex = 0;
+                        }
+                        if(itemSpawn) {
+                            var itemType = itemTypeBag[itemTypeBagIndex];
+                            itemTypeBagIndex += 1;
+                            if(itemTypeBagIndex >= itemTypeBag.length) {
+                                itemTypeBagIndex = 0;
+                            }
+                            if(itemType == "pot") {
                                 entities.push(new Pot(entity.x, entity.y - 5));
                             }
                             else {

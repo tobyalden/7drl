@@ -8,6 +8,7 @@ import haxepunk.utils.*;
 import openfl.Lib;
 import openfl.ui.Mouse;
 import scenes.*;
+import entities.Level;
 
 
 class Main extends Engine
@@ -38,6 +39,9 @@ class Main extends Engine
         Gamepad.onConnect.bind(function(newGamepad:Gamepad) {
             defineGamepadInputs(newGamepad);
         });
+
+        HXP.shuffle(Level.itemSpawnBag);
+        HXP.shuffle(Level.itemTypeBag);
 
         HXP.scene = new GameScene("bedroom");
         //HXP.scene = new GameScene("heaven");
