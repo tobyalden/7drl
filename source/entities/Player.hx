@@ -244,8 +244,8 @@ class Player extends MiniEntity
         wasOnGround = isOnGround();
         if(canMove) {
             handlePots();
-            handleBeds();
             action();
+            handleBeds();
             if(Player.riding == null) {
                 movement();
             }
@@ -339,7 +339,7 @@ class Player extends MiniEntity
             && carrying.type == "sword"
             && cast(carrying, Sword).isCursed
         );
-        if(Input.pressed("action") && !isCarryingCursedSword) {
+        if(Input.pressed("action") && !isCarryingCursedSword && canMove) {
             if(carrying != null) {
                 if(Input.check("down")) {
                     carrying.moveTo(
