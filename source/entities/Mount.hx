@@ -148,6 +148,7 @@ class Mount extends Item
 
     private function die() {
         HXP.scene.remove(this);
+        explode(3);
         if(Player.riding == this) {
             getPlayer().stopRiding();
         }

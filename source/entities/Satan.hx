@@ -11,7 +11,7 @@ import haxepunk.utils.*;
 import entities.Bullet;
 import scenes.*;
 
-class Satan extends Enemy
+class Satan extends MiniEntity
 {
     private var mover:MultiVarTween;
     private var fireTimer:Alarm;
@@ -19,6 +19,7 @@ class Satan extends Enemy
 
     public function new(x:Float, y:Float) {
         super(x, y);
+        type = "satan";
         mask = new Hitbox(60, 60);
         sprite = new Spritemap("graphics/satan.png", 60, 60);
         sprite.add("idle", [0, 1, 2, 3, 4, 5], 8);
@@ -64,7 +65,7 @@ class Satan extends Enemy
         scene.add(bullet);
     }
 
-    override private function die() {
+    private function die() {
         GameScene.sfx["shatter"].play();
         GameScene.sfx["satandeath"].play();
         GameScene.sfx["music_satan"].stop();
@@ -84,7 +85,14 @@ class Satan extends Enemy
     override public function update() {
         var sword = collide("sword", x, y);
         if(sword != null) {
-            die();
+            if(cast(sword, Sword).isCursed) {
+                if(!GameScene.sfx["toonaughty"].playing) {
+                    GameScene.sfx["toonaughty"].play();
+                }
+            }
+            else {
+                die();
+            }
         }
         super.update();
     }

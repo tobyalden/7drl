@@ -14,7 +14,7 @@ class MiniEntity extends Entity
     public static inline var OFFSCREEN_UNLOAD_BUFFER = 0;
 
     public static var semiSolids = ["pot", "bed"];
-    public static var hazards = ["lava", "enemy", "angel", "hazard", "ogre"];
+    public static var hazards = ["lava", "enemy", "angel", "hazard", "ogre", "satan"];
 
     public function new(x:Float, y:Float) {
         super(x, y);
