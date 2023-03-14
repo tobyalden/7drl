@@ -68,7 +68,9 @@ class Mount extends Item
     }
 
     private function spawnEgg() {
-        HXP.scene.add(new Egg(x, y));
+        var egg = new Egg(x, y);
+        egg.moveTo(centerX - egg.width / 2, bottom - egg.height);
+        HXP.scene.add(egg);
         GameScene.sfx["chicken_lay"].play();
     }
 
