@@ -281,8 +281,8 @@ class Player extends MiniEntity
             preventBacktracking();
             animation();
             moveCarriedItemToHands();
+            collisions();
         }
-        collisions();
         sound();
         if(!wasOnGround && isOnGround()) {
             GameScene.sfx["land"].play();
