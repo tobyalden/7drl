@@ -248,6 +248,7 @@ class GameScene extends Scene
 
         if(zone == "pot" && player.bottom < GameScene.GAME_HEIGHT) {
             player.removeCarriedItem();
+            player.removeRiding();
             player.x = GameScene.GAME_WIDTH / 2 - player.width / 2;
             player.y = GameScene.GAME_HEIGHT;
             player.velocity.x = 0;

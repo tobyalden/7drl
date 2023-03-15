@@ -196,18 +196,42 @@ class Player extends MiniEntity
             return;
         }
         HXP.scene.add(Player.riding);
-        Player.riding.moveTo(centerX - Player.riding.width / 2, bottom - Player.riding.height);
-        moveTo(Player.riding.centerX - width / 2, Player.riding.y - height);
+        if(GameScene.exitedPot) {
+            Player.riding.moveTo(
+                Math.floor(lastUsedPot.centerX - Player.riding.width / 2),
+                lastUsedPot.y + height
+            );
+            moveTo(
+                Math.floor(lastUsedPot.centerX - width / 2),
+                lastUsedPot.y
+            );
+        }
+        else {
+            Player.riding.moveTo(centerX - Player.riding.width / 2, bottom - Player.riding.height);
+            moveTo(Player.riding.centerX - width / 2, Player.riding.y - height);
+        }
     }
 
     public function exitPot() {
         // TODO: It's possible for an item to clip into a wall and get stuck when exiting
         GameScene.sfx["exitpot"].play();
+        var mountHeight = 0;
+        if(Player.riding != null) {
+            mountHeight = Player.riding.height;
+            HXP.tween(
+                Player.riding,
+                {
+                    x: Math.floor(lastUsedPot.centerX - Player.riding.width / 2),
+                    y: lastUsedPot.y - Player.riding.height
+                },
+                1
+            );
+        }
         HXP.tween(
             this,
             {
                 x: Math.floor(lastUsedPot.centerX - width / 2),
-                y: lastUsedPot.y - height
+                y: lastUsedPot.y - height - mountHeight
             },
             1,
             {complete: function() {
@@ -224,7 +248,7 @@ class Player extends MiniEntity
                 carrying,
                 {
                     x: Math.floor(lastUsedPot.centerX - carrying.width / 2),
-                    y: lastUsedPot.y - height - carrying.height
+                    y: lastUsedPot.y - height - carrying.height - mountHeight
                 },
                 1
             );
